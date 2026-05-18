@@ -47,41 +47,47 @@ mlam F1 F2 ⇒ case [_ ⊢ F1] of
     let [g,a:names ⊢ reffc] = fld_fc [g,a:names ⊢ F1'] [g,a:names ⊢ F2'] in [g ⊢ reffc]
 ;
 
-% First auxiliary lemma 
-rec no_fstep_cl_and_op_fld_two: (g:ctx) [g,a:names,b:names ⊢ fstep_cl X T[..,a] Y1] → [g,a:names,b:names ⊢ fstep_cl X T[..,b] Y2] →
-  [g,a:names,b:names ⊢ occurs b T[..,b]] → [g ⊢ false] =
-/ total f1 (no_fstep_cl_and_op_fld_two _ _ _ _ _ _ f1 _) /
+% To prove fld for forward open transitions, we need an auxiliary lemma to solve the restriction subcases.
+% This, in turn, needs a technical lemma to be proved.
+
+% Technical lemma: given two forward closed coinitial transitions in a context [g,a:names,b:names],
+% respectively using the proof label T[..,a] (meaning that T does not depend on b) and T[..,b]
+% (meaning that T does not depend on a), if b occurs in T[..,b], then we have a contradiction.
+rec no_trans_diff_dependency: (g:ctx) [g,a:names,b:names ⊢ fstep_cl X T[..,a] Y1] →
+  [g,a:names,b:names ⊢ fstep_cl X T[..,b] Y2] → [g,a:names,b:names ⊢ occurs b T[..,b]] → [g ⊢ false] =
+/ total f1 (no_trans_diff_dependency _ _ _ _ _ _ f1 _) /
 fn f1,f2,o ⇒ case f1 of
   | [g,a:names,b:names ⊢ fc_pref D1] ⇒ let [g,a:names,b:names ⊢ fc_pref D2] = f2 in impossible occur_imp o
   | [g,a:names,b:names ⊢ fc_kpref F1 _ _] ⇒ let [g,a:names,b:names ⊢ fc_kpref F2 _ _] = f2 in
-    impossible no_fstep_cl_and_op_fld_two [_ ⊢ F1] [_ ⊢ F2] o
+    impossible no_trans_diff_dependency [_ ⊢ F1] [_ ⊢ F2] o
   | [g,a:names,b:names ⊢ fc_suml F1 _] ⇒ let [g,a:names,b:names ⊢ fc_suml F2 _] = f2 in 
     let [g,a:names,b:names ⊢ occ_suml O] = o in
-    impossible no_fstep_cl_and_op_fld_two [_ ⊢ F1] [_ ⊢ F2] [_ ⊢ O]
+    impossible no_trans_diff_dependency [_ ⊢ F1] [_ ⊢ F2] [_ ⊢ O]
   | [g,a:names,b:names ⊢ fc_sumr F1 _] ⇒ let [g,a:names,b:names ⊢ fc_sumr F2 _] = f2 in 
     let [g,a:names,b:names ⊢ occ_sumr O] = o in
-    impossible no_fstep_cl_and_op_fld_two [_ ⊢ F1] [_ ⊢ F2] [_ ⊢ O]
+    impossible no_trans_diff_dependency [_ ⊢ F1] [_ ⊢ F2] [_ ⊢ O]
   | [g,a:names,b:names ⊢ fc_parl F1 _ _] ⇒ let [g,a:names,b:names ⊢ fc_parl F2 _ _] = f2 in 
     let [g,a:names,b:names ⊢ occ_parl O] = o in
-    impossible no_fstep_cl_and_op_fld_two [_ ⊢ F1] [_ ⊢ F2] [_ ⊢ O]
+    impossible no_trans_diff_dependency [_ ⊢ F1] [_ ⊢ F2] [_ ⊢ O]
   | [g,a:names,b:names ⊢ fc_parr F1 _ _] ⇒ let [g,a:names,b:names ⊢ fc_parr F2 _ _] = f2 in 
     let [g,a:names,b:names ⊢ occ_parr O] = o in
-    impossible no_fstep_cl_and_op_fld_two [_ ⊢ F1] [_ ⊢ F2] [_ ⊢ O]
+    impossible no_trans_diff_dependency [_ ⊢ F1] [_ ⊢ F2] [_ ⊢ O]
   | [g,a:names,b:names ⊢ fc_synl FL1 LL1 _ _ _ _] ⇒ (case f2 of
        | [g,a:names,b:names ⊢ fc_synl FL2 _ _ _ _ _] ⇒ let [g,a:names,b:names ⊢ occ_sync O] = o in
-         impossible no_fstep_cl_and_op_fld_two [_ ⊢ FL1] [_ ⊢ FL2] [_ ⊢ O]
+         impossible no_trans_diff_dependency [_ ⊢ FL1] [_ ⊢ FL2] [_ ⊢ O]
        | [g,a:names,b:names ⊢ fc_synr _ LL2[..,b,a] _ _ _ _] ⇒ impossible unique_lab [_ ⊢ LL1] [_ ⊢ LL2])
   | [g,a:names,b:names ⊢ fc_synr FL1 LL1 _ _ _ _] ⇒ (case f2 of
        | [g,a:names,b:names ⊢ fc_synl _ LL2[..,b,a] _ _ _ _] ⇒ impossible unique_lab [_ ⊢ LL1] [_ ⊢ LL2]
        | [g,a:names,b:names ⊢ fc_synr FL2 _ _ _ _ _] ⇒ let [g,a:names,b:names ⊢ occ_sync O] = o in
-         impossible no_fstep_cl_and_op_fld_two [_ ⊢ FL1] [_ ⊢ FL2] [_ ⊢ O])
+         impossible no_trans_diff_dependency [_ ⊢ FL1] [_ ⊢ FL2] [_ ⊢ O])
   | [g,a:names,b:names ⊢ fc_nu \c.F1[..,c,a,b]] ⇒ let [g,a:names,b:names ⊢ fc_nu \c.F2[..,c,a,b]] = f2 in
     let [g,a:names,b:names ⊢ O] = o in
-    impossible no_fstep_cl_and_op_fld_two [_ ⊢ F1] [_ ⊢ F2] [_ ⊢ O[..]]
+    impossible no_trans_diff_dependency [_ ⊢ F1] [_ ⊢ F2] [_ ⊢ O[..]]
 ;
 
-
-% Second auxiliary lemma
+% Auxiliary lemma for fld, open case: given two forward open coinitial transitions using the same
+% proof label T, if one is obtained via the rule fo_nu_cl and the other via the rule fo_nu_op,
+% then we have a contradiction.
 rec no_fstep_cl_and_op_fld: (g:ctx) [g,a:names ⊢ fstep_cl X T Y1] → [g,a:names ⊢ fstep_op X (open \a.T[..]) Y2] →
  [g,a:names ⊢ occurs a T] → [g,a:names ⊢ lab T A[..]] → [g ⊢ false] =
 / total f1 (no_fstep_cl_and_op_fld _ _ _ _ _ _ f1 _ _ _) /
@@ -109,7 +115,7 @@ fn f1,f2,o1,l1 ⇒ case f1 of
   | [g,a:names ⊢ fc_synr _ _ _ _ _ _] ⇒ impossible f2
   | [g,a:names ⊢ fc_nu \b.F1[..,b,a]] ⇒ (case f2 of
        | [g,a:names ⊢ fo_nu_cl (\b.O2) (\b.L2) (\b.F2[..,b,a])] ⇒ let [g,a:names ⊢ O1] = o1 in
-         impossible no_fstep_cl_and_op_fld_two [g,b:names,a:names ⊢ F1[..,a,b]] [g,b:names,a:names ⊢ F2[..,a,b]] [_ ⊢ O1[..]]
+         impossible no_trans_diff_dependency [g,b:names,a:names ⊢ F1[..,a,b]] [g,b:names,a:names ⊢ F2[..,a,b]] [_ ⊢ O1[..]]
        | [g,a:names ⊢ fo_nu_op \b.F2[..,b,a]] ⇒ let [g,a:names ⊢ O1] = o1 in
          let [g,a:names ⊢ L1] = l1 in
          let [g,b:names,a:names ⊢ E[..,b]] = no_fstep_cl_and_op_fld [g,a:names,b:names ⊢ F1] [g,a:names,b:names ⊢ F2]
