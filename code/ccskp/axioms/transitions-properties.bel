@@ -231,7 +231,7 @@ mlam S ⇒ case [_ ⊢ S] of
   | [g ⊢ so (bwo B)] ⇒ [g ⊢ sdb (btc_op B) (btc_op B)]
 ;
 
-% If two combined transitions S1 and S2 have same directions, then S2 and S1 have.
+% If two combined transitions S1 and S2 have same directions, then S2 and S1 have the same directions.
 rec symmetric_same_direction: (g:ctx) (S1:[g ⊢ step X1 T1 Y1]) (S2:[g ⊢ step X2 T2 Y2])
   [g ⊢ same_direction S1 S2] → [g ⊢ same_direction S2 S1] =
 / total (symmetric_same_direction) /

@@ -173,18 +173,28 @@ case [_ ⊢ S1] of
        | [g ⊢ bw B2] ⇒ impossible ccsk_no_composable_bw_tr_with_same_label [g ⊢ B1] [g ⊢ B2])
 ;
 
-rec ccsk_same_direction_sym: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 X1']) (S2:[g ⊢ ccsk.step X2 KL2 X2'])
+% Given a combined transition S, it has the same direction as itself.
+rec reflexive_ccsk_same_direction: (g:ctx) {S:[g ⊢ ccsk.step X KL Y]} [g ⊢ ccsk_same_direction S S] =
+/ total (reflexive_ccsk_same_direction) /
+mlam S ⇒ case [_ ⊢ S] of
+  | [g ⊢ fw F] ⇒ [g ⊢ ccsk_sdf]
+  | [g ⊢ bw B] ⇒ [g ⊢ ccsk_sdb]
+;
+
+% If two combined transitions S1 and S2 have same directions, then S2 and S1 have the same directions.
+rec symmetric_ccsk_same_direction: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 X1']) (S2:[g ⊢ ccsk.step X2 KL2 X2'])
   [g ⊢ ccsk_same_direction S1 S2] → [g ⊢ ccsk_same_direction S2 S1] =
-/ total (ccsk_same_direction_sym) /
+/ total (symmetric_ccsk_same_direction) /
 fn sd ⇒ case sd of
   | [g ⊢ ccsk_sdf] ⇒ [g ⊢ ccsk_sdf]
   | [g ⊢ ccsk_sdb] ⇒ [g ⊢ ccsk_sdb]
 ;
 
-rec ccsk_same_direction_trans: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 X1']) (S2:[g ⊢ ccsk.step X2 KL2 X2'])
+% If S1 and S2 have same directions, and S2 and S3 have same directions, then S1 and S3 have same directions.
+rec transitive_ccsk_same_direction: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 X1']) (S2:[g ⊢ ccsk.step X2 KL2 X2'])
   (S3:[g ⊢ ccsk.step X3 KL3 X3']) [g ⊢ ccsk_same_direction S1 S2] → [g ⊢ ccsk_same_direction S2 S3] →
   [g ⊢ ccsk_same_direction S1 S3] =
-/ total (ccsk_same_direction_trans) /
+/ total (transitive_ccsk_same_direction) /
 fn sd1,sd2 ⇒ case sd1 of
   | [g ⊢ ccsk_sdf] ⇒ let [g ⊢ ccsk_sdf] = sd2 in [g ⊢ ccsk_sdf]
   | [g ⊢ ccsk_sdb] ⇒ let [g ⊢ ccsk_sdb] = sd2 in [g ⊢ ccsk_sdb]
@@ -2290,8 +2300,8 @@ mlam T,T' ⇒ fn e,ent,ent' ⇒ case e of
                    impossible ccsk_no_composable_fw_tr_with_same_key (ccsk_loop_lemma_two [g ⊢ BU']) (ccsk_loop_lemma_two [g ⊢ BT])))
        % If K != M, we can apply the auxiliary lemma unique_diamonds to prove that (T',T'') and (U',U'') coincide
        | [g ⊢ c_neq N] ⇒ let [g ⊢ refp] = unique_diamonds [g ⊢ T'] [g ⊢ T''] [g ⊢ U'] [g ⊢ U''] 
-           (ccsk_same_direction_trans (ccsk_same_direction_sym [g ⊢ SDT]) [g ⊢ SDT'])
-           (ccsk_same_direction_trans (ccsk_same_direction_sym [g ⊢ SDU]) [g ⊢ SDU']) [g ⊢ N] in
+           (transitive_ccsk_same_direction (symmetric_ccsk_same_direction [g ⊢ SDT]) [g ⊢ SDT'])
+           (transitive_ccsk_same_direction (symmetric_ccsk_same_direction [g ⊢ SDU]) [g ⊢ SDU']) [g ⊢ N] in
          % As a consequence, (T'+,T''+) and (U'+,U''+) also coincide
          let [g ⊢ refst] = unique_step [g ⊢ T'+] [g ⊢ T''+] in
          let [g ⊢ refst] = unique_step [g ⊢ U'+] [g ⊢ U''+] in
@@ -2358,6 +2368,18 @@ fn s ⇒ case s of
        let [g ⊢ S2*'] = ccsk_symmetric_step* [g ⊢ S2*] in [g ⊢ ccsk.tr_s* S2*' S1*']
 ;
 
+% Equivalent transitions have the same direction
+rec ccsk_equiv_tr_have_same_direction: (g:ctx) (T:[g ⊢ ccsk.step P A Q]) (T':[g ⊢ ccsk.step R A S])
+  [g ⊢ ccsk_equiv_tr T T'] → [g ⊢ ccsk_same_direction T T'] =
+/ total e (ccsk_equiv_tr_have_same_direction _ _ _ _ _ _ _ _ e) /
+fn e ⇒ case e of
+  | [g ⊢ ccsk_et_base (ccsk_etb SD1 _ _)]:[g ⊢ ccsk_equiv_tr T T'] ⇒ [g ⊢ SD1]
+  | [g ⊢ ccsk_et_refl] ⇒ reflexive_ccsk_same_direction [g ⊢ _]
+  | [g ⊢ ccsk_et_sym E'] ⇒ symmetric_ccsk_same_direction (ccsk_equiv_tr_have_same_direction [g ⊢ E'])
+  | [g ⊢ ccsk_et_trans E1 E2] ⇒ transitive_ccsk_same_direction 
+       (ccsk_equiv_tr_have_same_direction [g ⊢ E1]) (ccsk_equiv_tr_have_same_direction [g ⊢ E2])
+;
+
 % Equivalent transitions are connected
 rec ccsk_equiv_tr_are_connected: (g:ctx) (T:[g ⊢ ccsk.step P A Q]) (T':[g ⊢ ccsk.step R A S])
   [g ⊢ ccsk_equiv_tr T T'] → [g ⊢ ccsk.conn_tr T T'] =
@@ -2417,4 +2439,15 @@ let [g ⊢ ccsk_it T S] = d in
 let [g ⊢ ex_en ENS] = total_enrich [g ⊢ S] in
 let [g ⊢ it _ _] = inv_ccsk_to_ccskp d [g ⊢ ENT] [g ⊢ ENS] in
  [g ⊢ ccsk_ind_tr ENS ENT' I (ctr _ _ (ccsk.tr_s* (ccsk.st_s* S) S*))]
+;
+
+
+%%% ED: event determinism
+
+% ED: if T and U are coinitial transitions and T ~ U, then T and U are cofinal.
+rec ccsk_ed: (g:ctx) {T:[g ⊢ ccsk.step X KL Y1]} {U:[g ⊢ ccsk.step X KL Y2]} [g ⊢ ccsk_equiv_tr T U] → [g ⊢ eqp Y1 Y2] =
+/ total e (ccsk_ed _ _ _ _ _ _ _ e) /
+mlam T,U ⇒ fn e ⇒ let {ENT:[g ⊢ enrich T T+]}[g ⊢ ex_en ENT] = total_enrich [_ ⊢ T] in
+let {ENU:[g ⊢ enrich U U+]}[g ⊢ ex_en ENU] = total_enrich [_ ⊢ U] in
+let [g ⊢ sl_et E+] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ U] e [g ⊢ ENT] [g ⊢ ENU] in ed [g ⊢ T+] [g ⊢ U+] [g ⊢ E+]
 ;
