@@ -17,40 +17,52 @@ LF non_deg_diamonds: step X T1 Y → step X T2 Z → step Y T2 W → step Z T1 W
              → non_deg_diamonds T U (U':step Y T2 W) (T':step Z T1 W)
 ;
 
-%{
+% Independence of diamonds
 rec id: (g:ctx) (T:[g ⊢ step X T1 Y]) (U:[g ⊢ step X T2 Z]) (U':[g ⊢ step Y T2 W])
   (T':[g ⊢ step Z T1 W]) [g ⊢ same_direction T T'] → [g ⊢ same_direction U U'] →
   [g ⊢ non_deg_diamonds T U U' T'] → [g ⊢ indep_tr T U] =
 / total (id _ _ _ _ _ _ _ t _ _ _ _ _) /
 fn sd1,sd2,nd ⇒ case nd of
-  | [g ⊢ sd_diam SD \x.H] ⇒ (case [g ⊢ SD] of
-       | [g ⊢ sdf FCT FCU] ⇒ (case sd1 of
-            | [g ⊢ sdf FCT2 FCT'] ⇒ 
-              let [g ⊢ reff] = injective_forw_to_comb [g ⊢ FCT] [g ⊢ FCT2] in
-              (case sd2 of
-                 | [g ⊢ sdf FCU2 FCU'] ⇒
-                   let [g ⊢ reff] = injective_forw_to_comb [g ⊢ FCU] [g ⊢ FCU2] in
-                   let [g ⊢ FCT']:[g ⊢ forw_to_comb FT' T'] = [g ⊢ FCT'] in
-                   let [g ⊢ FCU']:[g ⊢ forw_to_comb FU' U'] = [g ⊢ FCU'] in
-                   let [g ⊢ FCU]:[g ⊢ forw_to_comb FU U] = [g ⊢ FCU] in
-                   let [g ⊢ FCT]:[g ⊢ forw_to_comb FT T] = [g ⊢ FCT] in
-                   let [g ⊢ BT'] = loop_lemma_one [g ⊢ FT'] in
-                   let [g ⊢ BU'] = loop_lemma_one [g ⊢ FU'] in
-                   let [g ⊢ BU] = loop_lemma_one [g ⊢ FU] in
-                   let [g ⊢ BT] = loop_lemma_one [g ⊢ FT] in
-                   let [g ⊢ ex_iv (it _ RU)] = total_inv [g ⊢ U] in
-                   let [g ⊢ ex_iv (it _ RT)] = total_inv [g ⊢ T] in
-                   ?%(case surjective_forw_back_to_comb [g ⊢ RU] of
-                    % | [g ⊢ or_fw FCU''] ⇒ let [g ⊢ btc BCU''] = total_back_to_comb [g ⊢ BU] in
-                    %   impossible disjoint_forw_back_to_comb [g ⊢ FCU''] [g ⊢ BCU'']
-                    % | [g ⊢ or_bw BCU] ⇒ ?)
-                   %(case bti_equiv [g ⊢ BT'] [g ⊢ BU'] of
-                   %     | [g ⊢ bt_id refb] ⇒ impossible [g, refp:eqp _ _ ⊢ H]
-                   %     | [g ⊢ bt_ind BCT' BCU' (ind_tr I _)] ⇒ 
-                   %       let [g ⊢ I'] = pci [g ⊢ sdb BCT' (btc)] [g ⊢ sdb BCU' FCU']
-                   %           [g ⊢ ind_tr I (ct _ _ (st_s* (ftc_cl FU')))] [g ⊢ it (ftc_cl FT') (ftc_cl BT')] in ?)
-                 | [g ⊢ sdb BCU _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCU] [g ⊢ BCU])
-            | [g ⊢ sdb BCT _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCT] [g ⊢ BCT])
-       | [g ⊢ sdb BTC1 BTC2] ⇒ ?)
-  | [g ⊢ od_diam OD \x.H] ⇒ ?
-;}%
+  | [g ⊢ sd_diam (sdf FCT FCU) \x.H] ⇒ (case sd1 of
+       | [g ⊢ sdf _ FCT'] ⇒ (case sd2 of
+            | [g ⊢ sdf _ FCU'] ⇒ let [g ⊢ FCT']:[g ⊢ forw_to_comb FT' T'] = [g ⊢ FCT'] in
+              let [g ⊢ FCU']:[g ⊢ forw_to_comb FU' U'] = [g ⊢ FCU'] in
+              let [g ⊢ FCU]:[g ⊢ forw_to_comb FU U] = [g ⊢ FCU] in
+              let [g ⊢ BT'] = loop_lemma_one [g ⊢ FT'] in
+              let [g ⊢ BU'] = loop_lemma_one [g ⊢ FU'] in
+              (case bti_equiv [g ⊢ BT'] [g ⊢ BU'] of
+                | [g ⊢ bt_id refb] ⇒ impossible [g, refp:eqp _ _ ⊢ H]
+                | [g ⊢ bt_ind BCT2' BCU2' (ind_tr I _)] ⇒ [g ⊢ ind_tr I (ct _ _ (st_s* U))])
+            | [g ⊢ sdb BCU _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCU] [g ⊢ BCU])
+       | [g ⊢ sdb BCT _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCT] [g ⊢ BCT])
+  | [g ⊢ sd_diam (sdb BCT BCU) \x.H] ⇒ (case sd1 of
+       | [g ⊢ sdf FCT _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCT] [g ⊢ BCT]
+       | [g ⊢ sdb _ BCT'] ⇒ (case sd2 of
+            | [g ⊢ sdf FCU _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCU] [g ⊢ BCU]
+            | [g ⊢ sdb _ BCU'] ⇒ let [g ⊢ BCT]:[g ⊢ back_to_comb BT T] = [g ⊢ BCT] in
+              let [g ⊢ BCU]:[g ⊢ back_to_comb BU U] = [g ⊢ BCU] in
+              (case bti_equiv [g ⊢ BT] [g ⊢ BU] of
+                | [g ⊢ bt_id refb] ⇒ impossible [g, refp:eqp _ _ ⊢ H]
+                | [g ⊢ bt_ind _ _ (ind_tr I _)] ⇒ [g ⊢ ind_tr I (ct _ _ (st_s* U))])))
+  | [g ⊢ od_diam (odfb FCT BCU) \x.H] ⇒ (case sd1 of
+       | [g ⊢ sdf _ FCT'] ⇒ (case sd2 of
+            | [g ⊢ sdf FCU _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCU] [g ⊢ BCU]
+            | [g ⊢ sdb _ BCU'] ⇒ let [g ⊢ FCT]:[g ⊢ forw_to_comb FT T] = [g ⊢ FCT] in
+              let [g ⊢ BT] = loop_lemma_one [g ⊢ FT] in
+              let [g ⊢ BCU]:[g ⊢ back_to_comb BU U] = [g ⊢ BCU] in
+              let [g ⊢ BCU']:[g ⊢ back_to_comb BU' U'] = [g ⊢ BCU'] in
+              (case bti_equiv [g ⊢ BT] [g ⊢ BU'] of
+                | [g ⊢ bt_id refb] ⇒ impossible [g, refp:eqp _ _ ⊢ H]
+                | [g ⊢ bt_ind _ _ (ind_tr I _)] ⇒ [g ⊢ ind_tr I (ct _ _ (st_s* U))]))
+       | [g ⊢ sdb BCT _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCT] [g ⊢ BCT])
+  | [g ⊢ od_diam (odbf BCT FCU) \x.H] ⇒ (case sd1 of
+       | [g ⊢ sdf FCT _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCT] [g ⊢ BCT]
+       | [g ⊢ sdb _ BCT'] ⇒ (case sd2 of
+            | [g ⊢ sdf _ FCU'] ⇒ let [g ⊢ FCU]:[g ⊢ forw_to_comb FU U] = [g ⊢ FCU] in
+              let [g ⊢ BU] = loop_lemma_one [g ⊢ FU] in
+              let [g ⊢ BCT']:[g ⊢ back_to_comb BT' T'] = [g ⊢ BCT'] in
+              (case bti_equiv [g ⊢ BT'] [g ⊢ BU] of
+                | [g ⊢ bt_id refb] ⇒ impossible [g, refp:eqp _ _ ⊢ H]
+                | [g ⊢ bt_ind _ _ (ind_tr I _)] ⇒ [g ⊢ ind_tr I (ct _ _ (st_s* U))])
+            | [g ⊢ sdb BCU _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCU] [g ⊢ BCU]))
+;
