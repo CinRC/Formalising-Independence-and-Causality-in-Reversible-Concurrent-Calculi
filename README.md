@@ -76,6 +76,8 @@ to perform the type reconstruction of the formalization. Expected result, after 
 ## Type Reconstruction done:  run/../code/ccskp/axioms/cire.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/axioms/rpi.bel ##
 ## Type Reconstruction done:  run/../code/ccskp/axioms/rpi.bel ##
+## Type Reconstruction begin: run/../code/ccskp/axioms/ed.bel ##
+## Type Reconstruction done:  run/../code/ccskp/axioms/ed.bel ##
 ## Type Reconstruction begin: run/../code/ccsk/axioms/transitions-properties.bel ##
 ## Type Reconstruction done:  run/../code/ccsk/axioms/transitions-properties.bel ##
 ```
@@ -220,10 +222,11 @@ opam install --deps-only ./beluga.opam
       - `sp.bel`: … SP (square property)
       - `wf.bel`: … WF (well-foundedness)
       - `pci.bel`: … PCI (propagation of coinitial independence)
-      - `fld.bel`: … FLD (forward label determinism)
+      - `fld.bel`: … FLD (forward label determinism) and BLD (backward label determinism)
       - `ire.bel`: … IRE (independence respects events)
       - `cire.bel`: … CIRE (coinitial independence respects events)
       - `rpi.bel`: … RPI (reversing preserves independence)
+      - `ed.bel`: … ED (event determinism)
   + `bijection\`: … the proof of the bijection between CCSK and CCSKP, in particular …
     * `definitions.bel`: … definitions of the forget and enrich functions (as relations)
     * `functionality.bel`: … functionality of forget and enrich

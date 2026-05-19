@@ -1,0 +1,13 @@
+%%% ED: event determinism
+
+% ED: if T and U are coinitial transitions and T ~ U, then T and U are cofinal.
+rec ed: (g:ctx) {T:[g ⊢ step X θ Y1]} {U:[g ⊢ step X θ Y2]} [g ⊢ equiv_tr T U] → [g ⊢ eqp Y1 Y2] =
+/ total e (ed _ _ _ _ _ _ _ e) /
+mlam T,U ⇒ fn e ⇒ case equiv_tr_have_same_direction e of
+  | [g ⊢ sdf FTC1 FTC2] ⇒ let [g ⊢ FTC1]:[g ⊢ forw_to_comb F1 _] = [g ⊢ FTC1] in
+    let [g ⊢ FTC2]:[g ⊢ forw_to_comb F2 _] = [g ⊢ FTC2] in
+    let [g ⊢ reff] = fld [g ⊢ F1] [g ⊢ F2] in [g ⊢ refp]
+  | [g ⊢ sdb BTC1 BTC2] ⇒ let [g ⊢ BTC1]:[g ⊢ back_to_comb B1 _] = [g ⊢ BTC1] in
+    let [g ⊢ BTC2]:[g ⊢ back_to_comb B2 _] = [g ⊢ BTC2] in
+    let [g ⊢ refb] = bld [g ⊢ B1] [g ⊢ B2] in [g ⊢ refp]
+;

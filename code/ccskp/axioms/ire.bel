@@ -126,6 +126,18 @@ fn e ⇒ case e of
                       let [g ⊢ RT] = symmetric_step [g ⊢ T] in [g ⊢ ct _ _ (tr_s* S1* (tr_s* (st_s* RT) S2*))]
 ;
 
+% Equivalent transitions have the same direction
+rec equiv_tr_have_same_direction: (g:ctx) (T:[g ⊢ step P A Q]) (T':[g ⊢ step R A S])
+  [g ⊢ equiv_tr T T'] → [g ⊢ same_direction T T'] =
+/ total e (equiv_tr_have_same_direction _ _ _ _ _ _ _ _ e) /
+fn e ⇒ case e of
+  | [g ⊢ et_base (etb SD1 _ _)]:[g ⊢ equiv_tr T T'] ⇒ [g ⊢ SD1]
+  | [g ⊢ et_refl] ⇒ reflexive_same_direction [g ⊢ _]
+  | [g ⊢ et_sym E'] ⇒ symmetric_same_direction (equiv_tr_have_same_direction [g ⊢ E'])
+  | [g ⊢ et_trans E1 E2] ⇒ transitive_same_direction 
+       (equiv_tr_have_same_direction [g ⊢ E1]) (equiv_tr_have_same_direction [g ⊢ E2])
+;
+
 % Independence respects events (IRE):
 % Given three transitions t,t' and u, if t~t' (t and t' are equivalent) and t' and u are independent,
 % then also t and u are independent.

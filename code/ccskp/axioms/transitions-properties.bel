@@ -102,7 +102,6 @@ fn hb1,hb2 ⇒ unique_bstep [_ ⊢ _] [_ ⊢ _]
 ;
 
 
-
 %%% Inverse of a transition
 
 % Inverse of a transition: inv_tr S1 S2 holds iff S2 is the inverse of S1
@@ -220,6 +219,38 @@ fn sd,od ⇒ case sd of
   | [g ⊢ sdb (btc_op B1) (btc_op B2)] ⇒ (case od of
        | [g ⊢ odfb FC1 _] ⇒ impossible [g ⊢ FC1]
        | [g ⊢ odbf _ FC2] ⇒ impossible [g ⊢ FC2])
+;
+
+% Given a combined transition S, it has the same direction as itself.
+rec reflexive_same_direction: (g:ctx) {S:[g ⊢ step X T Y]} [g ⊢ same_direction S S] =
+/ total (reflexive_same_direction) /
+mlam S ⇒ case [_ ⊢ S] of
+  | [g ⊢ sc (fwc F)] ⇒ [g ⊢ sdf (ftc_cl F) (ftc_cl F)]
+  | [g ⊢ so (fwo F)] ⇒ [g ⊢ sdf (ftc_op F) (ftc_op F)]
+  | [g ⊢ sc (bwc B)] ⇒ [g ⊢ sdb (btc_cl B) (btc_cl B)]
+  | [g ⊢ so (bwo B)] ⇒ [g ⊢ sdb (btc_op B) (btc_op B)]
+;
+
+% If two combined transitions S1 and S2 have same directions, then S2 and S1 have.
+rec symmetric_same_direction: (g:ctx) (S1:[g ⊢ step X1 T1 Y1]) (S2:[g ⊢ step X2 T2 Y2])
+  [g ⊢ same_direction S1 S2] → [g ⊢ same_direction S2 S1] =
+/ total (symmetric_same_direction) /
+fn sd ⇒ case sd of
+  | [g ⊢ sdf FTC1 FTC2] ⇒ [g ⊢ sdf FTC2 FTC1]
+  | [g ⊢ sdb BTC1 BTC2] ⇒ [g ⊢ sdb BTC2 BTC1]
+;
+
+% If S1 and S2 have same directions, and S2 and S3 have same directions, then S1 and S3 have same directions.
+rec transitive_same_direction: (g:ctx) (S1:[g ⊢ step X1 T1 Y1]) (S2:[g ⊢ step X2 T2 Y2]) (S3:[g ⊢ step X3 T3 Y3])
+  [g ⊢ same_direction S1 S2] → [g ⊢ same_direction S2 S3] → [g ⊢ same_direction S1 S3] =
+/ total (transitive_same_direction) /
+fn sd1,sd2 ⇒ case sd1 of
+  | [g ⊢ sdf FTC1 FTC2] ⇒ (case sd2 of
+       | [g ⊢ sdf _ FTC3] ⇒ [g ⊢ sdf FTC1 FTC3]
+       | [g ⊢ sdb BTC2 _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FTC2] [g ⊢ BTC2])
+  | [g ⊢ sdb BTC1 BTC2] ⇒ (case sd2 of
+       | [g ⊢ sdf FTC2 _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FTC2] [g ⊢ BTC2]
+       | [g ⊢ sdb _ BTC3] ⇒ [g ⊢ sdb BTC1 BTC3])
 ;
 
 % Given a combined transition t, t and inv_tr(t) have opposite directions.
