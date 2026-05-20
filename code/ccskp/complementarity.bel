@@ -221,15 +221,15 @@ fn d ⇒ case d of
 ;
 
 % Predicate expressing dependence or independence of proof labels:
-% dep_or_indep T1 T2 holds iff they are dependent or independent
+% dep_or_indep T1 T2 holds iff T1 and T2 are dependent or independent
 LF dep_cl_or_indep_cl: pr_lab_cl → pr_lab_cl → type =
-  | or_dep: dep_cl T1 T2 → dep_cl_or_indep_cl T1 T2
-  | or_ind: indep_cl T1 T2 → dep_cl_or_indep_cl T1 T2
+  | or_dep_cl: dep_cl T1 T2 → dep_cl_or_indep_cl T1 T2
+  | or_ind_cl: indep_cl T1 T2 → dep_cl_or_indep_cl T1 T2
 ;
 
 LF dep_or_indep: pr_lab → pr_lab → type =
-  | or_dep_pl: dep T1 T2 → dep_or_indep T1 T2
-  | or_ind_pl: indep T1 T2 → dep_or_indep T1 T2
+  | or_dep: dep T1 T2 → dep_or_indep T1 T2
+  | or_ind: indep T1 T2 → dep_or_indep T1 T2
 ;
 
 % Proof of complementarity (third part):
@@ -237,72 +237,72 @@ LF dep_or_indep: pr_lab → pr_lab → type =
 rec conn_cl_impl_dep_cl_or_indep_cl: (g:ctx) [g ⊢ conn_cl T1 T2] → [g ⊢ dep_cl_or_indep_cl T1 T2] =
 / total c (conn_cl_impl_dep_cl_or_indep_cl _ _ _ c) /
 fn c ⇒ case c of
-  | [g ⊢ c_a1] ⇒ [g ⊢ or_dep d_a1]
-  | [g ⊢ c_a2] ⇒ [g ⊢ or_dep d_a2]
+  | [g ⊢ c_a1] ⇒ [g ⊢ or_dep_cl d_a1]
+  | [g ⊢ c_a2] ⇒ [g ⊢ or_dep_cl d_a2]
   | [g ⊢ c_c1l C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
-       | [g ⊢ or_dep D] ⇒ [g ⊢ or_dep (d_c1l D)]
-       | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind (i_c1l I)])
+       | [g ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep_cl (d_c1l D)]
+       | [g ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind_cl (i_c1l I)])
   | [g ⊢ c_c1r C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
-       | [g ⊢ or_dep D] ⇒ [g ⊢ or_dep (d_c1r D)]
-       | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind (i_c1r I)])
-  | [g ⊢ c_c2l] ⇒ [g ⊢ or_dep d_c2l]
-  | [g ⊢ c_c2r] ⇒ [g ⊢ or_dep d_c2r]
+       | [g ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep_cl (d_c1r D)]
+       | [g ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind_cl (i_c1r I)])
+  | [g ⊢ c_c2l] ⇒ [g ⊢ or_dep_cl d_c2l]
+  | [g ⊢ c_c2r] ⇒ [g ⊢ or_dep_cl d_c2r]
   | [g ⊢ c_p1l C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
-       | [g ⊢ or_dep D] ⇒ [g ⊢ or_dep (d_p1l D)]
-       | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind (i_p1l I)])
+       | [g ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep_cl (d_p1l D)]
+       | [g ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind_cl (i_p1l I)])
   | [g ⊢ c_p1r C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
-       | [g ⊢ or_dep D] ⇒ [g ⊢ or_dep (d_p1r D)]
-       | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind (i_p1r I)])
+       | [g ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep_cl (d_p1r D)]
+       | [g ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind_cl (i_p1r I)])
   | [g ⊢ c_p2l]:[g ⊢ conn_cl (pr_parl T1) (pr_parr T2)] ⇒
     let [g ⊢ ex_k H1] = total_key [g ⊢ T1] in
     let [g ⊢ ex_k H2] = total_key [g ⊢ T2] in
     let [g ⊢ H1]:[g ⊢ key T1 K[]] = [g ⊢ H1] in
     let [g ⊢ H2]:[g ⊢ key T2 M[]] = [g ⊢ H2] in
     (case dec_eq_keys [g] [⊢ K] [⊢ M] of
-       | [g ⊢ c_eq] ⇒ [g ⊢ or_dep (d_p2l H1 H2)]
-       | [g ⊢ c_neq D] ⇒ [g ⊢ or_ind (i_p2l H1 H2 D)])
+       | [g ⊢ c_eq] ⇒ [g ⊢ or_dep_cl (d_p2l H1 H2)]
+       | [g ⊢ c_neq D] ⇒ [g ⊢ or_ind_cl (i_p2l H1 H2 D)])
   | [g ⊢ c_p2r]:[g ⊢ conn_cl (pr_parr T1) (pr_parl T2)] ⇒
     let [g ⊢ ex_k H1] = total_key [g ⊢ T1] in
     let [g ⊢ ex_k H2] = total_key [g ⊢ T2] in
     let [g ⊢ H1]:[g ⊢ key T1 K[]] = [g ⊢ H1] in
     let [g ⊢ H2]:[g ⊢ key T2 M[]] = [g ⊢ H2] in
     (case dec_eq_keys [g] [⊢ K] [⊢ M] of
-       | [g ⊢ c_eq] ⇒ [g ⊢ or_dep (d_p2r H1 H2)]
-       | [g ⊢ c_neq D] ⇒ [g ⊢ or_ind (i_p2r H1 H2 D)])
+       | [g ⊢ c_eq] ⇒ [g ⊢ or_dep_cl (d_p2r H1 H2)]
+       | [g ⊢ c_neq D] ⇒ [g ⊢ or_ind_cl (i_p2r H1 H2 D)])
   | [g ⊢ c_s1l C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
-       | [g ⊢ or_dep D] ⇒ [g ⊢ or_dep (d_s1l D)]
-       | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind (i_s1l I)])
+       | [g ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep_cl (d_s1l D)]
+       | [g ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind_cl (i_s1l I)])
   | [g ⊢ c_s1r C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
-       | [g ⊢ or_dep D] ⇒ [g ⊢ or_dep (d_s1r D)]
-       | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind (i_s1r I)])
+       | [g ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep_cl (d_s1r D)]
+       | [g ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind_cl (i_s1r I)])
   | [g ⊢ c_s2l C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
-       | [g ⊢ or_dep D] ⇒ [g ⊢ or_dep (d_s2l D)]
-       | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind (i_s2l I)])
+       | [g ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep_cl (d_s2l D)]
+       | [g ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind_cl (i_s2l I)])
   | [g ⊢ c_s2r C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
-       | [g ⊢ or_dep D] ⇒ [g ⊢ or_dep (d_s2r D)]
-       | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind (i_s2r I)])
+       | [g ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep_cl (d_s2r D)]
+       | [g ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind_cl (i_s2r I)])
   | [g ⊢ c_s3 C1 C2] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C1] of
-       | [g ⊢ or_dep D1] ⇒ [g ⊢ or_dep (d_s3l D1 C2)]
-       | [g ⊢ or_ind I1] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C2] of
-            | [g ⊢ or_dep D2] ⇒ [g ⊢ or_dep (d_s3r C1 D2)]
-            | [g ⊢ or_ind I2] ⇒ [g ⊢ or_ind (i_s3 I1 I2)]))
+       | [g ⊢ or_dep_cl D1] ⇒ [g ⊢ or_dep_cl (d_s3l D1 C2)]
+       | [g ⊢ or_ind_cl I1] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C2] of
+            | [g ⊢ or_dep_cl D2] ⇒ [g ⊢ or_dep_cl (d_s3r C1 D2)]
+            | [g ⊢ or_ind_cl I2] ⇒ [g ⊢ or_ind_cl (i_s3 I1 I2)]))
 ;
 
 rec conn_impl_dep_or_indep: (g:ctx) [g ⊢ conn T1 T2] → [g ⊢ dep_or_indep T1 T2] =
 / total (conn_impl_dep_or_indep) /
 fn c ⇒ case c of
   | [g ⊢ c_cc C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
-       | [g ⊢ or_dep D] ⇒ [g ⊢ or_dep_pl (d_cc D)]
-       | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind_pl (i_cc I)])
+       | [g ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep (d_cc D)]
+       | [g ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind (i_cc I)])
   | [g ⊢ c_co \a.C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [_ ⊢ C] of
-       | [g,a:names ⊢ or_dep D] ⇒ [g ⊢ or_dep_pl (d_co \a.D)]
-       | [g,a:names ⊢ or_ind I] ⇒ [g ⊢ or_ind_pl (i_co \a.I)])
+       | [g,a:names ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep (d_co \a.D)]
+       | [g,a:names ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind (i_co \a.I)])
   | [g ⊢ c_oc \a.C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [_ ⊢ C] of
-       | [g,a:names ⊢ or_dep D] ⇒ [g ⊢ or_dep_pl (d_oc \a.D)]
-       | [g,a:names ⊢ or_ind I] ⇒ [g ⊢ or_ind_pl (i_oc \a.I)])
+       | [g,a:names ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep (d_oc \a.D)]
+       | [g,a:names ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind (i_oc \a.I)])
   | [g ⊢ c_oo \a.C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [_ ⊢ C] of
-       | [g,a:names ⊢ or_dep D] ⇒ [g ⊢ or_dep_pl (d_oo \a.D)]
-       | [g,a:names ⊢ or_ind I] ⇒ [g ⊢ or_ind_pl (i_oo \a.I)])
+       | [g,a:names ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep (d_oo \a.D)]
+       | [g,a:names ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind (i_oo \a.I)])
 ;
 
 % Proof of complementarity (fourth part):
@@ -339,4 +339,33 @@ fn d,i ⇒ case d of
   | [g ⊢ d_co \a.D] ⇒ let [g ⊢ i_co \a.I] = i in impossible impossible_dep_cl_and_indep_cl [_ ⊢ D] [_ ⊢ I]
   | [g ⊢ d_oc \a.D] ⇒ let [g ⊢ i_oc \a.I] = i in impossible impossible_dep_cl_and_indep_cl [_ ⊢ D] [_ ⊢ I]
   | [g ⊢ d_oo \a.D] ⇒ let [g ⊢ i_oo \a.I] = i in impossible impossible_dep_cl_and_indep_cl [_ ⊢ D] [_ ⊢ I]
+;
+
+
+%%% Complementarity of transitions %%%
+
+% Predicate expressing dependence or independence of transitions:
+% dep_or_indep S1 S2 holds iff S1 and S2 are dependent or independent
+LF dep_tr_or_indep_tr: step X1 T1 Y1 → step X2 T2 Y2 → type =
+  | or_dep_tr: dep_tr S1 S2 → dep_tr_or_indep_tr S1 S2
+  | or_ind_tr: indep_tr S1 S2 → dep_tr_or_indep_tr S1 S2
+;
+
+% Connected transitions between reachable processes are dependent or independent
+rec conn_tr_impl_dep_tr_or_indep_tr: (g:ctx) (S1:[g ⊢ step X1 T1 Y1]) (S2:[g ⊢ step X2 T2 Y2])
+  [g ⊢ reachable X1] → [g ⊢ conn_tr S1 S2] → [g ⊢ dep_tr_or_indep_tr S1 S2] =
+/ total (conn_tr_impl_dep_tr_or_indep_tr) /
+fn r,ct ⇒ let [g ⊢ C] = conn_rel_one r ct in
+let [g ⊢ CT] = ct in
+(case conn_impl_dep_or_indep [g ⊢ C] of
+  | [g ⊢ or_dep D] ⇒ [g ⊢ or_dep_tr (dp_tr D CT)]
+  | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind_tr (ind_tr I CT)])
+;
+
+% Transitions cannot be both dependent and independent
+rec impossible_dep_tr_and_indep_tr: (g:ctx) (S1:[g ⊢ step X1 T1 Y1]) (S2:[g ⊢ step X2 T2 Y2])
+  [g ⊢ dep_tr S1 S2] → [g ⊢ indep_tr S1 S2] → [g ⊢ false] =
+/ total (impossible_dep_tr_and_indep_tr) /
+fn dt,it ⇒ let [g ⊢ dp_tr D CT] = dt in
+let [g ⊢ ind_tr I _] = it in impossible impossible_dep_and_indep [g ⊢ D] [g ⊢ I]
 ;

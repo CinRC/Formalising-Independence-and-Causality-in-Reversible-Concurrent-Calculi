@@ -319,6 +319,11 @@ LF indep_tr: step X T1 X' → step Y T2 Y' → type =
   | ind_tr: indep T1 T2 → conn_tr (S1:step X T1 X') (S2:step Y T2 Y') → indep_tr S1 S2
 ;
 
+% Dependence of transitions
+LF dep_tr: step X T1 X' → step Y T2 Y' → type =
+  | dp_tr: dep T1 T2 → conn_tr (S1:step X T1 X') (S2:step Y T2 Y') → dep_tr S1 S2
+;
+
 
 %%% Type families for equality
 
