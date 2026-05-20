@@ -366,6 +366,6 @@ let [g ⊢ CT] = ct in
 rec impossible_dep_tr_and_indep_tr: (g:ctx) (S1:[g ⊢ step X1 T1 Y1]) (S2:[g ⊢ step X2 T2 Y2])
   [g ⊢ dep_tr S1 S2] → [g ⊢ indep_tr S1 S2] → [g ⊢ false] =
 / total (impossible_dep_tr_and_indep_tr) /
-fn dt,it ⇒ let [g ⊢ dp_tr D CT] = dt in
+fn dt,it ⇒ let [g ⊢ dp_tr D _] = dt in
 let [g ⊢ ind_tr I _] = it in impossible impossible_dep_and_indep [g ⊢ D] [g ⊢ I]
 ;
