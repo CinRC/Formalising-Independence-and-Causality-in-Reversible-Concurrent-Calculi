@@ -10,5 +10,5 @@ rec pci: (g:ctx) (T:[g ⊢ step X T1 Y]) (U:[g ⊢ step X T2 Z]) (U':[g ⊢ step
 / total (pci _ _ _ _ _ _ _ t _ _ _ _ _ _) /
 fn sd1,sd2,i,d ⇒ let [g ⊢ ind_tr I _] = i in
 let [g ⊢ it T S] = d in 
-let [g ⊢ I'] = symmetric_indep_pl [g ⊢ I] in [g ⊢ ind_tr I' (ct _ _ (st_s* S))]
+let [g ⊢ I'] = symmetric_indep [g ⊢ I] in [g ⊢ ind_tr I' (ct _ _ (st_s* S))]
 ;

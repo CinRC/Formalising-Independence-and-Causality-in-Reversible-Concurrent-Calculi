@@ -29,7 +29,7 @@ rec indep_tr_in_diamond_one: (g:ctx) (T:[g ⊢ step P A Q]) (U:[g ⊢ step P B R
 / total t (indep_tr_in_diamond_one _ _ _ _ _ _ t _ _) /
 fn sd1,sd2,hi ⇒ let [g ⊢ ind_tr I (ct _ U _)] = hi in
 let [g ⊢ _]:[g ⊢ same_direction _ T'] = sd1 in
-let [g ⊢ I'] = symmetric_indep_pl [g ⊢ I] in
+let [g ⊢ I'] = symmetric_indep [g ⊢ I] in
 let [g ⊢ ex_iv HRU] = total_inv [g ⊢ U] in
 let [g ⊢ it _ _] = [g ⊢ HRU] in
 [g ⊢ exi1 HRU (ind_tr I' (ct _ _ (st_s* T')))]
@@ -62,7 +62,7 @@ rec indep_tr_in_diamond_three: (g:ctx) (T:[g ⊢ step P A Q]) (U:[g ⊢ step P B
   → [g ⊢ indep_tr T U] → [g ⊢ ex_indep_tr_three T U U' T'] =
 / total t (indep_tr_in_diamond_three _ _ _ _ _ _ t _ _) /
 fn sd1,sd2,hi ⇒ let [g ⊢ ind_tr I (ct T _ _)] = hi in
-let [g ⊢ I'] = symmetric_indep_pl [g ⊢ I] in
+let [g ⊢ I'] = symmetric_indep [g ⊢ I] in
 let [g ⊢ ex_iv HRT] = total_inv [g ⊢ T] in
 let [g ⊢ it _ RT] = [g ⊢ HRT] in
 [g ⊢ exi3 HRT (ind_tr I' (ct _ _ (st_s* RT)))]

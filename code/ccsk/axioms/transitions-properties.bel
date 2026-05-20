@@ -2341,7 +2341,7 @@ let {ENRT:[g ⊢ enrich RT RT+]}[g ⊢ ex_en ENRT] = total_enrich [g ⊢ RT] in
 let [g ⊢ HR+]:[g ⊢ inv_tr T+ RT+] = inv_ccsk_to_ccskp hr [g ⊢ ENT] [g ⊢ ENRT] in
 let [g ⊢ it T+ RT+] = [g ⊢ HR+] in
 % Since T+ and U+ are independent, U+ and T+ are also independent (symmetry of independence)
-let [g ⊢ I'] = symmetric_indep_pl [g ⊢ I] in
+let [g ⊢ I'] = symmetric_indep [g ⊢ I] in
 % Since U and U' are equivalent, U+ and U'+ are also equivalent
 let [g ⊢ sl_et EU+] = enrich_preserves_equiv_tr [g ⊢ U] [g ⊢ U']
     [g ⊢ ccsk_et_base (ccsk_etb SDU SDT (ccsk_ind_tr ENU ENT I' (ctr _ _ (ccsk.st_s* T))))] [g ⊢ ENU] [g ⊢ ENU'] in

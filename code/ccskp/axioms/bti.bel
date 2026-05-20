@@ -320,7 +320,7 @@ LF id_or_ind: bstep X T1 X1 → bstep X T2 X2 → type =
 rec bti_equiv: (g:ctx) {B1:[g ⊢ bstep X T1 X1]} {B2:[g ⊢ bstep X T2 X2]}
   [g ⊢ id_or_ind B1 B2] =
 / total b1 (bti_equiv _ _ _ _ _ _ b1 _) /
-mlam B1,B2 ⇒  let [g ⊢ btc C1] = total_back_to_comb [_ ⊢ B1] in
+mlam B1,B2 ⇒ let [g ⊢ btc C1] = total_back_to_comb [_ ⊢ B1] in
 let [g ⊢ btc C2] = total_back_to_comb [g ⊢ B2] in
 case [g ⊢ B1] of
   | [g ⊢ bc B1'] ⇒ (case [g ⊢ B2] of

@@ -1046,12 +1046,12 @@ case [_ ⊢ S1] of
          let [g ⊢ F1'] = loop_lemma_two_cl [g ⊢ B1'] in [g ⊢ sq (so (fwo F2')) (sc (fwc F1')) (sdf (ftc_cl _) (ftc_cl _)) (sdf (ftc_op _) (ftc_op _))]
        | [g ⊢ sc (bwc B2)] ⇒ let [g ⊢ F2] = loop_lemma_two_cl [g ⊢ B2] in
          let [g ⊢ i_cc I] = [g ⊢ J] in
-         let [g ⊢ I'] = symmetric_indep [g ⊢ I] in
+         let [g ⊢ I'] = symmetric_indep_cl [g ⊢ I] in
          let [g ⊢ s_ffcc F1' F2'] = sp_ffcc [g ⊢ F2] [g ⊢ F1] [g ⊢ i_cc I'] in
          let [g ⊢ B2'] = loop_lemma_one_cl [g ⊢ F2'] in [g ⊢ sq (sc (bwc B2')) (sc (fwc F1')) (sdf (ftc_cl _) (ftc_cl _)) (sdb (btc_cl _) (btc_cl _))]
        | [g ⊢ so (bwo B2)] ⇒ let [g ⊢ F2] = loop_lemma_two_op [g ⊢ B2] in
          let [g ⊢ i_co \a.I] = [g ⊢ J] in
-         let [g,a:names ⊢ I'] = symmetric_indep [_ ⊢ I] in
+         let [g,a:names ⊢ I'] = symmetric_indep_cl [_ ⊢ I] in
          let [g ⊢ s_ffoc F1' F2'] = sp_ffoc [g ⊢ F2] [g ⊢ F1] [g ⊢ i_oc \a.I'] in
          let [g ⊢ B2'] = loop_lemma_one_op [g ⊢ F2'] in [g ⊢ sq (so (bwo B2')) (sc (fwc F1')) (sdf (ftc_cl _) (ftc_cl _)) (sdb (btc_op _) (btc_op _))])
   | [g ⊢ so (fwo F1)] ⇒ (case [g ⊢ S2] of
@@ -1063,12 +1063,12 @@ case [_ ⊢ S1] of
          let [g ⊢ F1'] = loop_lemma_two_op [g ⊢ B1'] in [g ⊢ sq (so (fwo F2')) (so (fwo F1')) (sdf (ftc_op _) (ftc_op _)) (sdf (ftc_op _) (ftc_op _))]
        | [g ⊢ sc (bwc B2)] ⇒ let [g ⊢ F2] = loop_lemma_two_cl [g ⊢ B2] in
          let [g ⊢ i_oc \a.I] = [g ⊢ J] in
-         let [g,a:names ⊢ I'] = symmetric_indep [_ ⊢ I] in
+         let [g,a:names ⊢ I'] = symmetric_indep_cl [_ ⊢ I] in
          let [g ⊢ s_ffco F1' F2'] = sp_ffco [g ⊢ F2] [g ⊢ F1] [g ⊢ i_co \a.I'] in
          let [g ⊢ B2'] = loop_lemma_one_cl [g ⊢ F2'] in [g ⊢ sq (sc (bwc B2')) (so (fwo F1')) (sdf (ftc_op _) (ftc_op _)) (sdb (btc_cl _) (btc_cl _))]
        | [g ⊢ so (bwo B2)] ⇒ let [g ⊢ F2] = loop_lemma_two_op [g ⊢ B2] in
          let [g ⊢ i_oo \a.I] = [g ⊢ J] in
-         let [g,a:names ⊢ I'] = symmetric_indep [_ ⊢ I] in
+         let [g,a:names ⊢ I'] = symmetric_indep_cl [_ ⊢ I] in
          let [g ⊢ s_ffoo F1' F2'] = sp_ffoo [g ⊢ F2] [g ⊢ F1] [g ⊢ i_oo \a.I'] in
          let [g ⊢ B2'] = loop_lemma_one_op [g ⊢ F2'] in [g ⊢ sq (so (bwo B2')) (so (fwo F1')) (sdf (ftc_op _) (ftc_op _)) (sdb (btc_op _) (btc_op _))])
   | [g ⊢ sc (bwc B1)] ⇒ let [g ⊢ F1] = loop_lemma_two_cl [g ⊢ B1] in
