@@ -11,15 +11,15 @@ It extends and refines the [formalization of CCSKP in Beluga](https://github.com
 
 ## Usage instructions
 
-Once Beluga is installed and the correct opam switch is enabled (cf. [the installation instructions](#installation-instructions)), it suffices to run
+Once Beluga is installed (cf. [the installation instructions](#installation-instructions)), it suffices to run
 
-```Shell
+```console
 beluga run/code.cfg 
 ```
 
-to perform the type reconstruction of the formalization. Expected result, after ±2 seconds, is
+to perform the type reconstruction of the formalization. Expected result, after ±15 seconds, is
 
-```Shell
+```console
 ## Type Reconstruction begin: run/../code/shared/definitions.bel ##
 ## Type Reconstruction done:  run/../code/shared/definitions.bel ##
 ## Type Reconstruction begin: run/../code/shared/unique.bel ##
@@ -84,13 +84,13 @@ to perform the type reconstruction of the formalization. Expected result, after 
 
 Tests can be run using e.g.
 
-```Shell
+```console
 beluga run/ex-processes.cfg 
 ```
 
 For this particular set of examples, expected result is, after ±1 second,
 
-```Shell
+```console
 ## Type Reconstruction begin: run/../code/shared/definitions.bel ##
 ## Type Reconstruction done:  run/../code/shared/definitions.bel ##
 ## Type Reconstruction begin: run/../examples/processes/standard.bel ##
@@ -105,18 +105,17 @@ For this particular set of examples, expected result is, after ±1 second,
 
 If Makefile is installed, then the previous commands can be replaced by
 
-```Makefile
+```console
 make code
 ```
 
 and 
 
-```Makefile
+```console
 make test
 ```
 
-will perform the type reconstruction of all the tests, and is expected to take ±1 second.
-
+will perform the type reconstruction of all the tests, and is expected to take ±8 seconds.
 
 ## Installation instructions
 
