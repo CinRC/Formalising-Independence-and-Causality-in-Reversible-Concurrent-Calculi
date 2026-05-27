@@ -120,17 +120,16 @@ will perform the type reconstruction of all the tests, and is expected to take Â
 
 ## Installation instructions
 
-This mechanization is compatible with [Beluga](https://complogic.cs.mcgill.ca/beluga/) version 1.1.1.
+This mechanization is compatible with [Beluga](https://complogic.cs.mcgill.ca/beluga/) version 1.1.1 and above, and optionally uses [GNU Make](https://www.gnu.org/software/make/) version 4.0 and above to facilitate compilation.
+To install Beluga or compile it from source, please refer to [their documentation](https://beluga-lang.readthedocs.io/en/latest/getting-started.html#installation) or [installation guide](https://github.com/Beluga-lang/Beluga/blob/master/INSTALL).
 
-For installation, please refer to the [installation guide](https://github.com/Beluga-lang/Beluga/blob/master/INSTALL) in the GitHub repository of Beluga. Below is a summary.
+In short, once [opam](https://opam.ocaml.org/doc/Install.html) version 2.1.4 and above is installed, simply execute
 
-### Prerequisites
+```shell
+opam install beluga
+```
 
-The following must be installed before proceeding with the installation of Beluga:
-
-- opam 2.1.4+: <https://opam.ocaml.org/doc/Install.html>
-- GNU Make 4.0+: <https://www.gnu.org/software/make/>
-- (optional, for improved beli mode) rlwrap: <https://github.com/hanslub42/rlwrap>
+Optionally, for improved beli mode [rlwrap](https://github.com/hanslub42/rlwrap) can also be installed.
 
 ### Debian/Ubuntu
 
