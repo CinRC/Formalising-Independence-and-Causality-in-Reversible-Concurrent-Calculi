@@ -39,4 +39,6 @@ run/%.success: run/%.cfg
 clean:
 	rm run/*.success
 count:
-	cloc --read-lang-def=beluga_cloc_config.txt --by-file code/
+	cloc --read-lang-def=beluga_cloc_config.txt --by-file code/ && \
+	cloc --read-lang-def=beluga_cloc_config.txt --by-file examples/
+	
