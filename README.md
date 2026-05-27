@@ -207,7 +207,7 @@ The `beluga_cloc_config.txt` file is a configuration file for [cloc](https://git
 Thanks to [cloc](https://github.com/AlDanial/cloc) and [our configuration file](beluga_cloc_config.txt), 
 
 ```console
-cloc --read-lang-def=beluga_cloc_config.txt --by-file code/
+cloc --md --read-lang-def=beluga_cloc_config.txt --by-file code/
 cloc --read-lang-def=beluga_cloc_config.txt --by-file examples/
 ```
 
@@ -219,66 +219,65 @@ make count
 
 can be used to count the lines of code (comments excluded):
 
------------------------------------------------------------------------------------------------
-File                                                        blank        comment           code
------------------------------------------------------------------------------------------------
-code/ccsk/axioms/transitions-properties.bel                    86            126           2283
-code/ccskp/axioms/sp.bel                                       44             73            977
-code/ccskp/axioms/transitions-properties.bel                   60             85            793
-code/ccskp/connectivity-relationship-one.bel                    3              5            688
-code/ccskp/connectivity-relationship-two.bel                   12             20            567
-code/ccskp/unique-step.bel                                     31             27            528
-code/ccskp/lemmas-bijection.bel                                33             44            417
-code/ccskp/complementarity.bel                                 30             30            311
-code/bijection/totality.bel                                    21             26            298
-code/ccskp/axioms/bti.bel                                      19             38            296
-code/ccskp/lemmas-connectivity-one.bel                         24             27            293
-code/ccskp/definitions.bel                                     52             68            270
-code/ccsk/unique-step.bel                                      14             11            203
-code/ccskp/axioms/fld.bel                                       7             17            159
-code/ccskp/lemmas-connectivity-two.bel                         12             24            141
-code/bijection/bijection.bel                                   23             19            114
-code/ccskp/basic-properties.bel                                15             16            112
-code/ccskp/axioms/ire.bel                                      15             25            110
-code/bijection/functionality.bel                               16             27            100
-code/ccskp/unique.bel                                          10             15             92
-code/shared/unique.bel                                          9             10             69
-code/ccskp/axioms/wf.bel                                        8             17             59
-code/ccsk/definitions.bel                                      11              9             58
-code/ccskp/axioms/id.bel                                        3             11             54
-code/shared/definitions.bel                                    13             14             54
-code/bijection/definitions.bel                                 11             12             44
-code/shared/basic-properties.bel                                7             10             44
-code/ccskp/axioms/ed.bel                                        1              2             10
-code/ccskp/axioms/pci.bel                                       1              5              8
-code/ccskp/axioms/cire.bel                                      1              4              6
-code/ccskp/axioms/rpi.bel                                       1              3              6
------------------------------------------------------------------------------------------------
-SUM:                                                          593            820           9164
------------------------------------------------------------------------------------------------
-  
+<!--
+Add the --md flag to the commands above to obtain a markdown-formatted table.
+-->
 
-------------------------------------------------------------------------------------------------------
-File                                                               blank        comment           code
-------------------------------------------------------------------------------------------------------
-examples/transitions/stuck-keyed-ccskp.bel                            18             13             85
-examples/transitions/stuck-keyed-ccsk.bel                             14              8             56
-examples/transitions/forward-transitions-ccskp.bel                    16             18             48
-examples/transitions/stuck-std-ccskp.bel                               9              7             46
-examples/transitions/forward-transitions-ccsk.bel                     16             18             45
-examples/proof-labels/not-valid.bel                                    8              7             28
-examples/transitions/backward-transitions-ccskp.bel                    9             11             26
-examples/transitions/backward-transitions-ccsk.bel                     9             11             24
-examples/transitions/stuck-std-ccsk.bel                                4              4             19
-examples/transitions/events.bel                                        0              3             17
-examples/processes/standard.bel                                        8              9             15
-examples/causality-relations/independence.bel                          6              5             14
-examples/causality-relations/connectivity.bel                          6              5             12
-examples/causality-relations/dependence.bel                            6              5             12
-examples/proof-labels/valid.bel                                       13             12             12
-examples/processes/keyed.bel                                           6              7              6
-examples/processes/stuck-keyed.bel                                     5              6              6
-examples/processes/stuck-std.bel                                       3              4              3
-------------------------------------------------------------------------------------------------------
-SUM:                                                                 156            153            474
-------------------------------------------------------------------------------------------------------
+File|blank|comment|code
+:-------|-------:|-------:|-------:
+code/ccsk/axioms/transitions-properties.bel|86|126|2283
+code/ccskp/axioms/sp.bel|44|73|977
+code/ccskp/axioms/transitions-properties.bel|60|85|793
+code/ccskp/connectivity-relationship-one.bel|3|5|688
+code/ccskp/connectivity-relationship-two.bel|12|20|567
+code/ccskp/unique-step.bel|31|27|528
+code/ccskp/lemmas-bijection.bel|33|44|417
+code/ccskp/complementarity.bel|30|30|311
+code/bijection/totality.bel|21|26|298
+code/ccskp/axioms/bti.bel|19|38|296
+code/ccskp/lemmas-connectivity-one.bel|24|27|293
+code/ccskp/definitions.bel|52|68|270
+code/ccsk/unique-step.bel|14|11|203
+code/ccskp/axioms/fld.bel|7|17|159
+code/ccskp/lemmas-connectivity-two.bel|12|24|141
+code/bijection/bijection.bel|23|19|114
+code/ccskp/basic-properties.bel|15|16|112
+code/ccskp/axioms/ire.bel|15|25|110
+code/bijection/functionality.bel|16|27|100
+code/ccskp/unique.bel|10|15|92
+code/shared/unique.bel|9|10|69
+code/ccskp/axioms/wf.bel|8|17|59
+code/ccsk/definitions.bel|11|9|58
+code/ccskp/axioms/id.bel|3|11|54
+code/shared/definitions.bel|13|14|54
+code/bijection/definitions.bel|11|12|44
+code/shared/basic-properties.bel|7|10|44
+code/ccskp/axioms/ed.bel|1|2|10
+code/ccskp/axioms/pci.bel|1|5|8
+code/ccskp/axioms/cire.bel|1|4|6
+code/ccskp/axioms/rpi.bel|1|3|6
+--------|--------|--------|--------
+SUM:|593|820|9164
+
+File|blank|comment|code
+:-------|-------:|-------:|-------:
+examples/transitions/stuck-keyed-ccskp.bel|18|13|85
+examples/transitions/stuck-keyed-ccsk.bel|14|8|56
+examples/transitions/forward-transitions-ccskp.bel|16|18|48
+examples/transitions/stuck-std-ccskp.bel|9|7|46
+examples/transitions/forward-transitions-ccsk.bel|16|18|45
+examples/proof-labels/not-valid.bel|8|7|28
+examples/transitions/backward-transitions-ccskp.bel|9|11|26
+examples/transitions/backward-transitions-ccsk.bel|9|11|24
+examples/transitions/stuck-std-ccsk.bel|4|4|19
+examples/transitions/events.bel|0|3|17
+examples/processes/standard.bel|8|9|15
+examples/causality-relations/independence.bel|6|5|14
+examples/causality-relations/connectivity.bel|6|5|12
+examples/causality-relations/dependence.bel|6|5|12
+examples/proof-labels/valid.bel|13|12|12
+examples/processes/keyed.bel|6|7|6
+examples/processes/stuck-keyed.bel|5|6|6
+examples/processes/stuck-std.bel|3|4|3
+--------|--------|--------|--------
+SUM:|156|153|474
