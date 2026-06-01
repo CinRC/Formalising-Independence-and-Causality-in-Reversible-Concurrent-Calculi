@@ -1,13 +1,13 @@
-# Formalizing Independence and Causality in Reversible Concurrent Calculi
+# Formalising Independence and Causality in Reversible Concurrent Calculi
 
 ## Overview
 
-This repository contains a formalization of reversible concurrent calculi in [Beluga](https://complogic.cs.mcgill.ca/beluga/index.html).
+This repository contains a formalisation of reversible concurrent calculi in [Beluga](https://complogic.cs.mcgill.ca/beluga/index.html).
 
-It extends and refines the [formalization of CCSKP in Beluga](https://github.com/CinRC/A-Beluga-Formalization-of-CCSKP) presented in [*A Formalization of the Reversible Concurrent Calculus CCSKP in Beluga*](https://cgi.cse.unsw.edu.au/~eptcs/paper.cgi?ICE2025.5) with additional results from [*Independence and Causality in the Reversible Concurrent Setting.*](https://doi.org/10.1007/978-3-031-97063-4_2).
+It extends and refines the [formalisation of CCSKP in Beluga](https://github.com/CinRC/A-Beluga-formalization-of-CCSKP) presented in [*A formalization of the Reversible Concurrent Calculus CCSKP in Beluga*](https://cgi.cse.unsw.edu.au/~eptcs/paper.cgi?ICE2025.5) with additional results from [*Independence and Causality in the Reversible Concurrent Setting*](https://doi.org/10.1007/978-3-031-97063-4_2).
 
-[![Code Type Reconstruction](https://github.com/CinRC/Formalizing-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml/badge.svg)](https://github.com/CinRC/Formalizing-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml)
-[![Example Tests](https://github.com/CinRC/Formalizing-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml/badge.svg)](https://github.com/CinRC/Formalizing-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml)
+[![Code Type Reconstruction](https://github.com/CinRC/formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml/badge.svg)](https://github.com/CinRC/formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml)
+[![Example Tests](https://github.com/CinRC/formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml/badge.svg)](https://github.com/CinRC/formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml)
 
 ## Usage instructions
 
@@ -17,7 +17,7 @@ Once Beluga is installed (cf. [the installation instructions](#installation-inst
 beluga run/code.cfg 
 ```
 
-to perform the type reconstruction of the formalization. Expected result, after ±15 seconds, is
+to perform the type reconstruction of the formalisation. Expected result, after ±15 seconds, is
 
 ```console
 ## Type Reconstruction begin: run/../code/shared/definitions.bel ##
@@ -133,12 +133,12 @@ Optionally, for improved beli mode [rlwrap](https://github.com/hanslub42/rlwrap)
 ## Repository structure
 
 - `run\`: Contains the `.cfg` files requires to compile …
-  + `code.cfg`: … the actual formalization (in `code/` folder)
+  + `code.cfg`: … the actual formalisation (in `code/` folder)
   + `ex-processes.cfg`: … test examples on processes (in `examples/` folder)
   + `ex-proof-labels.cfg`: … test examples on proof labels (in `examples/` folder)
   + `ex-transitions.cfg`: … test examples on transitions (in `examples/` folder)
   + `ex-causality-relations.cfg`: … test examples on connectivity, dependence and independence (in `examples/` folder)
-- `code\`: Contains the Beluga formalization of …
+- `code\`: Contains the Beluga formalisation of …
   + `shared\`: … shared …
     * `definitions.bel`: … definitions
     * `unique.bel`: … proofs of uniqueness of the derivation of predicates
