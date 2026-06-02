@@ -75,4 +75,19 @@ LF eqkl: key_lab → key_lab → type =
   | refkl: eqkl T T
 ;
 
+% Equality of derivations of fstep X KL X'
+LF eqfs: fstep X1 KL1 X1' → fstep X2 KL2 X2' → type =
+  | reffs: eqfs F F
+;
+
+% Equality of derivations of bstep X' KL X
+LF eqbs: bstep X1' KL1 X1 → bstep X2' KL2 X2 → type =
+  | refbs: eqbs B B
+;
+
+% Equality of derivations of step X KL X'
+LF eqs: step X1 KL1 X1' → step X2 KL2 X2' → type =
+  | refs: eqs S S
+;
+
 end;

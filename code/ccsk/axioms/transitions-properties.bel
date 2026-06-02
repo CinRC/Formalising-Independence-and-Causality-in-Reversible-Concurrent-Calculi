@@ -1,136 +1,5 @@
 % Definitions and properties needed to state and prove the axioms from "An Axiomatic Approach to Reversible Computation" for CCSK
 
-% Independence of CCSK transitions:
-% Two CCSK transitions s1 and s2 are independent if they are connected and the proof labels
-% of their corresponding CCSKP transitions enrich(s1) and enrich(s2) are independent.
-LF ccsk_indep_tr: ccsk.step X KL1 X' → ccsk.step Y KL2 Y' → type =
-  | ccsk_ind_tr: enrich (S1:ccsk.step X KL1 X') (S1+:ccskp.step X T1 X') →
-    enrich (S2:ccsk.step Y KL2 Y') (S2+:ccskp.step Y T2 Y') →
-    indep T1 T2 → ccsk.conn_tr S1 S2 → ccsk_indep_tr S1 S2
-;
-
-% Dependence of CCSK transitions:
-% Two CCSK transitions s1 and s2 are dependent if they are connected and the proof labels
-% of their corresponding CCSKP transitions enrich(s1) and enrich(s2) are dependent.
-LF ccsk_dep_tr: ccsk.step X KL1 X' → ccsk.step Y KL2 Y' → type =
-  | ccsk_dp_tr: enrich (S1:ccsk.step X KL1 X') (S1+:ccskp.step X T1 X') →
-    enrich (S2:ccsk.step Y KL2 Y') (S2+:ccskp.step Y T2 Y') →
-    dep T1 T2 → ccsk.conn_tr S1 S2 → ccsk_dep_tr S1 S2
-;
-
-
-%%% Basic properties of transitions
-
-% Loop lemma - first implication
-rec ccsk_loop_lemma_one: (g:ctx) [g ⊢ ccsk.fstep X KL X'] → [g ⊢ ccsk.bstep X' KL X] =
-/ total f (ccsk_loop_lemma_one _ _ _ _ f) /
-fn f ⇒ case f of
-  | [g ⊢ fs_pref D] ⇒ [g ⊢ bs_pref D]
-  | [g ⊢ fs_kpref F I] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bs_kpref B I]
-  | [g ⊢ fs_suml F D] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bs_suml B D]
-  | [g ⊢ fs_sumr F D] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bs_sumr B D]
-  | [g ⊢ fs_parl F N] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bs_parl B N]
-  | [g ⊢ fs_parr F N] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bs_parr B N]
-  | [g ⊢ fs_synl F1 F2] ⇒ let [g ⊢ B1] = ccsk_loop_lemma_one [g ⊢ F1] in
-       let [g ⊢ B2] = ccsk_loop_lemma_one [g ⊢ F2] in [g ⊢ bs_synl B1 B2]
-  | [g ⊢ fs_synr F1 F2] ⇒ let [g ⊢ B1] = ccsk_loop_lemma_one [g ⊢ F1] in
-       let [g ⊢ B2] = ccsk_loop_lemma_one [g ⊢ F2] in [g ⊢ bs_synr B1 B2]
-  | [g ⊢ fs_nu \a.F] ⇒ let [g,a:names ⊢ B] = ccsk_loop_lemma_one [g,a:names ⊢ F] in [g ⊢ bs_nu \a.B]
-;
-
-% Loop lemma - second implication
-rec ccsk_loop_lemma_two: (g:ctx) [g ⊢ ccsk.bstep X' KL X] → [g ⊢ ccsk.fstep X KL X'] =
-/ total f (ccsk_loop_lemma_two _ _ _ _ f) /
-fn f ⇒ case f of
-  | [g ⊢ bs_pref D] ⇒ [g ⊢ fs_pref D]
-  | [g ⊢ bs_kpref B I] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fs_kpref F I]
-  | [g ⊢ bs_suml B D] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fs_suml F D]
-  | [g ⊢ bs_sumr B D] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fs_sumr F D]
-  | [g ⊢ bs_parl B N] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fs_parl F N]
-  | [g ⊢ bs_parr B N] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fs_parr F N]
-  | [g ⊢ bs_synl B1 B2] ⇒ let [g ⊢ F1] = ccsk_loop_lemma_two [g ⊢ B1] in
-       let [g ⊢ F2] = ccsk_loop_lemma_two [g ⊢ B2] in [g ⊢ fs_synl F1 F2]
-  | [g ⊢ bs_synr B1 B2] ⇒ let [g ⊢ F1] = ccsk_loop_lemma_two [g ⊢ B1] in
-       let [g ⊢ F2] = ccsk_loop_lemma_two [g ⊢ B2] in [g ⊢ fs_synr F1 F2]
-  | [g ⊢ bs_nu \a.B] ⇒ let [g,a:names ⊢ F] = ccsk_loop_lemma_two [g,a:names ⊢ B] in [g ⊢ fs_nu \a.F]
-;
-
-% Two forward composable transitions cannot have the same key.
-rec ccsk_no_composable_fw_tr_with_same_key: (g:ctx) [g ⊢ ccsk.fstep X (kl_base A1 K[]) Y] →
-  [g ⊢ ccsk.fstep Y (kl_base A2 K[]) Z] → [g ⊢ false] =
-/ total x (ccsk_no_composable_fw_tr_with_same_key _ x _ _ _ _ _ _ _) /
-fn f1,f2 ⇒ let [g ⊢ F1] = f1 in
-let [g ⊢ F2] = f2 in
-(case total_enrich_f [g ⊢ F1] of
-  | [g ⊢ ex_enfc (en_fc _ F1+ _ H1)] ⇒ (case total_enrich_f [g ⊢ F2] of
-       | [g ⊢ ex_enfc (en_fc _ F2+ _ H2)] ⇒ impossible no_composable_fw_tr_with_same_key [g ⊢ fc F1+] [g ⊢ fc F2+] [g ⊢ key_cl H1] [g ⊢ key_cl H2]
-       | [g ⊢ ex_enfo (en_fo _ F2+ \a.H2)] ⇒ impossible no_composable_fw_tr_with_same_key [g ⊢ fc F1+] [g ⊢ fo F2+] [g ⊢ key_cl H1] [g ⊢ key_op \a.H2])
-  | [g ⊢ ex_enfo (en_fo _ F1+ \a.H1)] ⇒ (case total_enrich_f [g ⊢ F2] of
-       | [g ⊢ ex_enfc (en_fc _ F2+ _ H2)] ⇒ impossible no_composable_fw_tr_with_same_key [g ⊢ fo F1+] [g ⊢ fc F2+] [g ⊢ key_op \a.H1] [g ⊢ key_cl H2]
-       | [g ⊢ ex_enfo (en_fo _ F2+ \a.H2)] ⇒ impossible no_composable_fw_tr_with_same_key [g ⊢ fo F1+] [g ⊢ fo F2+] [g ⊢ key_op \a.H1] [g ⊢ key_op \a.H2]))
-;
-
-% Two forward composable transitions cannot have the same keyed label.
-rec ccsk_no_composable_fw_tr_with_same_label: (g:ctx) [g ⊢ ccsk.fstep X KL Y] → [g ⊢ ccsk.fstep Y KL Z] → [g ⊢ false] =
-/ total x (ccsk_no_composable_fw_tr_with_same_label _ x _ _ _ _ _) /
-fn f1,f2 ⇒ let [g ⊢ F1]:[g ⊢ ccsk.fstep _ (kl_base _ _) _] = f1 in 
-impossible ccsk_no_composable_fw_tr_with_same_key [g ⊢ F1] f2
-;
-
-% Two backward composable transitions cannot have the same keyed label.
-rec ccsk_no_composable_bw_tr_with_same_label: (g:ctx) [g ⊢ ccsk.bstep Z KL Y] → [g ⊢ ccsk.bstep Y KL X] → [g ⊢ false] =
-/ total x (ccsk_no_composable_bw_tr_with_same_label _ x _ _ _ _ _) /
-fn b1,b2 ⇒ let [g ⊢ B1]:[g ⊢ ccsk.bstep _ (kl_base _ _) _] = b1 in 
-let [g ⊢ F1] = ccsk_loop_lemma_two [g ⊢ B1] in
-let [g ⊢ F2] = ccsk_loop_lemma_two b2 in
-impossible ccsk_no_composable_fw_tr_with_same_key [g ⊢ F2] [g ⊢ F1]
-;
-
-
-%%% Complementarity of transitions %%%
-
-% Given a CCSK path between two processes, there exists a CCSKP path between the same processes.
-rec path_ccsk_to_ccskp: (g:ctx) [g ⊢ ccsk.step* X X'] → [g ⊢ ccskp.step* X X'] =
-/ total s* (path_ccsk_to_ccskp _ _ _ s*) /
-fn s* ⇒ case s* of
-  | [g ⊢ ccsk.id_s*] ⇒ [g ⊢ ccskp.id_s*]
-  | [g ⊢ ccsk.st_s* S] ⇒ let {EN:[g ⊢ enrich _ S+]}[g ⊢ ex_en EN] = total_enrich [g ⊢ S] in [g ⊢ ccskp.st_s* S+]
-  | [g ⊢ ccsk.tr_s* S1* S2*] ⇒ let [g ⊢ S1*+] = path_ccsk_to_ccskp [g ⊢ S1*] in
-                                let [g ⊢ S2*+] = path_ccsk_to_ccskp [g ⊢ S2*] in [g ⊢ ccskp.tr_s* S1*+ S2*+]
-;
-
-% Predicate expressing dependence or independence of transitions:
-% ccsk_dep_or_indep S1 S2 holds iff S1 and S2 are dependent or independent
-LF ccsk_dep_tr_or_indep_tr: ccsk.step X1 KL1 Y1 → ccsk.step X2 KL2 Y2 → type =
-  | ccsk_or_dep_tr: ccsk_dep_tr S1 S2 → ccsk_dep_tr_or_indep_tr S1 S2
-  | ccsk_or_ind_tr: ccsk_indep_tr S1 S2 → ccsk_dep_tr_or_indep_tr S1 S2
-;
-
-% Connected transitions between reachable processes are dependent or independent
-rec ccsk_conn_tr_impl_dep_tr_or_indep_tr: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2])
-  [g ⊢ reachable X1] → [g ⊢ ccsk.conn_tr S1 S2] → [g ⊢ ccsk_dep_tr_or_indep_tr S1 S2] =
-/ total (ccsk_conn_tr_impl_dep_tr_or_indep_tr) /
-fn r,c ⇒ let [g ⊢ ctr S1 S2 S*] = c in
-let {EN1:[g ⊢ enrich _ S1+]}[g ⊢ ex_en EN1] = total_enrich [g ⊢ S1] in
-let {EN2:[g ⊢ enrich _ S2+]}[g ⊢ ex_en EN2] = total_enrich [g ⊢ S2] in
-let [g ⊢ S*+] = path_ccsk_to_ccskp [g ⊢ S*] in
-let [g ⊢ C] = conn_rel_one r [g ⊢ ct S1+ S2+ S*+] in
-(case conn_impl_dep_or_indep [g ⊢ C] of
-  | [g ⊢ or_dep D] ⇒ [g ⊢ ccsk_or_dep_tr (ccsk_dp_tr EN1 EN2 D (ctr S1 S2 S*))]
-  | [g ⊢ or_ind I] ⇒ [g ⊢ ccsk_or_ind_tr (ccsk_ind_tr EN1 EN2 I (ctr S1 S2 S*))])
-;
-
-% Transitions cannot be both dependent and independent
-rec ccsk_impossible_dep_tr_and_indep_tr: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2])
-  [g ⊢ ccsk_dep_tr S1 S2] → [g ⊢ ccsk_indep_tr S1 S2] → [g ⊢ false] =
-/ total (ccsk_impossible_dep_tr_and_indep_tr) /
-fn dt,it ⇒ let [g ⊢ ccsk_dp_tr EN1 EN2 D _] = dt in
-let [g ⊢ ccsk_ind_tr EN1' EN2' I _] = it in
-let [g ⊢ refst] = functional_enrich [g ⊢ EN1] [g ⊢ EN1'] in
-let [g ⊢ refst] = functional_enrich [g ⊢ EN2] [g ⊢ EN2'] in
-impossible impossible_dep_and_indep [g ⊢ D] [g ⊢ I]
-;
-
 %%% Inverse of a transition
 
 % Inverse of a transition: ccsk_inv_tr S1 S2 holds iff S2 is the inverse of S1
@@ -172,6 +41,9 @@ fn d1,d2 ⇒ let [g ⊢ ccsk_it S1 S2] = d1 in
 let [g ⊢ ccsk_it S2 S3] = d2 in ccsk_unique_step [g ⊢ S1] [g ⊢ S3]
 ;
 
+
+%%% Same and opposite direction of transitions
+
 % Type family relating two combined CCSK transitions having the same direction
 LF ccsk_same_direction: ccsk.step X1 KL1 Y1 → ccsk.step X2 KL2 Y2 → type =
   | ccsk_sdf: ccsk_same_direction (fw F1) (fw F2)
@@ -212,20 +84,6 @@ fn sd,od ⇒ case sd of
   | [g ⊢ ccsk_sdb] ⇒ impossible od
 ;
 
-% Given a combined transition t, t and inv_tr(t) have opposite directions.
-rec ccsk_inv_tr_have_opp_direction: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 X1']) (S2:[g ⊢ ccsk.step X2 KL2 X2'])
-  [g ⊢ ccsk_inv_tr S1 S2] → [g ⊢ ccsk_opp_direction S1 S2] =
-/ total hr (ccsk_inv_tr_have_opp_direction _ _ _ _ _ _ _ _ _ hr) /
-fn hr ⇒ let [g ⊢ ccsk_it S1 S2] = hr in
-case [_ ⊢ S1] of
-  | [g ⊢ fw F1] ⇒ (case [g ⊢ S2] of
-       | [g ⊢ fw F2] ⇒ impossible ccsk_no_composable_fw_tr_with_same_label [g ⊢ F1] [g ⊢ F2]
-       | [g ⊢ bw B2] ⇒ [g ⊢ ccsk_odfb])
-  | [g ⊢ bw B1] ⇒ (case [g ⊢ S2] of
-       | [g ⊢ fw F2] ⇒ [g ⊢ ccsk_odbf]
-       | [g ⊢ bw B2] ⇒ impossible ccsk_no_composable_bw_tr_with_same_label [g ⊢ B1] [g ⊢ B2])
-;
-
 % Given a combined transition S, it has the same direction as itself.
 rec reflexive_ccsk_same_direction: (g:ctx) {S:[g ⊢ ccsk.step X KL Y]} [g ⊢ ccsk_same_direction S S] =
 / total (reflexive_ccsk_same_direction) /
@@ -253,217 +111,12 @@ fn sd1,sd2 ⇒ case sd1 of
   | [g ⊢ ccsk_sdb] ⇒ let [g ⊢ ccsk_sdb] = sd2 in [g ⊢ ccsk_sdb]
 ;
 
-% Auxiliary lemmas for SP
-
-% Equality of keyed labels
-LF eqkl: key_lab → key_lab → type =
-  | refkl: eqkl KL KL
-;
-
-% If two CCSKP transitions s1 and s2 have the same proof label, then their corresponding
-% CCSK transitions forget(s1) and forget(s2) have the same keyed label.
-rec injective_forget_on_labels: (g:ctx) (S1+:[g ⊢ ccskp.step X1 T Y1]) (S2+:[g ⊢ ccskp.step X2 T Y2])
-  (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2]) [g ⊢ forget S1+ S1] → [g ⊢ forget S2+ S2] →
-  [g ⊢ eqkl KL1 KL2] =
-/ total (injective_forget_on_labels) /
-fn fg1,fg2 ⇒ case fg1 of
-  | [g ⊢ fgfc (fg_fc _ _ L1 H1)] ⇒ (case fg2 of
-       | [g ⊢ fgfc (fg_fc _ _ L2 H2)] ⇒ let [g ⊢ refl] = functional_lab [g ⊢ L1] [g ⊢ L2] in
-         let [g ⊢ refk] = functional_key [g ⊢ H1] [g ⊢ H2] in [g ⊢ refkl]
-       | [g ⊢ fgbc (fg_bc _ _ L2 H2)] ⇒ let [g ⊢ refl] = functional_lab [g ⊢ L1] [g ⊢ L2] in
-         let [g ⊢ refk] = functional_key [g ⊢ H1] [g ⊢ H2] in [g ⊢ refkl])
-  | [g ⊢ fgfo (fg_fo _ _ \a.H1)] ⇒ (case fg2 of
-       | [g ⊢ fgfo (fg_fo _ _ \a.H2)] ⇒ let [g,a:names ⊢ refk] = functional_key [_ ⊢ H1] [_ ⊢ H2] in [g ⊢ refkl]
-       | [g ⊢ fgbo (fg_bo _ _ \a.H2)] ⇒ let [g,a:names ⊢ refk] = functional_key [_ ⊢ H1] [_ ⊢ H2] in [g ⊢ refkl])
-  | [g ⊢ fgbc (fg_bc _ _ L1 H1)] ⇒ (case fg2 of
-       | [g ⊢ fgfc (fg_fc _ _ L2 H2)] ⇒ let [g ⊢ refl] = functional_lab [g ⊢ L1] [g ⊢ L2] in
-         let [g ⊢ refk] = functional_key [g ⊢ H1] [g ⊢ H2] in [g ⊢ refkl]
-       | [g ⊢ fgbc (fg_bc _ _ L2 H2)] ⇒ let [g ⊢ refl] = functional_lab [g ⊢ L1] [g ⊢ L2] in
-         let [g ⊢ refk] = functional_key [g ⊢ H1] [g ⊢ H2] in [g ⊢ refkl])
-  | [g ⊢ fgbo (fg_bo _ _ \a.H1)] ⇒ (case fg2 of
-       | [g ⊢ fgfo (fg_fo _ _ \a.H2)] ⇒ let [g,a:names ⊢ refk] = functional_key [_ ⊢ H1] [_ ⊢ H2] in [g ⊢ refkl]
-       | [g ⊢ fgbo (fg_bo _ _ \a.H2)] ⇒ let [g,a:names ⊢ refk] = functional_key [_ ⊢ H1] [_ ⊢ H2] in [g ⊢ refkl])
-;
-
-% If two CCSKP transitions s1 and s2 have the same direction, then their corresponding
-% CCSK transitions forget(s1) and forget(s2) have the same direction.
-rec sdir_ccskp_to_ccsk: (g:ctx) (S1+:[g ⊢ ccskp.step X1 T1 Y1]) (S2+:[g ⊢ ccskp.step X2 T2+ Y2])
-  (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2]) [g ⊢ same_direction S1+ S2+]
-  → [g ⊢ forget S1+ S1] → [g ⊢ forget S2+ S2] → [g ⊢ ccsk_same_direction S1 S2] =
-/ total s (sdir_ccskp_to_ccsk _ _ _ _ _ _ _ _ _ s _ _ _ _ _ _) /
-fn sd+,fg1,fg2 ⇒ case sd+ of
-  | [g ⊢ sdf _ _] ⇒ (case fg1 of
-    | [g ⊢ fgfc _] ⇒ (case fg2 of
-         | [g ⊢ fgfc _] ⇒ [g ⊢ ccsk_sdf]
-         | [g ⊢ fgfo _] ⇒ [g ⊢ ccsk_sdf])
-    | [g ⊢ fgfo _] ⇒ (case fg2 of
-         | [g ⊢ fgfc _] ⇒ [g ⊢ ccsk_sdf]
-         | [g ⊢ fgfo _] ⇒ [g ⊢ ccsk_sdf]))
-  | [g ⊢ sdb _ _] ⇒ (case fg1 of
-    | [g ⊢ fgbc _] ⇒ (case fg2 of
-         | [g ⊢ fgbc _] ⇒ [g ⊢ ccsk_sdb]
-         | [g ⊢ fgbo _] ⇒ [g ⊢ ccsk_sdb])
-    | [g ⊢ fgbo _] ⇒ (case fg2 of
-         | [g ⊢ fgbc _] ⇒ [g ⊢ ccsk_sdb]
-         | [g ⊢ fgbo _] ⇒ [g ⊢ ccsk_sdb]))
-;
+% Given a combined transition t, t and inv_tr(t) have opposite directions.
+% We postpone the proof of this result to the end of the file, in order to exploit one of the lemmas
+% that will be proved below.
 
 
-
-
-
-
-% Backward transitions are independent (BTI):
-% Given two backward transitions sharing the same source process,
-% if they are not equal, they are independent.
-rec ccsk_bti: (g:ctx) {B1:[g ⊢ ccsk.bstep X KL1 X1]} {B2:[g ⊢ ccsk.bstep X KL2 X2]}
-  ([g ⊢ eqbs B1 B2] → [g ⊢ false]) → [g ⊢ ccsk_indep_tr (bw B1) (bw B2)] =
-/ total b1 (ccsk_bti _ _ _ _ _ _ b1 _ _) /
-mlam B1,B2 ⇒ fn f ⇒
-case total_enrich_b [_ ⊢ B1] of
-  | {EN1:[g ⊢ enrich_bc _ B1+]}[g ⊢ ex_enbc EN1] ⇒ (case total_enrich_b [_ ⊢ B2] of
-       | {EN2:[g ⊢ enrich_bc _ B2+]}[g ⊢ ex_enbc EN2] ⇒ 
-         let [g ⊢ ind_bw_tr _ _ (ind_tr I+ _)] = bti [g ⊢ bc B1+] [g ⊢ bc B2+]
-             (fn e ⇒ let [g ⊢ refb] = e in
-             let [g ⊢ ex_fgbc FG] = total_forget_bc [g ⊢ B1+] in
-             let [g ⊢ refbs] = inverse_bc_two [g ⊢ EN1] [g ⊢ FG] in
-             let [g ⊢ refbs] = inverse_bc_two [g ⊢ EN2] [g ⊢ FG] in impossible f [g ⊢ refbs]) in
-         [g ⊢ ccsk_ind_tr (enbc EN1) (enbc EN2) I+ (ctr _ _ (ccsk.st_s* (bw B2)))]
-       | {EN2:[g ⊢ enrich_bo _ B2+]}[g ⊢ ex_enbo EN2] ⇒
-         let [g ⊢ ind_bw_tr _ _ (ind_tr I+ _)] = bti [g ⊢ bc B1+] [g ⊢ bo B2+] (fn e ⇒ impossible e) in
-         [g ⊢ ccsk_ind_tr (enbc EN1) (enbo EN2) I+ (ctr _ _ (ccsk.st_s* (bw B2)))])
-  | {EN1:[g ⊢ enrich_bo _ B1+]}[g ⊢ ex_enbo EN1] ⇒ (case total_enrich_b [_ ⊢ B2] of
-       | {EN2:[g ⊢ enrich_bc _ B2+]}[g ⊢ ex_enbc EN2] ⇒
-         let [g ⊢ ind_bw_tr _ _ (ind_tr I+ _)] = bti [g ⊢ bo B1+] [g ⊢ bc B2+] (fn e ⇒ impossible e) in
-         [g ⊢ ccsk_ind_tr (enbo EN1) (enbc EN2) I+ (ctr _ _ (ccsk.st_s* (bw B2)))]
-       | {EN2:[g ⊢ enrich_bo _ B2+]}[g ⊢ ex_enbo EN2] ⇒
-         let [g ⊢ ind_bw_tr _ _ (ind_tr I+ _)] = bti [g ⊢ bo B1+] [g ⊢ bo B2+]
-             (fn e ⇒ let [g ⊢ refb] = e in
-             let [g ⊢ ex_fgbo FG] = total_forget_bo [g ⊢ B1+] in
-             let [g ⊢ refbs] = inverse_bo_two [g ⊢ EN1] [g ⊢ FG] in
-             let [g ⊢ refbs] = inverse_bo_two [g ⊢ EN2] [g ⊢ FG] in impossible f [g ⊢ refbs]) in
-         [g ⊢ ccsk_ind_tr (enbo EN1) (enbo EN2) I+ (ctr _ _ (ccsk.st_s* (bw B2)))])
-;
-
-
-
-% Existence of combined transitions closing a square diagram in CCSK
-LF ccsk_square: ccsk.step X KL1 X1 → ccsk.step X KL2 X2 → type =
-  | ccsk_sq: {S2':ccsk.step X1 KL2 Y} {S1':ccsk.step X2 KL1 Y} ccsk_same_direction (S1:ccsk.step X KL1 X1) S1' → 
-    ccsk_same_direction (S2:ccsk.step X KL2 X2) S2' → ccsk_square (S1:ccsk.step X KL1 X1) (S2:ccsk.step X KL2 X2)
-;
-% Square property (SP):
-% Given two independent coinitial combined transitions,
-% there exist two cofinal combined transition closing the square diagram.
-rec ccsk_sp: (g:ctx) {S1:[g ⊢ ccsk.step X KL1 X1]} {S2:[g ⊢ ccsk.step X KL2 X2]}
-  [g ⊢ ccsk_indep_tr S1 S2] → [g ⊢ ccsk_square S1 S2] =
-/ total s1 (ccsk_sp _ _ _ _ _ _ s1 _ _) /
-mlam S1,S2 ⇒ fn i ⇒ let [g ⊢ ccsk_ind_tr EN1 EN2 I+ (ctr _ _ S*)] = i in
-let [g ⊢ _]:[g ⊢ enrich _ S1+] = [g ⊢ EN1] in
-let [g ⊢ _]:[g ⊢ enrich _ S2+] = [g ⊢ EN2] in
-let [g ⊢ sq S2'+ S1'+ SD1+ SD2+] = sp [g ⊢ S1+] [g ⊢ S2+] [g ⊢ ind_tr I+ (ct _ _ (ccskp.st_s* S2+))] in
-let {FG2':[g ⊢ forget _ S2']}[g ⊢ ex_fg FG2'] = total_forget [g ⊢ S2'+] in
-let {FG1':[g ⊢ forget _ S1']}[g ⊢ ex_fg FG1'] = total_forget [g ⊢ S1'+] in
-let [g ⊢ ex_fg FG1] = total_forget [g ⊢ S1+] in
-let [g ⊢ ex_fg FG2] = total_forget [g ⊢ S2+] in
-let [g ⊢ refs] = inverse_two [g ⊢ EN1] [g ⊢ FG1] in
-let [g ⊢ refs] = inverse_two [g ⊢ EN2] [g ⊢ FG2] in
-let [g ⊢ SD1] = sdir_ccskp_to_ccsk [g ⊢ SD1+] [g ⊢ FG1] [g ⊢ FG1'] in
-let [g ⊢ SD2] = sdir_ccskp_to_ccsk [g ⊢ SD2+] [g ⊢ FG2] [g ⊢ FG2'] in
-let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FG1] [g ⊢ FG1'] in
-let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FG2] [g ⊢ FG2'] in
-[g ⊢ ccsk_sq S2' S1' SD1 SD2]
-;
-
-
-
-% Type family encoding accessibility of CCSK processes
-inductive ccsk_acc: (g:ctx) [g ⊢ proc] → ctype =
-  | ccsk_acc_intro: {g:ctx} {X':[g ⊢ proc]}
-    ({X:[g ⊢ proc]} {KL:[g ⊢ key_lab]} [g ⊢ ccsk.fstep X KL X'] → ccsk_acc [g ⊢ X]) → ccsk_acc [g ⊢ X']
-;
-
-% If a process X is accessible w.r.t. the LTS of CCSKP, then it is accessible w.r.t. the LTS of CCSK. 
-rec acc_ccskp_to_ccsk: (g:ctx) acc [g ⊢ X] → ccsk_acc [g ⊢ X] =
-/ total a (acc_ccskp_to_ccsk _ _ a) /
-fn a ⇒ let acc_intro [g] [g ⊢ X] h = a in
-ccsk_acc_intro [g] [g ⊢ X] (mlam _,_ ⇒ fn f ⇒
-  let [g ⊢ F] = f in
-  (case total_enrich_f [g ⊢ F] of
-     | {EN:[g ⊢ enrich_fc _ F+]}[g ⊢ ex_enfc EN] ⇒ acc_ccskp_to_ccsk (h _ _ [g ⊢ fc F+])
-     | {EN:[g ⊢ enrich_fo _ F+]}[g ⊢ ex_enfo EN] ⇒ acc_ccskp_to_ccsk (h _ _ [g ⊢ fo F+])))
-;
-
-% Well-foundedness (WF): all processes are accessible
-rec ccsk_wf: (g:ctx) {X:[g ⊢ proc]} ccsk_acc [g ⊢ X] =
-/ total x (ccsk_wf _ x) /
-mlam X ⇒ acc_ccskp_to_ccsk (wf [_ ⊢ X])
-;
-
-
-
-% If two CCSK transitions s1 and s2 have the same direction, then their corresponding
-% CCSKP transitions enrich(s1) and enrich(s2) have the same direction.
-rec sdir_ccsk_to_ccskp: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2])
-  (S1+:[g ⊢ ccskp.step X1 T1 Y1]) (S2+:[g ⊢ ccskp.step X2 T2+ Y2]) [g ⊢ ccsk_same_direction S1 S2]
-  → [g ⊢ enrich S1 S1+] → [g ⊢ enrich S2 S2+] → [g ⊢ same_direction S1+ S2+] =
-/ total s (sdir_ccsk_to_ccskp _ _ _ _ _ _ _ _ _ s _ _ _ _ _ _) /
-fn sd,en1,en2 ⇒ case sd of
-  | [g ⊢ ccsk_sdf] ⇒ (case en1 of
-       | [g ⊢ enfc _] ⇒ (case en2 of
-            | [g ⊢ enfc _] ⇒ [g ⊢ sdf (ftc_cl _) (ftc_cl _)]
-            | [g ⊢ enfo _] ⇒ [g ⊢ sdf (ftc_cl _) (ftc_op _)])
-       | [g ⊢ enfo _] ⇒ (case en2 of
-            | [g ⊢ enfc _] ⇒ [g ⊢ sdf (ftc_op _) (ftc_cl _)]
-            | [g ⊢ enfo _] ⇒ [g ⊢ sdf (ftc_op _) (ftc_op _)]))
-  | [g ⊢ ccsk_sdb] ⇒ (case en1 of
-       | [g ⊢ enbc _] ⇒ (case en2 of
-            | [g ⊢ enbc _] ⇒ [g ⊢ sdb (btc_cl _) (btc_cl _)]
-            | [g ⊢ enbo _] ⇒ [g ⊢ sdb (btc_cl _) (btc_op _)])
-       | [g ⊢ enbo _] ⇒ (case en2 of
-            | [g ⊢ enbc _] ⇒ [g ⊢ sdb (btc_op _) (btc_cl _)]
-            | [g ⊢ enbo _] ⇒ [g ⊢ sdb (btc_op _) (btc_op _)]))
-;
-
-
-% Given a CCSK transition t with inverse transition ccsk_inv(t), then their corresponding
-% CCSKP transitions enrich(t) and enrich(ccsk_inv(t)) are also mutual inverses.
-rec inv_ccsk_to_ccskp: (g:ctx) (T:[g ⊢ ccsk.step X KL Y]) (RT:[g ⊢ ccsk.step Y KL X])
-  (T+:[g ⊢ ccskp.step X T1 Y]) (RT+:[g ⊢ ccskp.step Y T2 X]) [g ⊢ ccsk_inv_tr T RT]
-  → [g ⊢ enrich T T+] → [g ⊢ enrich RT RT+] → [g ⊢ inv_tr T+ RT+] =
-/ total hi (inv_ccsk_to_ccskp _ _ _ _ _ _ _ _ _ _ hi _ _) /
-fn hr,en1,en2 ⇒
-let [g ⊢ ccsk_it T RT] = hr in
-let [g ⊢ EN1]:[g ⊢ enrich T T+] = en1 in
-let [g ⊢ EN2]:[g ⊢ enrich RT RT+] = en2 in
-let [g ⊢ ex_iv (it T+ RT'+)] = total_inv [g ⊢ T+] in
-let [g ⊢ refst] = unique_step [g ⊢ RT+] [g ⊢ RT'+] in [g ⊢ it T+ RT+]
-;
-
-
-% Given a forward transition F: X --[A K]--> Y, the target process Y contains the key K.
-% More precisely, we prove that notin K Y gives a contradiction.
-rec key_in_target_of_fstep: (g:ctx) [g ⊢ ccsk.fstep X (kl_base A K[]) Y] → [g ⊢ notin K[] Y] → [g ⊢ false] =
-/ total f (key_in_target_of_fstep _ _ _ _ _ f _) /
-fn f,n ⇒ case f of
-  | [g ⊢ fs_pref _] ⇒ let [g ⊢ not_kpref I _] = n in impossible irreflexive_neq [g ⊢ I]
-  | [g ⊢ fs_kpref F _] ⇒ let [g ⊢ not_kpref _ N] = n in
-    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
-  | [g ⊢ fs_suml F D] ⇒ let [g ⊢ not_sum N _] = n in
-    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
-  | [g ⊢ fs_sumr F D] ⇒ let [g ⊢ not_sum _ N] = n in
-    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
-  | [g ⊢ fs_parl F _] ⇒ let [g ⊢ not_par N _] = n in
-    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
-  | [g ⊢ fs_parr F _] ⇒ let [g ⊢ not_par _ N] = n in
-    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
-  | [g ⊢ fs_synl F _] ⇒ let [g ⊢ not_par N _] = n in
-    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
-  | [g ⊢ fs_synr F _] ⇒ let [g ⊢ not_par N _] = n in
-    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
-  | [g ⊢ fs_nu \a.F] ⇒ let [g ⊢ not_nu \a.N] = n in
-    impossible key_in_target_of_fstep [_ ⊢ F] [_ ⊢ N]
-;
+%%% Auxiliary lemmas
 
 % If a process X makes a forward transition F into the process X',
 % and a key K does not occur in X' (i.e., notin K X' holds), then K does
@@ -523,7 +176,84 @@ fn f,n,i ⇒ case f of
     let [g,a:names ⊢ N'] = notin_propagates_to_target [_ ⊢ F] [_ ⊢ N] [_ ⊢ I[..]] in [g ⊢ not_nu \a.N']
 ;
 
+% Given a forward transition F: X --[A K]--> Y, the target process Y contains the key K.
+% More precisely, we prove that notin K Y gives a contradiction.
+rec key_in_target_of_fstep: (g:ctx) [g ⊢ ccsk.fstep X (kl_base A K[]) Y] → [g ⊢ notin K[] Y] → [g ⊢ false] =
+/ total f (key_in_target_of_fstep _ _ _ _ _ f _) /
+fn f,n ⇒ case f of
+  | [g ⊢ fs_pref _] ⇒ let [g ⊢ not_kpref I _] = n in impossible irreflexive_neq [g ⊢ I]
+  | [g ⊢ fs_kpref F _] ⇒ let [g ⊢ not_kpref _ N] = n in
+    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
+  | [g ⊢ fs_suml F D] ⇒ let [g ⊢ not_sum N _] = n in
+    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
+  | [g ⊢ fs_sumr F D] ⇒ let [g ⊢ not_sum _ N] = n in
+    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
+  | [g ⊢ fs_parl F _] ⇒ let [g ⊢ not_par N _] = n in
+    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
+  | [g ⊢ fs_parr F _] ⇒ let [g ⊢ not_par _ N] = n in
+    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
+  | [g ⊢ fs_synl F _] ⇒ let [g ⊢ not_par N _] = n in
+    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
+  | [g ⊢ fs_synr F _] ⇒ let [g ⊢ not_par N _] = n in
+    impossible key_in_target_of_fstep [g ⊢ F] [g ⊢ N]
+  | [g ⊢ fs_nu \a.F] ⇒ let [g ⊢ not_nu \a.N] = n in
+    impossible key_in_target_of_fstep [_ ⊢ F] [_ ⊢ N]
+;
 
+% Two forward composable transitions cannot have the same key.
+rec ccsk_no_composable_fw_tr_with_same_key: (g:ctx) [g ⊢ ccsk.fstep X (kl_base A1 K[]) Y] →
+  [g ⊢ ccsk.fstep Y (kl_base A2 K[]) Z] → [g ⊢ false] =
+/ total x (ccsk_no_composable_fw_tr_with_same_key _ x _ _ _ _ _ _ _) /
+fn f1,f2 ⇒ let [g ⊢ F1] = f1 in
+let [g ⊢ F2] = f2 in
+(case total_enrich_f [g ⊢ F1] of
+  | [g ⊢ ex_enfc (en_fc _ F1+ _ H1)] ⇒ (case total_enrich_f [g ⊢ F2] of
+       | [g ⊢ ex_enfc (en_fc _ F2+ _ H2)] ⇒ impossible no_composable_fw_tr_with_same_key [g ⊢ fc F1+] [g ⊢ fc F2+] [g ⊢ key_cl H1] [g ⊢ key_cl H2]
+       | [g ⊢ ex_enfo (en_fo _ F2+ \a.H2)] ⇒ impossible no_composable_fw_tr_with_same_key [g ⊢ fc F1+] [g ⊢ fo F2+] [g ⊢ key_cl H1] [g ⊢ key_op \a.H2])
+  | [g ⊢ ex_enfo (en_fo _ F1+ \a.H1)] ⇒ (case total_enrich_f [g ⊢ F2] of
+       | [g ⊢ ex_enfc (en_fc _ F2+ _ H2)] ⇒ impossible no_composable_fw_tr_with_same_key [g ⊢ fo F1+] [g ⊢ fc F2+] [g ⊢ key_op \a.H1] [g ⊢ key_cl H2]
+       | [g ⊢ ex_enfo (en_fo _ F2+ \a.H2)] ⇒ impossible no_composable_fw_tr_with_same_key [g ⊢ fo F1+] [g ⊢ fo F2+] [g ⊢ key_op \a.H1] [g ⊢ key_op \a.H2]))
+;
+
+% Two forward composable transitions cannot have the same keyed label.
+rec ccsk_no_composable_fw_tr_with_same_label: (g:ctx) [g ⊢ ccsk.fstep X KL Y] → [g ⊢ ccsk.fstep Y KL Z] → [g ⊢ false] =
+/ total x (ccsk_no_composable_fw_tr_with_same_label _ x _ _ _ _ _) /
+fn f1,f2 ⇒ let [g ⊢ F1]:[g ⊢ ccsk.fstep _ (kl_base _ _) _] = f1 in 
+impossible ccsk_no_composable_fw_tr_with_same_key [g ⊢ F1] f2
+;
+
+% Two backward composable transitions cannot have the same keyed label.
+rec ccsk_no_composable_bw_tr_with_same_label: (g:ctx) [g ⊢ ccsk.bstep Z KL Y] → [g ⊢ ccsk.bstep Y KL X] → [g ⊢ false] =
+/ total x (ccsk_no_composable_bw_tr_with_same_label _ x _ _ _ _ _) /
+fn b1,b2 ⇒ let [g ⊢ B1]:[g ⊢ ccsk.bstep _ (kl_base _ _) _] = b1 in 
+let [g ⊢ F1] = ccsk_loop_lemma_two [g ⊢ B1] in
+let [g ⊢ F2] = ccsk_loop_lemma_two b2 in
+impossible ccsk_no_composable_fw_tr_with_same_key [g ⊢ F2] [g ⊢ F1]
+;
+
+% Given a combined transition t, t and inv_tr(t) have opposite directions.
+rec ccsk_inv_tr_have_opp_direction: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 X1']) (S2:[g ⊢ ccsk.step X2 KL2 X2'])
+  [g ⊢ ccsk_inv_tr S1 S2] → [g ⊢ ccsk_opp_direction S1 S2] =
+/ total hr (ccsk_inv_tr_have_opp_direction _ _ _ _ _ _ _ _ _ hr) /
+fn hr ⇒ let [g ⊢ ccsk_it S1 S2] = hr in
+case [_ ⊢ S1] of
+  | [g ⊢ fw F1] ⇒ (case [g ⊢ S2] of
+       | [g ⊢ fw F2] ⇒ impossible ccsk_no_composable_fw_tr_with_same_label [g ⊢ F1] [g ⊢ F2]
+       | [g ⊢ bw B2] ⇒ [g ⊢ ccsk_odfb])
+  | [g ⊢ bw B1] ⇒ (case [g ⊢ S2] of
+       | [g ⊢ fw F2] ⇒ [g ⊢ ccsk_odbf]
+       | [g ⊢ bw B2] ⇒ impossible ccsk_no_composable_bw_tr_with_same_label [g ⊢ B1] [g ⊢ B2])
+;
+
+
+% Given CCSK combined transitions T1: step X (kl_base A K) Z1, T2: step X (kl_base C K) Z2,
+% U1: step Y (kl_base B M) Z1] and U2: step Y (kl_base D M) Z2, that use distinct keys K and M
+% and such that (T1,T2) and (U1,U2) have same direction, then the two processes Z1 and Z2 are equal.
+% As a consequence, for the uniqueness of derivation trees of transitions, T1=T2 and U1=U2.
+
+% We first prove the result by cases, according to the direction of Ti and Ui, i=1,2.
+
+% (T1,T2) and (U1,U2) are all forward
 rec unique_diamonds_ff: (g:ctx) {F1:[g ⊢ ccsk.fstep X (kl_base A K[]) Z1]} {F2:[g ⊢ ccsk.fstep X (kl_base C K[]) Z2]}
   {G1:[g ⊢ ccsk.fstep Y (kl_base B M[]) Z1]} {G2:[g ⊢ ccsk.fstep Y (kl_base D M[]) Z2]} [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
 / total t1 (unique_diamonds_ff _ _ _ _ _ _ _ _ _ _ _ t1 _ _ _ _) /
@@ -1313,7 +1043,9 @@ mlam F1,F2,G1,G2 ⇒ fn i ⇒ case [_ ⊢ F1] of
     let [g,a:names ⊢ refp] = unique_diamonds_ff [_ ⊢ F1'] [_ ⊢ F2'] [_ ⊢ G1'] [_ ⊢ G2'] [_ ⊢ I[..]] in [g ⊢ refp]
 ;
 
-
+% (T1,T2) and (U1,U2) have opposite directions.
+% Thanks to the loop lemma, we can reverse the backward transitions
+% and equivalently state the result using only forward transitions.
 rec unique_diamonds_fb: (g:ctx) {F1:[g ⊢ ccsk.fstep X (kl_base A K[]) Z1]} {F2:[g ⊢ ccsk.fstep X (kl_base C K[]) Z2]}
   {G1:[g ⊢ ccsk.fstep Z1 (kl_base B M[]) Y]} {G2:[g ⊢ ccsk.fstep Z2 (kl_base D M[]) Y]} [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
 / total t1 (unique_diamonds_fb _ _ _ _ _ _ _ _ _ _ _ t1 _ _ _ _) /
@@ -1993,7 +1725,7 @@ mlam F1,F2,G1,G2 ⇒ fn i ⇒ case [_ ⊢ F1] of
     let [g,a:names ⊢ refp] = unique_diamonds_fb [_ ⊢ F1'] [_ ⊢ F2'] [_ ⊢ G1'] [_ ⊢ G2'] [_ ⊢ I[..]] in [g ⊢ refp]
 ;
 
-
+% (T1,T2) and (U1,U2) are all backward
 rec unique_diamonds_bb: (g:ctx) {F1:[g ⊢ ccsk.fstep Z1 (kl_base A K[]) X]} {F2:[g ⊢ ccsk.fstep Z2 (kl_base C K[]) X]}
   {G1:[g ⊢ ccsk.fstep Z1 (kl_base B M[]) Y]} {G2:[g ⊢ ccsk.fstep Z2 (kl_base D M[]) Y]} [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
 / total t1 (unique_diamonds_bb _ _ _ _ _ _ _ _ _ _ _ t1 _ _ _ _) /
@@ -2230,6 +1962,7 @@ mlam F1,F2,G1,G2 ⇒ fn i ⇒ case [_ ⊢ F1] of
     let [g,a:names ⊢ refp] = unique_diamonds_bb [_ ⊢ F1'] [_ ⊢ F2'] [_ ⊢ G1'] [_ ⊢ G2'] [_ ⊢ I[..]] in [g ⊢ refp]
 ;
 
+% Unique diamonds lemma for combined CCSK transitions
 rec unique_diamonds: (g:ctx) {T1:[g ⊢ ccsk.step X (kl_base A K[]) Z1]} {T2:[g ⊢ ccsk.step X (kl_base C K[]) Z2]}
   {U1:[g ⊢ ccsk.step Y (kl_base B M[]) Z1]} {U2:[g ⊢ ccsk.step Y (kl_base D M[]) Z2]}
   [g ⊢ ccsk_same_direction T1 T2] → [g ⊢ ccsk_same_direction U1 U2] → [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
@@ -2256,240 +1989,37 @@ mlam T1,T2,U1,U2 ⇒ fn sdt,sdu,i ⇒ case sdt of
 ;
 
 
-% Base case of the definition of equivalence of CCSK transitions
-LF ccsk_equiv_tr_base: ccsk.step P KL Q → ccsk.step R KL S → type =
-  | ccsk_etb: ccsk_same_direction (T:ccsk.step P KL1 Q) (T':ccsk.step R KL1 S) 
-            → ccsk_same_direction (U:ccsk.step P KL2 R) (U':ccsk.step Q KL2 S)
-            → ccsk_indep_tr T U → ccsk_equiv_tr_base T T'
-;
-
-% Equivalence of CCSK transitions ~:
-% Reflexive, symmetric and transitive closure of the ccsk_equiv_tr_base relation.
-LF ccsk_equiv_tr: ccsk.step P KL Q → ccsk.step R KL S → type =
-  | ccsk_et_base: ccsk_equiv_tr_base T T' → ccsk_equiv_tr T T'
-  | ccsk_et_refl: ccsk_equiv_tr T T
-  | ccsk_et_sym: ccsk_equiv_tr T' T → ccsk_equiv_tr T T'
-  | ccsk_et_trans: ccsk_equiv_tr T T' → ccsk_equiv_tr T' T'' → ccsk_equiv_tr T T''
-;
-
-% Given two CCSK transitions t and t' that use the same keyed label, their enriched versions
-% t+ and t'+ may in general use different proof labels. However, if t and t' are equivalent,
-% t+ and t'+ are also equivalent and, as a consequence, use the same proof label.
-
-% To state the result in full generality, t+ and t'+ must initially be allowed to use
-% different proof labels. However, the conclusion equiv_tr t+ t'+ would not type-check,
-% since equiv_tr requires its arguments to share the same proof label. For this reason,
-% we introduce the auxiliary type same_labels_and_equiv_tr, which wraps equiv_tr while
-% allowing the proof labels of t+ and t'+ to differ initially.
-LF same_labels_and_equiv_tr: ccskp.step X T Y → ccskp.step Z T' W → type =
-  | sl_et: equiv_tr (T+:ccskp.step X T Y) (T'+:ccskp.step Z T W) → same_labels_and_equiv_tr T+ T'+
-;
-
-% If two CCSK transitions are equivalent, then their enriched versions are equivalent
-rec enrich_preserves_equiv_tr: (g:ctx) {T:[g ⊢ ccsk.step X KL Y]} {T':[g ⊢ ccsk.step Z KL W]}
-  (T+:[g ⊢ ccskp.step X T1 Y]) (T'+:[g ⊢ ccskp.step Z T2 W]) [g ⊢ ccsk_equiv_tr T T']
-  → [g ⊢ enrich T T+] → [g ⊢ enrich T' T'+] → [g ⊢ same_labels_and_equiv_tr T+ T'+] =
-/ total e (enrich_preserves_equiv_tr _ _ _ _ _ _ _ _ _ _ _ _ e _ _) /
-mlam T,T' ⇒ fn e,ent,ent' ⇒ case e of
-  | [g ⊢ ccsk_et_base (ccsk_etb SDT SDU I)] ⇒
-    % We apply the auxiliary lemma sdir_ccsk_to_ccskp to infer that T+ and T'+ have same direction
-    let [g ⊢ SDT+]:[g ⊢ same_direction T+ T'+] = sdir_ccsk_to_ccskp [g ⊢ SDT] ent ent' in
-    % We apply the enrich function to U and U', obtaining U+ and U'+
-    let [g ⊢ SDU]:[g ⊢ ccsk_same_direction U U'] = [g ⊢ SDU] in
-    let [g ⊢ ex_en ENU] = total_enrich [g ⊢ U] in
-    let [g ⊢ ex_en ENU'] = total_enrich [g ⊢ U'] in
-    % We apply the auxiliary lemma sdir_ccsk_to_ccskp to infer that U+ and U'+ have same direction
-    let [g ⊢ SDU+]:[g ⊢ same_direction U+ U'+] = sdir_ccsk_to_ccskp [g ⊢ SDU] [g ⊢ ENU] [g ⊢ ENU'] in
-    % Inversion on I:ccsk_indep_tr T U to obtain I+, witness that the proof labels used by T+ and U+ are independent.
-    % This collaterally creates two spurious copies of T+ and U+, that we unify by functionality of enrich
-    let [g ⊢ ccsk_ind_tr ENT'' ENU'' I+ _] = [g ⊢ I] in
-    let [g ⊢ refst] = functional_enrich ent [g ⊢ ENT''] in
-    let [g ⊢ refst] = functional_enrich [g ⊢ ENU] [g ⊢ ENU''] in
-    % We cannot yet say that T+ and T'+ are equivalent because we do not know yet that their proof labels are equal:
-    % The instructions below have the goal of proving this equality.
-    % Square lemma on T+,U+, to obtain a second pair of transitions U''+,T''+ closing the square.
-    % Such transitions have the same proof labels as T+,U+. We want to prove that U''+,T''+ coincide with U'+ and T'+
-    let [g ⊢ sq U''+ T''+ SDT'+ SDU'+] = sp [g ⊢ T+] [g ⊢ U+] [g ⊢ ind_tr I+ (ct _ _ (st_s* U+))] in
-    % Map from ccskp to ccsk to forget U''+,T''+,T+ and U+. We denote U'',T'' the "forgotten" versions of the first two
-    let {FGT'':[g ⊢ forget T''+ T'']}[g ⊢ ex_fg FGT''] = total_forget [g ⊢ T''+] in
-    let {FGU'':[g ⊢ forget U''+ U'']}[g ⊢ ex_fg FGU''] = total_forget [g ⊢ U''+] in
-    let [g ⊢ ex_fg FGT] = total_forget [g ⊢ T+] in
-    let [g ⊢ ex_fg FGU] = total_forget [g ⊢ U+] in
-    % Bijection between ccsk and ccskp, to infer that forget(enrich(T))=T and forget(enrich(U))=U
-    let [g ⊢ refs] = inverse_two ent [g ⊢ FGT] in
-    let [g ⊢ refs] = inverse_two [g ⊢ ENU] [g ⊢ FGU] in
-    % We apply the auxiliary lemma injective_forget_on_labels to infer that T and T'' have the same keys. Same for U and U''
-    let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FGT] [g ⊢ FGT''] in
-    let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FGU] [g ⊢ FGU''] in
-    % We apply the auxiliary lemma sdir_ccskp_to_ccsk to infer that T and T'' have same direction. Same for U and U''
-    let [g ⊢ SDU'] = sdir_ccskp_to_ccsk [g ⊢ SDU'+] [g ⊢ FGU] [g ⊢ FGU''] in
-    let [g ⊢ SDT'] = sdir_ccskp_to_ccsk [g ⊢ SDT'+] [g ⊢ FGT] [g ⊢ FGT''] in
-    % We denote as K and M the keys of T and U respectively; for decidability of keys, they are either equal or different
-    let [g ⊢ T]:[g ⊢ ccsk.step _ (kl_base _ K[]) _] = [g ⊢ T] in
-    let [g ⊢ U]:[g ⊢ ccsk.step _ (kl_base _ M[]) _] = [g ⊢ U] in
-    (case dec_eq_keys [g] [⊢ K] [⊢ M] of
-       % If K = M, we have a contradiction (forward composable transitions with same key)
-       | [g ⊢ c_eq] ⇒ (case [g ⊢ SDT] of
-            | [g ⊢ ccsk_sdf]:[g ⊢ ccsk_same_direction (fw FT) (fw FT')] ⇒ (case [g ⊢ SDU] of
-                 | [g ⊢ ccsk_sdf]:[g ⊢ ccsk_same_direction (fw FU) (fw FU')] ⇒
-                   impossible ccsk_no_composable_fw_tr_with_same_key [g ⊢ FT] [g ⊢ FU']
-                 | [g ⊢ ccsk_sdb]:[g ⊢ ccsk_same_direction (bw BU) (bw BU')] ⇒
-                   impossible ccsk_no_composable_fw_tr_with_same_key (ccsk_loop_lemma_two [g ⊢ BU]) [g ⊢ FT])
-            | [g ⊢ ccsk_sdb]:[g ⊢ ccsk_same_direction (bw BT) (bw BT')] ⇒ (case [g ⊢ SDU] of
-                 | [g ⊢ ccsk_sdf]:[g ⊢ ccsk_same_direction (fw FU) (fw FU')] ⇒
-                   impossible ccsk_no_composable_fw_tr_with_same_key (ccsk_loop_lemma_two [g ⊢ BT]) [g ⊢ FU]
-                 | [g ⊢ ccsk_sdb]:[g ⊢ ccsk_same_direction (bw BU) (bw BU')] ⇒
-                   impossible ccsk_no_composable_fw_tr_with_same_key (ccsk_loop_lemma_two [g ⊢ BU']) (ccsk_loop_lemma_two [g ⊢ BT])))
-       % If K != M, we can apply the auxiliary lemma unique_diamonds to prove that (T',T'') and (U',U'') coincide
-       | [g ⊢ c_neq N] ⇒ let [g ⊢ refp] = unique_diamonds [g ⊢ T'] [g ⊢ T''] [g ⊢ U'] [g ⊢ U''] 
-           (transitive_ccsk_same_direction (symmetric_ccsk_same_direction [g ⊢ SDT]) [g ⊢ SDT'])
-           (transitive_ccsk_same_direction (symmetric_ccsk_same_direction [g ⊢ SDU]) [g ⊢ SDU']) [g ⊢ N] in
-         % As a consequence, (T'+,T''+) and (U'+,U''+) also coincide
-         let [g ⊢ refst] = unique_step [g ⊢ T'+] [g ⊢ T''+] in
-         let [g ⊢ refst] = unique_step [g ⊢ U'+] [g ⊢ U''+] in
-         % We can finally say that T+ and T'+ are equivalent
-         [g ⊢ sl_et (et_base (etb SDT+ SDU+ (ind_tr I+ (ct T+ U+ (st_s* U+)))))])
-  | [g ⊢ ccsk_et_refl] ⇒ let [g ⊢ refst] = functional_enrich ent ent' in [g ⊢ sl_et et_refl]
-  | [g ⊢ ccsk_et_sym E] ⇒ let [g ⊢ sl_et E'] = enrich_preserves_equiv_tr [g ⊢ T'] [g ⊢ T] [g ⊢ E] ent' ent in [g ⊢ sl_et (et_sym E')]
-  | [g ⊢ ccsk_et_trans E1 E2] ⇒ let [g ⊢ E1]:[g ⊢ ccsk_equiv_tr T T''] = [g ⊢ E1] in
-    let [g ⊢ ex_en ENT''] = total_enrich [g ⊢ T''] in
-    let [g ⊢ sl_et E1'] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ T''] [g ⊢ E1] ent [g ⊢ ENT''] in
-    let [g ⊢ sl_et E2'] = enrich_preserves_equiv_tr [g ⊢ T''] [g ⊢ T'] [g ⊢ E2] [g ⊢ ENT''] ent' in [g ⊢ sl_et (et_trans E1' E2')]
-;
-
-% Propagation of coinitial independence (PCI):
-% Given t:step X KL1 Y, u:step X KL2 Z, u':step Y KL2 W and t':step Z KL1 W,
-% where (t,t') and (u,u') have same direction,
-% if t and u are independent, then u' and inv_tr(t) are independent.
-rec ccsk_pci: (g:ctx) (T:[g ⊢ ccsk.step X KL1 Y]) (U:[g ⊢ ccsk.step X KL2 Z])
-  (U':[g ⊢ ccsk.step Y KL2 W]) (T':[g ⊢ ccsk.step Z KL1 W]) (RT:[g ⊢ ccsk.step Y KL1 X])
-  [g ⊢ ccsk_same_direction T T'] → [g ⊢ ccsk_same_direction U U'] → [g ⊢ ccsk_indep_tr T U] → 
-  [g ⊢ ccsk_inv_tr T RT] → [g ⊢ ccsk_indep_tr U' RT] =
-/ total (ccsk_pci _ _ _ _ _ _ _ t _ _ _ _ _ _) /
-fn sdt,sdu,i,hr ⇒
-% Inversion on i: ENT and ENU map t and u to their enriched versions t+ and u+; I denotes independence of t+ and u+
-let [g ⊢ ccsk_ind_tr ENT ENU I _] = i in
-% t,u,u' and t' are not explicit parameters of the function ccsk_pci.
-% We give an explicit annotation of the types of sdt and sdu, to obtain explicit names T,U,U' and T'
-let [g ⊢ SDT]:[g ⊢ ccsk_same_direction T T'] = sdt in
-let [g ⊢ SDU]:[g ⊢ ccsk_same_direction U U'] = sdu in
-% We apply the enrich map from ccsk to ccskp to obtain U'+, enriched transitions of U'
-let {ENU':[g ⊢ enrich U' U'+]}[g ⊢ ex_en ENU'] = total_enrich [g ⊢ U'] in
-% Inversion on hr to obtain RT, the reverse transition of T
-let [g ⊢ ccsk_it T RT] = hr in
-% Map from ccsk to ccskp to enrich RT
-let {ENRT:[g ⊢ enrich RT RT+]}[g ⊢ ex_en ENRT] = total_enrich [g ⊢ RT] in
-% Auxiliary lemmas to infer that RT+, the enriched transition of the reverse transition of T, is the reverse of the enriched transition of T
-let [g ⊢ HR+]:[g ⊢ inv_tr T+ RT+] = inv_ccsk_to_ccskp hr [g ⊢ ENT] [g ⊢ ENRT] in
-let [g ⊢ it T+ RT+] = [g ⊢ HR+] in
-% Since T+ and U+ are independent, U+ and T+ are also independent (symmetry of independence)
-let [g ⊢ I'] = symmetric_indep [g ⊢ I] in
-% Since U and U' are equivalent, U+ and U'+ are also equivalent
-let [g ⊢ sl_et EU+] = enrich_preserves_equiv_tr [g ⊢ U] [g ⊢ U']
-    [g ⊢ ccsk_et_base (ccsk_etb SDU SDT (ccsk_ind_tr ENU ENT I' (ctr _ _ (ccsk.st_s* T))))] [g ⊢ ENU] [g ⊢ ENU'] in
-% We conclude by observing that U' and RT are independent, since the proof labels of their enriched versions are independent
-[g ⊢ ccsk_ind_tr ENU' ENRT I' (ctr _ _ (ccsk.st_s* RT))]
-;
 
 
-% Proof that step is symmetric
-rec ccsk_symmetric_step: (g:ctx) [g ⊢ ccsk.step X KL Y] → [g ⊢ ccsk.step Y KL X] =
-/ total s (ccsk_symmetric_step _ _ _ s) /
-fn s ⇒ case s of
-    | [g ⊢ fw F] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bw B]
-    | [g ⊢ bw B] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fw F]
-;
-
-% Proof that step* is symmetric
-rec ccsk_symmetric_step*: (g:ctx) [g ⊢ ccsk.step* X Y] → [g ⊢ ccsk.step* Y X] =
-/ total s (ccsk_symmetric_step* _ _ _ s) /
-fn s ⇒ case s of
-  | [g ⊢ ccsk.id_s*] ⇒ [g ⊢ ccsk.id_s*]
-  | [g ⊢ ccsk.st_s* S] ⇒ let [g ⊢ S'] = ccsk_symmetric_step [g ⊢ S] in [g ⊢ ccsk.st_s* S']
-  | [g ⊢ ccsk.tr_s* S1* S2*] ⇒ let [g ⊢ S1*'] = ccsk_symmetric_step* [g ⊢ S1*] in
-       let [g ⊢ S2*'] = ccsk_symmetric_step* [g ⊢ S2*] in [g ⊢ ccsk.tr_s* S2*' S1*']
-;
-
-% Equivalent transitions have the same direction
-rec ccsk_equiv_tr_have_same_direction: (g:ctx) (T:[g ⊢ ccsk.step P A Q]) (T':[g ⊢ ccsk.step R A S])
-  [g ⊢ ccsk_equiv_tr T T'] → [g ⊢ ccsk_same_direction T T'] =
-/ total e (ccsk_equiv_tr_have_same_direction _ _ _ _ _ _ _ _ e) /
-fn e ⇒ case e of
-  | [g ⊢ ccsk_et_base (ccsk_etb SD1 _ _)]:[g ⊢ ccsk_equiv_tr T T'] ⇒ [g ⊢ SD1]
-  | [g ⊢ ccsk_et_refl] ⇒ reflexive_ccsk_same_direction [g ⊢ _]
-  | [g ⊢ ccsk_et_sym E'] ⇒ symmetric_ccsk_same_direction (ccsk_equiv_tr_have_same_direction [g ⊢ E'])
-  | [g ⊢ ccsk_et_trans E1 E2] ⇒ transitive_ccsk_same_direction 
-       (ccsk_equiv_tr_have_same_direction [g ⊢ E1]) (ccsk_equiv_tr_have_same_direction [g ⊢ E2])
-;
-
-% Equivalent transitions are connected
-rec ccsk_equiv_tr_are_connected: (g:ctx) (T:[g ⊢ ccsk.step P A Q]) (T':[g ⊢ ccsk.step R A S])
-  [g ⊢ ccsk_equiv_tr T T'] → [g ⊢ ccsk.conn_tr T T'] =
-/ total e (ccsk_equiv_tr_are_connected _ _ _ _ _ _ _ _ e) /
-fn e ⇒ case e of
-  | [_ ⊢ ccsk_et_base (ccsk_etb _ SD2 _)]:[_ ⊢ ccsk_equiv_tr T T'] ⇒
-    let [_ ⊢ _]:[_ ⊢ ccsk_same_direction U _] = [_ ⊢ SD2] in
-    [_ ⊢ ctr T T' (ccsk.tr_s* (ccsk.st_s* U) (ccsk.st_s* T'))]
-  | [_ ⊢ ccsk_et_refl] ⇒ let [_ ⊢ _]:[_ ⊢ ccsk_equiv_tr T T] = e in [_ ⊢ ctr _ _ (ccsk.st_s* T)]
-  | [_ ⊢ ccsk_et_sym E'] ⇒ let [g ⊢ ctr T' T S*] = ccsk_equiv_tr_are_connected [_ ⊢ E'] in
-                 let [g ⊢ S*'] = ccsk_symmetric_step* [g ⊢ S*] in [g ⊢ ctr _ _ (ccsk.tr_s* (ccsk.st_s* T) (ccsk.tr_s* S*' (ccsk.st_s* T')))]
-  | [_ ⊢ ccsk_et_trans E1 E2] ⇒ let [g ⊢ ctr _ T S1*] = ccsk_equiv_tr_are_connected [_ ⊢ E1] in
-                      let [g ⊢ ctr _ _ S2*] = ccsk_equiv_tr_are_connected [_ ⊢ E2] in
-                      let [g ⊢ RT] = ccsk_symmetric_step [g ⊢ T] in [g ⊢ ctr _ _ (ccsk.tr_s* S1* (ccsk.tr_s* (ccsk.st_s* RT) S2*))]
-;
-
-% Independence respects events (IRE):
-% Given three transitions t,t' and u, if t~t' (t and t' are equivalent) and t' and u are independent,
-% then also t and u are independent.
-rec ccsk_ire: (g:ctx) {T:[g ⊢ ccsk.step X1 KL1 Y1]} {T':[g ⊢ ccsk.step X2 KL1 Y2]} {U:[g ⊢ ccsk.step X3 KL3 Y3]} 
-  [g ⊢ ccsk_equiv_tr T T'] → [g ⊢ ccsk_indep_tr T' U] → [g ⊢ ccsk_indep_tr T U] =
-/ total e (ccsk_ire _ _ _ _ _ _ _ _ _ _ _ _ e _) /
-mlam T,T',U ⇒ fn e,i ⇒ let [g ⊢ ccsk_ind_tr ENT' ENU I (ctr _ _ S'*)] = i in
-let [g ⊢ ex_en ENT] = total_enrich [g ⊢ T] in
-let [g ⊢ sl_et _] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ T'] e [g ⊢ ENT] [g ⊢ ENT'] in
-let [g ⊢ ctr _ _ S*] = ccsk_equiv_tr_are_connected e in
-let [g ⊢ RT'] = ccsk_symmetric_step [g ⊢ T'] in [g ⊢ ccsk_ind_tr ENT ENU I (ctr _ _ (ccsk.tr_s* S* (ccsk.tr_s* (ccsk.st_s* RT') S'*)))]
-;
-
-%%% CIRE: coinitial independence respects events
-
-% Coinitial independence respects events (CIRE):
-% Given four transitions t,t',u and u', if t~t', u~u', t and u are coinitial,
-% t' and u' are coinitial, and t' and u' are independent, then also t and u are independent.
-rec ccsk_cire: (g:ctx) {T:[g ⊢ ccsk.step X1 KL1 Y1]} {T':[g ⊢ ccsk.step X2 KL1 Y2]} {U:[g ⊢ ccsk.step X1 KL2 Y3]}
-  {U':[g ⊢ ccsk.step X2 KL2 Y4]} [g ⊢ ccsk_equiv_tr T T'] → [g ⊢ ccsk_equiv_tr U U'] → [g ⊢ ccsk_indep_tr T' U']
-  → [g ⊢ ccsk_indep_tr T U] =
-/ total e (ccsk_cire _ _ _ _ _ _ _ _ _ _ _ _ _ e _ _) /
-mlam T,T',U,U' ⇒ fn et,eu,i ⇒ let [g ⊢ ex_en ENT] = total_enrich [_ ⊢ T] in
-let [g ⊢ ex_en ENU] = total_enrich [g ⊢ U] in
-let [g ⊢ ccsk_ind_tr ENT' ENU' I _] = i in
-let [g ⊢ sl_et _] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ T'] et [g ⊢ ENT] [g ⊢ ENT'] in
-let [g ⊢ sl_et _] = enrich_preserves_equiv_tr [g ⊢ U] [g ⊢ U'] eu [g ⊢ ENU] [g ⊢ ENU'] in
-[g ⊢ ccsk_ind_tr ENT ENU I (ctr _ _ (ccsk.st_s* U))]
-;
 
 
-%%% RPI: reversing preserves independence
-
-% Reversing preserves independence (RPI):
-% If two transitions t and t' are independent, then also inv_tr(t) and t' are independent.
-rec ccsk_rpi: (g:ctx) (T:[g ⊢ ccsk.step X1 KL1 Y1]) (T':[g ⊢ ccsk.step X2 KL2 Y2]) (S:[g ⊢ ccsk.step Y1 KL1 X1]) 
-  [g ⊢ ccsk_indep_tr T T'] → [g ⊢ ccsk_inv_tr T S] → [g ⊢ ccsk_indep_tr S T'] =
-/ total (ccsk_rpi _ _ _ _ _ _ _ t _ _ _ _) /
-fn i,d ⇒ let [g ⊢ ccsk_ind_tr ENT ENT' I (ctr _ _ S*)] = i in
-let [g ⊢ ccsk_it T S] = d in
-let [g ⊢ ex_en ENS] = total_enrich [g ⊢ S] in
-let [g ⊢ it _ _] = inv_ccsk_to_ccskp d [g ⊢ ENT] [g ⊢ ENS] in
- [g ⊢ ccsk_ind_tr ENS ENT' I (ctr _ _ (ccsk.tr_s* (ccsk.st_s* S) S*))]
-;
 
 
-%%% ED: event determinism
 
-% ED: if T and U are coinitial transitions and T ~ U, then T and U are cofinal.
-rec ccsk_ed: (g:ctx) {T:[g ⊢ ccsk.step X KL Y1]} {U:[g ⊢ ccsk.step X KL Y2]} [g ⊢ ccsk_equiv_tr T U] → [g ⊢ eqp Y1 Y2] =
-/ total e (ccsk_ed _ _ _ _ _ _ _ e) /
-mlam T,U ⇒ fn e ⇒ let {ENT:[g ⊢ enrich T T+]}[g ⊢ ex_en ENT] = total_enrich [_ ⊢ T] in
-let {ENU:[g ⊢ enrich U U+]}[g ⊢ ex_en ENU] = total_enrich [_ ⊢ U] in
-let [g ⊢ sl_et E+] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ U] e [g ⊢ ENT] [g ⊢ ENU] in ed [g ⊢ T+] [g ⊢ U+] [g ⊢ E+]
-;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

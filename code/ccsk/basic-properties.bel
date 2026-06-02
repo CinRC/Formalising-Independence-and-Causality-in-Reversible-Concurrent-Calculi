@@ -1,0 +1,55 @@
+--open ccsk.
+
+%%% Basic properties of transitions
+
+% Loop lemma - first implication
+rec ccsk_loop_lemma_one: (g:ctx) [g ⊢ ccsk.fstep X KL X'] → [g ⊢ ccsk.bstep X' KL X] =
+/ total f (ccsk_loop_lemma_one _ _ _ _ f) /
+fn f ⇒ case f of
+  | [g ⊢ fs_pref D] ⇒ [g ⊢ bs_pref D]
+  | [g ⊢ fs_kpref F I] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bs_kpref B I]
+  | [g ⊢ fs_suml F D] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bs_suml B D]
+  | [g ⊢ fs_sumr F D] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bs_sumr B D]
+  | [g ⊢ fs_parl F N] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bs_parl B N]
+  | [g ⊢ fs_parr F N] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bs_parr B N]
+  | [g ⊢ fs_synl F1 F2] ⇒ let [g ⊢ B1] = ccsk_loop_lemma_one [g ⊢ F1] in
+       let [g ⊢ B2] = ccsk_loop_lemma_one [g ⊢ F2] in [g ⊢ bs_synl B1 B2]
+  | [g ⊢ fs_synr F1 F2] ⇒ let [g ⊢ B1] = ccsk_loop_lemma_one [g ⊢ F1] in
+       let [g ⊢ B2] = ccsk_loop_lemma_one [g ⊢ F2] in [g ⊢ bs_synr B1 B2]
+  | [g ⊢ fs_nu \a.F] ⇒ let [g,a:names ⊢ B] = ccsk_loop_lemma_one [g,a:names ⊢ F] in [g ⊢ bs_nu \a.B]
+;
+
+% Loop lemma - second implication
+rec ccsk_loop_lemma_two: (g:ctx) [g ⊢ ccsk.bstep X' KL X] → [g ⊢ ccsk.fstep X KL X'] =
+/ total f (ccsk_loop_lemma_two _ _ _ _ f) /
+fn f ⇒ case f of
+  | [g ⊢ bs_pref D] ⇒ [g ⊢ fs_pref D]
+  | [g ⊢ bs_kpref B I] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fs_kpref F I]
+  | [g ⊢ bs_suml B D] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fs_suml F D]
+  | [g ⊢ bs_sumr B D] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fs_sumr F D]
+  | [g ⊢ bs_parl B N] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fs_parl F N]
+  | [g ⊢ bs_parr B N] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fs_parr F N]
+  | [g ⊢ bs_synl B1 B2] ⇒ let [g ⊢ F1] = ccsk_loop_lemma_two [g ⊢ B1] in
+       let [g ⊢ F2] = ccsk_loop_lemma_two [g ⊢ B2] in [g ⊢ fs_synl F1 F2]
+  | [g ⊢ bs_synr B1 B2] ⇒ let [g ⊢ F1] = ccsk_loop_lemma_two [g ⊢ B1] in
+       let [g ⊢ F2] = ccsk_loop_lemma_two [g ⊢ B2] in [g ⊢ fs_synr F1 F2]
+  | [g ⊢ bs_nu \a.B] ⇒ let [g,a:names ⊢ F] = ccsk_loop_lemma_two [g,a:names ⊢ B] in [g ⊢ fs_nu \a.F]
+;
+
+% Proof that step is symmetric
+rec ccsk_symmetric_step: (g:ctx) [g ⊢ ccsk.step X KL Y] → [g ⊢ ccsk.step Y KL X] =
+/ total s (ccsk_symmetric_step _ _ _ s) /
+fn s ⇒ case s of
+    | [g ⊢ fw F] ⇒ let [g ⊢ B] = ccsk_loop_lemma_one [g ⊢ F] in [g ⊢ bw B]
+    | [g ⊢ bw B] ⇒ let [g ⊢ F] = ccsk_loop_lemma_two [g ⊢ B] in [g ⊢ fw F]
+;
+
+% Proof that step* is symmetric
+rec ccsk_symmetric_step*: (g:ctx) [g ⊢ ccsk.step* X Y] → [g ⊢ ccsk.step* Y X] =
+/ total s (ccsk_symmetric_step* _ _ _ s) /
+fn s ⇒ case s of
+  | [g ⊢ ccsk.id_s*] ⇒ [g ⊢ ccsk.id_s*]
+  | [g ⊢ ccsk.st_s* S] ⇒ let [g ⊢ S'] = ccsk_symmetric_step [g ⊢ S] in [g ⊢ ccsk.st_s* S']
+  | [g ⊢ ccsk.tr_s* S1* S2*] ⇒ let [g ⊢ S1*'] = ccsk_symmetric_step* [g ⊢ S1*] in
+       let [g ⊢ S2*'] = ccsk_symmetric_step* [g ⊢ S2*] in [g ⊢ ccsk.tr_s* S2*' S1*']
+;

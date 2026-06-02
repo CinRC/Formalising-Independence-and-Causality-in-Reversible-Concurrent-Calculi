@@ -1,21 +1,6 @@
 %%% Uniqueness of the derivation of CCSK transitions %%%
 
---open ccsk.
-
-% Equality of derivations of fstep X KL X'
-LF eqfs: fstep X1 KL1 X1' → fstep X2 KL2 X2' → type =
-  | reffs: eqfs F F
-;
-
-% Equality of derivations of bstep X' KL X
-LF eqbs: bstep X1' KL1 X1 → bstep X2' KL2 X2 → type =
-  | refbs: eqbs B B
-;
-
-% Equality of derivations of step X KL X'
-LF eqs: step X1 KL1 X1' → step X2 KL2 X2' → type =
-  | refs: eqs S S
-;
+%%% Auxiliary lemmas %%%
 
 % The target of a forward transition is not standard
 rec target_is_not_std: (g:ctx) [g ⊢ fstep X KL X'] → [g ⊢ std X'] → [g ⊢ false] =
@@ -86,6 +71,7 @@ fn s ⇒ case s of
 ;
 
 
+%%% Uniqueness of the derivation of transitions %%%
 
 % Uniqueness of the derivation of fstep X KL X'
 rec ccsk_unique_fstep: (g:ctx) {F1:[g ⊢ fstep X KL1 X']} {F2:[g ⊢ fstep X KL2 X']} [g ⊢ eqfs F1 F2] =

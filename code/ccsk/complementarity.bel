@@ -1,0 +1,64 @@
+%%% Independence and dependence of transitions %%%
+
+% Independence of CCSK transitions:
+% Two CCSK transitions s1 and s2 are independent if they are connected and the proof labels
+% of their corresponding CCSKP transitions enrich(s1) and enrich(s2) are independent.
+LF ccsk_indep_tr: ccsk.step X KL1 X' → ccsk.step Y KL2 Y' → type =
+  | ccsk_ind_tr: enrich (S1:ccsk.step X KL1 X') (S1+:ccskp.step X T1 X') →
+    enrich (S2:ccsk.step Y KL2 Y') (S2+:ccskp.step Y T2 Y') →
+    indep T1 T2 → ccsk.conn_tr S1 S2 → ccsk_indep_tr S1 S2
+;
+
+% Dependence of CCSK transitions:
+% Two CCSK transitions s1 and s2 are dependent if they are connected and the proof labels
+% of their corresponding CCSKP transitions enrich(s1) and enrich(s2) are dependent.
+LF ccsk_dep_tr: ccsk.step X KL1 X' → ccsk.step Y KL2 Y' → type =
+  | ccsk_dp_tr: enrich (S1:ccsk.step X KL1 X') (S1+:ccskp.step X T1 X') →
+    enrich (S2:ccsk.step Y KL2 Y') (S2+:ccskp.step Y T2 Y') →
+    dep T1 T2 → ccsk.conn_tr S1 S2 → ccsk_dep_tr S1 S2
+;
+
+
+%%% Complementarity of transitions %%%
+
+% Given a CCSK path between two processes, there exists a CCSKP path between the same processes.
+rec path_ccsk_to_ccskp: (g:ctx) [g ⊢ ccsk.step* X X'] → [g ⊢ ccskp.step* X X'] =
+/ total s* (path_ccsk_to_ccskp _ _ _ s*) /
+fn s* ⇒ case s* of
+  | [g ⊢ ccsk.id_s*] ⇒ [g ⊢ ccskp.id_s*]
+  | [g ⊢ ccsk.st_s* S] ⇒ let {EN:[g ⊢ enrich _ S+]}[g ⊢ ex_en EN] = total_enrich [g ⊢ S] in [g ⊢ ccskp.st_s* S+]
+  | [g ⊢ ccsk.tr_s* S1* S2*] ⇒ let [g ⊢ S1*+] = path_ccsk_to_ccskp [g ⊢ S1*] in
+                                let [g ⊢ S2*+] = path_ccsk_to_ccskp [g ⊢ S2*] in [g ⊢ ccskp.tr_s* S1*+ S2*+]
+;
+
+% Predicate expressing dependence or independence of transitions:
+% ccsk_dep_or_indep S1 S2 holds iff S1 and S2 are dependent or independent
+LF ccsk_dep_tr_or_indep_tr: ccsk.step X1 KL1 Y1 → ccsk.step X2 KL2 Y2 → type =
+  | ccsk_or_dep_tr: ccsk_dep_tr S1 S2 → ccsk_dep_tr_or_indep_tr S1 S2
+  | ccsk_or_ind_tr: ccsk_indep_tr S1 S2 → ccsk_dep_tr_or_indep_tr S1 S2
+;
+
+% Connected transitions between reachable processes are dependent or independent
+rec ccsk_conn_tr_impl_dep_tr_or_indep_tr: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2])
+  [g ⊢ reachable X1] → [g ⊢ ccsk.conn_tr S1 S2] → [g ⊢ ccsk_dep_tr_or_indep_tr S1 S2] =
+/ total (ccsk_conn_tr_impl_dep_tr_or_indep_tr) /
+fn r,c ⇒ let [g ⊢ ctr S1 S2 S*] = c in
+let {EN1:[g ⊢ enrich _ S1+]}[g ⊢ ex_en EN1] = total_enrich [g ⊢ S1] in
+let {EN2:[g ⊢ enrich _ S2+]}[g ⊢ ex_en EN2] = total_enrich [g ⊢ S2] in
+let [g ⊢ S*+] = path_ccsk_to_ccskp [g ⊢ S*] in
+let [g ⊢ C] = conn_rel_one r [g ⊢ ct S1+ S2+ S*+] in
+(case conn_impl_dep_or_indep [g ⊢ C] of
+  | [g ⊢ or_dep D] ⇒ [g ⊢ ccsk_or_dep_tr (ccsk_dp_tr EN1 EN2 D (ctr S1 S2 S*))]
+  | [g ⊢ or_ind I] ⇒ [g ⊢ ccsk_or_ind_tr (ccsk_ind_tr EN1 EN2 I (ctr S1 S2 S*))])
+;
+
+% Transitions cannot be both dependent and independent
+rec ccsk_impossible_dep_tr_and_indep_tr: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2])
+  [g ⊢ ccsk_dep_tr S1 S2] → [g ⊢ ccsk_indep_tr S1 S2] → [g ⊢ false] =
+/ total (ccsk_impossible_dep_tr_and_indep_tr) /
+fn dt,it ⇒ let [g ⊢ ccsk_dp_tr EN1 EN2 D _] = dt in
+let [g ⊢ ccsk_ind_tr EN1' EN2' I _] = it in
+let [g ⊢ refst] = functional_enrich [g ⊢ EN1] [g ⊢ EN1'] in
+let [g ⊢ refst] = functional_enrich [g ⊢ EN2] [g ⊢ EN2'] in
+impossible impossible_dep_and_indep [g ⊢ D] [g ⊢ I]
+;

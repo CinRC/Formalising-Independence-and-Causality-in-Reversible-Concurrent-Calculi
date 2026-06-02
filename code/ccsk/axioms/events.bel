@@ -1,0 +1,43 @@
+% Base case of the definition of equivalence of CCSK transitions
+LF ccsk_equiv_tr_base: ccsk.step P KL Q → ccsk.step R KL S → type =
+  | ccsk_etb: ccsk_same_direction (T:ccsk.step P KL1 Q) (T':ccsk.step R KL1 S) 
+            → ccsk_same_direction (U:ccsk.step P KL2 R) (U':ccsk.step Q KL2 S)
+            → ccsk_indep_tr T U → ccsk_equiv_tr_base T T'
+;
+
+% Equivalence of CCSK transitions ~:
+% Reflexive, symmetric and transitive closure of the ccsk_equiv_tr_base relation.
+LF ccsk_equiv_tr: ccsk.step P KL Q → ccsk.step R KL S → type =
+  | ccsk_et_base: ccsk_equiv_tr_base T T' → ccsk_equiv_tr T T'
+  | ccsk_et_refl: ccsk_equiv_tr T T
+  | ccsk_et_sym: ccsk_equiv_tr T' T → ccsk_equiv_tr T T'
+  | ccsk_et_trans: ccsk_equiv_tr T T' → ccsk_equiv_tr T' T'' → ccsk_equiv_tr T T''
+;
+
+% Equivalent transitions have the same direction
+rec ccsk_equiv_tr_have_same_direction: (g:ctx) (T:[g ⊢ ccsk.step P A Q]) (T':[g ⊢ ccsk.step R A S])
+  [g ⊢ ccsk_equiv_tr T T'] → [g ⊢ ccsk_same_direction T T'] =
+/ total e (ccsk_equiv_tr_have_same_direction _ _ _ _ _ _ _ _ e) /
+fn e ⇒ case e of
+  | [g ⊢ ccsk_et_base (ccsk_etb SD1 _ _)]:[g ⊢ ccsk_equiv_tr T T'] ⇒ [g ⊢ SD1]
+  | [g ⊢ ccsk_et_refl] ⇒ reflexive_ccsk_same_direction [g ⊢ _]
+  | [g ⊢ ccsk_et_sym E'] ⇒ symmetric_ccsk_same_direction (ccsk_equiv_tr_have_same_direction [g ⊢ E'])
+  | [g ⊢ ccsk_et_trans E1 E2] ⇒ transitive_ccsk_same_direction 
+       (ccsk_equiv_tr_have_same_direction [g ⊢ E1]) (ccsk_equiv_tr_have_same_direction [g ⊢ E2])
+;
+
+% Equivalent transitions are connected
+rec ccsk_equiv_tr_are_connected: (g:ctx) (T:[g ⊢ ccsk.step P A Q]) (T':[g ⊢ ccsk.step R A S])
+  [g ⊢ ccsk_equiv_tr T T'] → [g ⊢ ccsk.conn_tr T T'] =
+/ total e (ccsk_equiv_tr_are_connected _ _ _ _ _ _ _ _ e) /
+fn e ⇒ case e of
+  | [_ ⊢ ccsk_et_base (ccsk_etb _ SD2 _)]:[_ ⊢ ccsk_equiv_tr T T'] ⇒
+    let [_ ⊢ _]:[_ ⊢ ccsk_same_direction U _] = [_ ⊢ SD2] in
+    [_ ⊢ ctr T T' (ccsk.tr_s* (ccsk.st_s* U) (ccsk.st_s* T'))]
+  | [_ ⊢ ccsk_et_refl] ⇒ let [_ ⊢ _]:[_ ⊢ ccsk_equiv_tr T T] = e in [_ ⊢ ctr _ _ (ccsk.st_s* T)]
+  | [_ ⊢ ccsk_et_sym E'] ⇒ let [g ⊢ ctr T' T S*] = ccsk_equiv_tr_are_connected [_ ⊢ E'] in
+                 let [g ⊢ S*'] = ccsk_symmetric_step* [g ⊢ S*] in [g ⊢ ctr _ _ (ccsk.tr_s* (ccsk.st_s* T) (ccsk.tr_s* S*' (ccsk.st_s* T')))]
+  | [_ ⊢ ccsk_et_trans E1 E2] ⇒ let [g ⊢ ctr _ T S1*] = ccsk_equiv_tr_are_connected [_ ⊢ E1] in
+                      let [g ⊢ ctr _ _ S2*] = ccsk_equiv_tr_are_connected [_ ⊢ E2] in
+                      let [g ⊢ RT] = ccsk_symmetric_step [g ⊢ T] in [g ⊢ ctr _ _ (ccsk.tr_s* S1* (ccsk.tr_s* (ccsk.st_s* RT) S2*))]
+;

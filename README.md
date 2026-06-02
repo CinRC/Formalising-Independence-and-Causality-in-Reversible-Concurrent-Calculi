@@ -28,6 +28,8 @@ to perform the type reconstruction of the formalisation. Expected result, after 
 ## Type Reconstruction done:  run/../code/shared/basic-properties.bel ##
 ## Type Reconstruction begin: run/../code/ccsk/definitions.bel ##
 ## Type Reconstruction done:  run/../code/ccsk/definitions.bel ##
+## Type Reconstruction begin: run/../code/ccsk/basic-properties.bel ##
+## Type Reconstruction done:  run/../code/ccsk/basic-properties.bel ##
 ## Type Reconstruction begin: run/../code/ccsk/unique-step.bel ##
 ## Type Reconstruction done:  run/../code/ccsk/unique-step.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/definitions.bel ##
@@ -70,6 +72,8 @@ to perform the type reconstruction of the formalisation. Expected result, after 
 ## Type Reconstruction done:  run/../code/ccskp/axioms/wf.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/axioms/pci.bel ##
 ## Type Reconstruction done:  run/../code/ccskp/axioms/pci.bel ##
+## Type Reconstruction begin: run/../code/ccskp/axioms/id.bel ##
+## Type Reconstruction done:  run/../code/ccskp/axioms/id.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/axioms/fld.bel ##
 ## Type Reconstruction done:  run/../code/ccskp/axioms/fld.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/axioms/ire.bel ##
@@ -80,8 +84,30 @@ to perform the type reconstruction of the formalisation. Expected result, after 
 ## Type Reconstruction done:  run/../code/ccskp/axioms/rpi.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/axioms/ed.bel ##
 ## Type Reconstruction done:  run/../code/ccskp/axioms/ed.bel ##
+## Type Reconstruction begin: run/../code/ccsk/complementarity.bel ##
+## Type Reconstruction done:  run/../code/ccsk/complementarity.bel ##
 ## Type Reconstruction begin: run/../code/ccsk/axioms/transitions-properties.bel ##
 ## Type Reconstruction done:  run/../code/ccsk/axioms/transitions-properties.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/events.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/events.bel ##
+## Type Reconstruction begin: run/../code/bijection/lemmas-lifting.bel ##
+## Type Reconstruction done:  run/../code/bijection/lemmas-lifting.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/bti.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/bti.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/sp.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/sp.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/wf.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/wf.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/pci.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/pci.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/ire.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/ire.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/cire.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/cire.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/rpi.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/rpi.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/ed.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/ed.bel ##
 ```
 
 Tests can be run using e.g.
@@ -147,9 +173,20 @@ Optionally, for improved beli mode, [rlwrap](https://github.com/hanslub42/rlwrap
     * `basic-properties.bel`: … properties of keys
   + `ccsk\`: … CCSK …
     * `definitions.bel`: … definitions
+    * `basic-properties.bel`: … basic properties (e.g. loop lemma, symmetry of transitions and paths)
     * `unique-step.bel`: … uniqueness of the derivation of transitions
+    * `complementarity.bel`: … complementarity of dependence and independence
     * `axioms\`: … axioms, in particular …
       - `transitions-properties.bel`: … definitions and auxiliary lemmas for the axioms
+      - `events.bel`: … definition and properties of equivalent transitions
+      - `bti.bel`: … BTI (backward transitions are independent)
+      - `sp.bel`: … SP (square property)
+      - `wf.bel`: … WF (well-foundedness)
+      - `pci.bel`: … PCI (propagation of coinitial independence)
+      - `ire.bel`: … IRE (independence respects events)
+      - `cire.bel`: … CIRE (coinitial independence respects events)
+      - `rpi.bel`: … RPI (reversing preserves independence)
+      - `ed.bel`: … ED (event determinism)
   + `ccskp\`: … CCSKP …
     * `definitions.bel`: … definitions
     * `unique.bel`: … uniqueness of the derivation of predicates
@@ -168,6 +205,7 @@ Optionally, for improved beli mode, [rlwrap](https://github.com/hanslub42/rlwrap
       - `sp.bel`: … SP (square property)
       - `wf.bel`: … WF (well-foundedness)
       - `pci.bel`: … PCI (propagation of coinitial independence)
+      - `id.bel`: … ID (independence of diamonds)
       - `fld.bel`: … FLD (forward label determinism) and BLD (backward label determinism)
       - `ire.bel`: … IRE (independence respects events)
       - `cire.bel`: … CIRE (coinitial independence respects events)
@@ -178,6 +216,7 @@ Optionally, for improved beli mode, [rlwrap](https://github.com/hanslub42/rlwrap
     * `functionality.bel`: … functionality of forget and enrich
     * `totality.bel`: … totality of forget and enrich
     * `bijection.bel`: … forget and enrich are mutual inverses
+    * `lemmas-lifting.bel`: … properties that can be lifted from one LTS to the other
 - `examples\`: Contains examples serving as tests for…
   + `processes\`: … processes that …
     * `standard.bel`: … are standard

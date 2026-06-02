@@ -1,0 +1,27 @@
+% Existence of combined transitions closing a square diagram in CCSK
+LF ccsk_square: ccsk.step X KL1 X1 → ccsk.step X KL2 X2 → type =
+  | ccsk_sq: {S2':ccsk.step X1 KL2 Y} {S1':ccsk.step X2 KL1 Y} ccsk_same_direction (S1:ccsk.step X KL1 X1) S1' → 
+    ccsk_same_direction (S2:ccsk.step X KL2 X2) S2' → ccsk_square (S1:ccsk.step X KL1 X1) (S2:ccsk.step X KL2 X2)
+;
+% Square property (SP):
+% Given two independent coinitial combined transitions,
+% there exist two cofinal combined transition closing the square diagram.
+rec ccsk_sp: (g:ctx) {S1:[g ⊢ ccsk.step X KL1 X1]} {S2:[g ⊢ ccsk.step X KL2 X2]}
+  [g ⊢ ccsk_indep_tr S1 S2] → [g ⊢ ccsk_square S1 S2] =
+/ total s1 (ccsk_sp _ _ _ _ _ _ s1 _ _) /
+mlam S1,S2 ⇒ fn i ⇒ let [g ⊢ ccsk_ind_tr EN1 EN2 I+ (ctr _ _ S*)] = i in
+let [g ⊢ _]:[g ⊢ enrich _ S1+] = [g ⊢ EN1] in
+let [g ⊢ _]:[g ⊢ enrich _ S2+] = [g ⊢ EN2] in
+let [g ⊢ sq S2'+ S1'+ SD1+ SD2+] = sp [g ⊢ S1+] [g ⊢ S2+] [g ⊢ ind_tr I+ (ct _ _ (ccskp.st_s* S2+))] in
+let {FG2':[g ⊢ forget _ S2']}[g ⊢ ex_fg FG2'] = total_forget [g ⊢ S2'+] in
+let {FG1':[g ⊢ forget _ S1']}[g ⊢ ex_fg FG1'] = total_forget [g ⊢ S1'+] in
+let [g ⊢ ex_fg FG1] = total_forget [g ⊢ S1+] in
+let [g ⊢ ex_fg FG2] = total_forget [g ⊢ S2+] in
+let [g ⊢ refs] = inverse_two [g ⊢ EN1] [g ⊢ FG1] in
+let [g ⊢ refs] = inverse_two [g ⊢ EN2] [g ⊢ FG2] in
+let [g ⊢ SD1] = sdir_ccskp_to_ccsk [g ⊢ SD1+] [g ⊢ FG1] [g ⊢ FG1'] in
+let [g ⊢ SD2] = sdir_ccskp_to_ccsk [g ⊢ SD2+] [g ⊢ FG2] [g ⊢ FG2'] in
+let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FG1] [g ⊢ FG1'] in
+let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FG2] [g ⊢ FG2'] in
+[g ⊢ ccsk_sq S2' S1' SD1 SD2]
+;

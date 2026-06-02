@@ -1,0 +1,22 @@
+% Type family encoding accessibility of CCSK processes
+inductive ccsk_acc: (g:ctx) [g ⊢ proc] → ctype =
+  | ccsk_acc_intro: {g:ctx} {X':[g ⊢ proc]}
+    ({X:[g ⊢ proc]} {KL:[g ⊢ key_lab]} [g ⊢ ccsk.fstep X KL X'] → ccsk_acc [g ⊢ X]) → ccsk_acc [g ⊢ X']
+;
+
+% If a process X is accessible w.r.t. the LTS of CCSKP, then it is accessible w.r.t. the LTS of CCSK. 
+rec acc_ccskp_to_ccsk: (g:ctx) acc [g ⊢ X] → ccsk_acc [g ⊢ X] =
+/ total a (acc_ccskp_to_ccsk _ _ a) /
+fn a ⇒ let acc_intro [g] [g ⊢ X] h = a in
+ccsk_acc_intro [g] [g ⊢ X] (mlam _,_ ⇒ fn f ⇒
+  let [g ⊢ F] = f in
+  (case total_enrich_f [g ⊢ F] of
+     | {EN:[g ⊢ enrich_fc _ F+]}[g ⊢ ex_enfc EN] ⇒ acc_ccskp_to_ccsk (h _ _ [g ⊢ fc F+])
+     | {EN:[g ⊢ enrich_fo _ F+]}[g ⊢ ex_enfo EN] ⇒ acc_ccskp_to_ccsk (h _ _ [g ⊢ fo F+])))
+;
+
+% Well-foundedness (WF): all processes are accessible
+rec ccsk_wf: (g:ctx) {X:[g ⊢ proc]} ccsk_acc [g ⊢ X] =
+/ total x (ccsk_wf _ x) /
+mlam X ⇒ acc_ccskp_to_ccsk (wf [_ ⊢ X])
+;
