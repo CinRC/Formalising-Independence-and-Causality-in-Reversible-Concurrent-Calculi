@@ -3,10 +3,10 @@
 
 % If two CCSKP transitions s1 and s2 have the same direction, then their corresponding
 % CCSK transitions forget(s1) and forget(s2) have the same direction.
-rec sdir_ccskp_to_ccsk: (g:ctx) (S1+:[g ⊢ ccskp.step X1 T1 Y1]) (S2+:[g ⊢ ccskp.step X2 T2+ Y2])
+rec forget_preserves_same_direction: (g:ctx) (S1+:[g ⊢ ccskp.step X1 T1 Y1]) (S2+:[g ⊢ ccskp.step X2 T2+ Y2])
   (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2]) [g ⊢ same_direction S1+ S2+]
   → [g ⊢ forget S1+ S1] → [g ⊢ forget S2+ S2] → [g ⊢ ccsk_same_direction S1 S2] =
-/ total s (sdir_ccskp_to_ccsk _ _ _ _ _ _ _ _ _ s _ _ _ _ _ _) /
+/ total s (forget_preserves_same_direction _ _ _ _ _ _ _ _ _ s _ _ _ _ _ _) /
 fn sd+,fg1,fg2 ⇒ case sd+ of
   | [g ⊢ sdf _ _] ⇒ (case fg1 of
     | [g ⊢ fgfc _] ⇒ (case fg2 of
@@ -26,10 +26,10 @@ fn sd+,fg1,fg2 ⇒ case sd+ of
 
 % If two CCSK transitions s1 and s2 have the same direction, then their corresponding
 % CCSKP transitions enrich(s1) and enrich(s2) have the same direction.
-rec sdir_ccsk_to_ccskp: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2])
+rec enrich_preserves_same_direction: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2])
   (S1+:[g ⊢ ccskp.step X1 T1 Y1]) (S2+:[g ⊢ ccskp.step X2 T2+ Y2]) [g ⊢ ccsk_same_direction S1 S2]
   → [g ⊢ enrich S1 S1+] → [g ⊢ enrich S2 S2+] → [g ⊢ same_direction S1+ S2+] =
-/ total s (sdir_ccsk_to_ccskp _ _ _ _ _ _ _ _ _ s _ _ _ _ _ _) /
+/ total s (enrich_preserves_same_direction _ _ _ _ _ _ _ _ _ s _ _ _ _ _ _) /
 fn sd,en1,en2 ⇒ case sd of
   | [g ⊢ ccsk_sdf] ⇒ (case en1 of
        | [g ⊢ enfc _] ⇒ (case en2 of
@@ -50,10 +50,10 @@ fn sd,en1,en2 ⇒ case sd of
 
 % Given a CCSK transition t with inverse transition ccsk_inv(t), then their corresponding
 % CCSKP transitions enrich(t) and enrich(ccsk_inv(t)) are also mutual inverses.
-rec inv_ccsk_to_ccskp: (g:ctx) (T:[g ⊢ ccsk.step X KL Y]) (RT:[g ⊢ ccsk.step Y KL X])
+rec enrich_preserves_inv_tr: (g:ctx) (T:[g ⊢ ccsk.step X KL Y]) (RT:[g ⊢ ccsk.step Y KL X])
   (T+:[g ⊢ ccskp.step X T1 Y]) (RT+:[g ⊢ ccskp.step Y T2 X]) [g ⊢ ccsk_inv_tr T RT]
   → [g ⊢ enrich T T+] → [g ⊢ enrich RT RT+] → [g ⊢ inv_tr T+ RT+] =
-/ total hi (inv_ccsk_to_ccskp _ _ _ _ _ _ _ _ _ _ hi _ _) /
+/ total hi (enrich_preserves_inv_tr _ _ _ _ _ _ _ _ _ _ hi _ _) /
 fn hr,en1,en2 ⇒
 let [g ⊢ ccsk_it T RT] = hr in
 let [g ⊢ EN1]:[g ⊢ enrich T T+] = en1 in
@@ -116,11 +116,11 @@ rec forget_preserves_equiv_tr: (g:ctx) {T:[g ⊢ ccskp.step X T1 Y]} {T':[g ⊢ 
   → [g ⊢ forget T T◦] → [g ⊢ forget T' T'◦] → [g ⊢ ccsk_tr_are_equiv T◦ T'◦] =
 mlam T,T' ⇒ fn e,fgt,fgt' ⇒ case e of
   | [g ⊢ et_base (etb SDT SDU (ind_tr I _))] ⇒
-    let [g ⊢ SDT◦]:[g ⊢ ccsk_same_direction T◦ T'◦] = sdir_ccskp_to_ccsk [g ⊢ SDT] fgt fgt' in
+    let [g ⊢ SDT◦]:[g ⊢ ccsk_same_direction T◦ T'◦] = forget_preserves_same_direction [g ⊢ SDT] fgt fgt' in
     let [g ⊢ SDU]:[g ⊢ same_direction U U'] = [g ⊢ SDU] in
     let [g ⊢ ex_fg FGU] = total_forget [g ⊢ U] in
     let [g ⊢ ex_fg FGU'] = total_forget [g ⊢ U'] in
-    let [g ⊢ SDU◦]:[g ⊢ ccsk_same_direction U◦ U'◦] = sdir_ccskp_to_ccsk [g ⊢ SDU] [g ⊢ FGU] [g ⊢ FGU'] in
+    let [g ⊢ SDU◦]:[g ⊢ ccsk_same_direction U◦ U'◦] = forget_preserves_same_direction [g ⊢ SDU] [g ⊢ FGU] [g ⊢ FGU'] in
     let [g ⊢ refkl] = injective_forget_on_labels fgt fgt' in
     let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FGU] [g ⊢ FGU'] in
     let [g ⊢ ex_en ENT] = total_enrich [g ⊢ T◦] in
@@ -150,14 +150,14 @@ rec enrich_preserves_equiv_tr: (g:ctx) {T:[g ⊢ ccsk.step X KL Y]} {T':[g ⊢ c
 / total e (enrich_preserves_equiv_tr _ _ _ _ _ _ _ _ _ _ _ _ e _ _) /
 mlam T,T' ⇒ fn e,ent,ent' ⇒ case e of
   | [g ⊢ ccsk_et_base (ccsk_etb SDT SDU I)] ⇒
-    % We apply the auxiliary lemma sdir_ccsk_to_ccskp to infer that T+ and T'+ have same direction
-    let [g ⊢ SDT+]:[g ⊢ same_direction T+ T'+] = sdir_ccsk_to_ccskp [g ⊢ SDT] ent ent' in
+    % We apply the auxiliary lemma enrich_preserves_same_direction to infer that T+ and T'+ have same direction
+    let [g ⊢ SDT+]:[g ⊢ same_direction T+ T'+] = enrich_preserves_same_direction [g ⊢ SDT] ent ent' in
     % We apply the enrich function to U and U', obtaining U+ and U'+
     let [g ⊢ SDU]:[g ⊢ ccsk_same_direction U U'] = [g ⊢ SDU] in
     let [g ⊢ ex_en ENU] = total_enrich [g ⊢ U] in
     let [g ⊢ ex_en ENU'] = total_enrich [g ⊢ U'] in
-    % We apply the auxiliary lemma sdir_ccsk_to_ccskp to infer that U+ and U'+ have same direction
-    let [g ⊢ SDU+]:[g ⊢ same_direction U+ U'+] = sdir_ccsk_to_ccskp [g ⊢ SDU] [g ⊢ ENU] [g ⊢ ENU'] in
+    % We apply the auxiliary lemma enrich_preserves_same_direction to infer that U+ and U'+ have same direction
+    let [g ⊢ SDU+]:[g ⊢ same_direction U+ U'+] = enrich_preserves_same_direction [g ⊢ SDU] [g ⊢ ENU] [g ⊢ ENU'] in
     % Inversion on I:ccsk_indep_tr T U to obtain I+, witness that the proof labels used by T+ and U+ are independent.
     % This collaterally creates two spurious copies of T+ and U+, that we unify by functionality of enrich
     let [g ⊢ ccsk_ind_tr ENT'' ENU'' I+ _] = [g ⊢ I] in
@@ -179,9 +179,9 @@ mlam T,T' ⇒ fn e,ent,ent' ⇒ case e of
     % We apply the auxiliary lemma injective_forget_on_labels to infer that T and T'' have the same keys. Same for U and U''
     let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FGT] [g ⊢ FGT''] in
     let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FGU] [g ⊢ FGU''] in
-    % We apply the auxiliary lemma sdir_ccskp_to_ccsk to infer that T and T'' have same direction. Same for U and U''
-    let [g ⊢ SDU'] = sdir_ccskp_to_ccsk [g ⊢ SDU'+] [g ⊢ FGU] [g ⊢ FGU''] in
-    let [g ⊢ SDT'] = sdir_ccskp_to_ccsk [g ⊢ SDT'+] [g ⊢ FGT] [g ⊢ FGT''] in
+    % We apply the auxiliary lemma forget_preserves_same_direction to infer that T and T'' have same direction. Same for U and U''
+    let [g ⊢ SDU'] = forget_preserves_same_direction [g ⊢ SDU'+] [g ⊢ FGU] [g ⊢ FGU''] in
+    let [g ⊢ SDT'] = forget_preserves_same_direction [g ⊢ SDT'+] [g ⊢ FGT] [g ⊢ FGT''] in
     % We denote as K and M the keys of T and U respectively; for decidability of keys, they are either equal or different
     let [g ⊢ T]:[g ⊢ ccsk.step _ (kl_base _ K[]) _] = [g ⊢ T] in
     let [g ⊢ U]:[g ⊢ ccsk.step _ (kl_base _ M[]) _] = [g ⊢ U] in

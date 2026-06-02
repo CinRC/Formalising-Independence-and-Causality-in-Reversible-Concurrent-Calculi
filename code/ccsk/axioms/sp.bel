@@ -19,8 +19,8 @@ let [g ⊢ ex_fg FG1] = total_forget [g ⊢ S1+] in
 let [g ⊢ ex_fg FG2] = total_forget [g ⊢ S2+] in
 let [g ⊢ refs] = inverse_two [g ⊢ EN1] [g ⊢ FG1] in
 let [g ⊢ refs] = inverse_two [g ⊢ EN2] [g ⊢ FG2] in
-let [g ⊢ SD1] = sdir_ccskp_to_ccsk [g ⊢ SD1+] [g ⊢ FG1] [g ⊢ FG1'] in
-let [g ⊢ SD2] = sdir_ccskp_to_ccsk [g ⊢ SD2+] [g ⊢ FG2] [g ⊢ FG2'] in
+let [g ⊢ SD1] = forget_preserves_same_direction [g ⊢ SD1+] [g ⊢ FG1] [g ⊢ FG1'] in
+let [g ⊢ SD2] = forget_preserves_same_direction [g ⊢ SD2+] [g ⊢ FG2] [g ⊢ FG2'] in
 let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FG1] [g ⊢ FG1'] in
 let [g ⊢ refkl] = injective_forget_on_labels [g ⊢ FG2] [g ⊢ FG2'] in
 [g ⊢ ccsk_sq S2' S1' SD1 SD2]

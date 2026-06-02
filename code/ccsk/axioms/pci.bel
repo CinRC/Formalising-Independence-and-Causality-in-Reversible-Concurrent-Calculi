@@ -21,7 +21,7 @@ let [g ⊢ ccsk_it T RT] = hr in
 % Map from ccsk to ccskp to enrich RT
 let {ENRT:[g ⊢ enrich RT RT+]}[g ⊢ ex_en ENRT] = total_enrich [g ⊢ RT] in
 % Auxiliary lemmas to infer that RT+, the enriched transition of the reverse transition of T, is the reverse of the enriched transition of T
-let [g ⊢ HR+]:[g ⊢ inv_tr T+ RT+] = inv_ccsk_to_ccskp hr [g ⊢ ENT] [g ⊢ ENRT] in
+let [g ⊢ HR+]:[g ⊢ inv_tr T+ RT+] = enrich_preserves_inv_tr hr [g ⊢ ENT] [g ⊢ ENRT] in
 let [g ⊢ it T+ RT+] = [g ⊢ HR+] in
 % Since T+ and U+ are independent, U+ and T+ are also independent (symmetry of independence)
 let [g ⊢ I'] = symmetric_indep [g ⊢ I] in
