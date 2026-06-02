@@ -96,14 +96,14 @@ mlam B1,B2 ⇒ case [_ ⊢ B1] of
                    [g ⊢ bt_id_cc refbc]
                  | [g ⊢ bt_ind_cc I2] ⇒ let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BR1] in 
                    let [g ⊢ V2] = valid_in_bstep_cl [g ⊢ BR2] in
-                   let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I2] [g ⊢ HR1] [g ⊢ HR2] in
+                   let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I2] [g ⊢ HR1] [g ⊢ HR2] in
                    impossible irreflexive_neq [g ⊢ N])
             | [g ⊢ bt_ind_cc I1] ⇒ (case bti_cc [g ⊢ BR1] [g ⊢ BR2] of
                  | [g ⊢ bt_id_cc refbc] ⇒ let [g ⊢ reflb] = unique_lab [g ⊢ LR1] [g ⊢ LR2] in
                    let [g ⊢ refky] = unique_key [g ⊢ HR1] [g ⊢ HR2] in
                    let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BL1] in 
                    let [g ⊢ V2] = valid_in_bstep_cl [g ⊢ BL2] in
-                   let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I1] [g ⊢ HL1] [g ⊢ HL2] in
+                   let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I1] [g ⊢ HL1] [g ⊢ HL2] in
                    impossible irreflexive_neq [g ⊢ N]
                  | [g ⊢ bt_ind_cc I2] ⇒ [g ⊢ bt_ind_cc (i_s3 I1 I2)]))
        | [g ⊢ bc_synr BL2 LL2 HL2 BR2 LR2 HR2] ⇒ (case bti_cc [g ⊢ BL1] [g ⊢ BL2] of
@@ -134,14 +134,14 @@ mlam B1,B2 ⇒ case [_ ⊢ B1] of
                    [g ⊢ bt_id_cc refbc]
                  | [g ⊢ bt_ind_cc I2] ⇒ let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BR1] in 
                    let [g ⊢ V2] = valid_in_bstep_cl [g ⊢ BR2] in
-                   let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I2] [g ⊢ HR1] [g ⊢ HR2] in
+                   let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I2] [g ⊢ HR1] [g ⊢ HR2] in
                    impossible irreflexive_neq [g ⊢ N])
             | [g ⊢ bt_ind_cc I1] ⇒ (case bti_cc [g ⊢ BR1] [g ⊢ BR2] of
                  | [g ⊢ bt_id_cc refbc] ⇒ let [g ⊢ reflb] = unique_lab [g ⊢ LR1] [g ⊢ LR2] in
                    let [g ⊢ refky] = unique_key [g ⊢ HR1] [g ⊢ HR2] in
                    let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BL1] in 
                    let [g ⊢ V2] = valid_in_bstep_cl [g ⊢ BL2] in
-                   let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I1] [g ⊢ HL1] [g ⊢ HL2] in
+                   let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I1] [g ⊢ HL1] [g ⊢ HL2] in
                    impossible irreflexive_neq [g ⊢ N]
                  | [g ⊢ bt_ind_cc I2] ⇒ [g ⊢ bt_ind_cc (i_s3 I1 I2)])))
   | [g ⊢ bc_nu \a.B1'] ⇒ let [g ⊢ bc_nu \a.B2'] = [g ⊢ B2] in 

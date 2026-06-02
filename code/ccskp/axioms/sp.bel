@@ -43,14 +43,14 @@ case [g ⊢ F1] of
          let [g ⊢ s_ffcc FL2' F1''] = sp_ffcc [g ⊢ F1'] [g ⊢ FL2] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_fstep_cl [g ⊢ F1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FL2] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HL2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HL2] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FR2] [g ⊢ HR2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_ffcc (fc_synl FL2' LL2 HL2 FR2 LR2 HR2) (fc_parl F1'' H1 N1')]
        | [g ⊢ fc_synr FL2 LL2 HL2 FR2 LR2 HR2] ⇒ let [g ⊢ i_s1l I'] = [g ⊢ I] in
          let [g ⊢ s_ffcc FL2' F1''] = sp_ffcc [g ⊢ F1'] [g ⊢ FL2] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_fstep_cl [g ⊢ F1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FL2] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HL2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HL2] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FR2] [g ⊢ HR2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_ffcc (fc_synr FL2' LL2 HL2 FR2 LR2 HR2) (fc_parl F1'' H1 N1')])
   | [g ⊢ fc_parr F1' H1 N1] ⇒ (case [g ⊢ F2] of
@@ -67,14 +67,14 @@ case [g ⊢ F1] of
          let [g ⊢ s_ffcc FR2' F1''] = sp_ffcc [g ⊢ F1'] [g ⊢ FR2] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_fstep_cl [g ⊢ F1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FR2] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HR2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HR2] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FL2] [g ⊢ HL2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_ffcc (fc_synl FL2 LL2 HL2 FR2' LR2 HR2) (fc_parr F1'' H1 N1')]
        | [g ⊢ fc_synr FL2 LL2 HL2 FR2 LR2 HR2] ⇒ let [g ⊢ i_s1r I'] = [g ⊢ I] in
          let [g ⊢ s_ffcc FR2' F1''] = sp_ffcc [g ⊢ F1'] [g ⊢ FR2] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_fstep_cl [g ⊢ F1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FR2] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HR2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HR2] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FL2] [g ⊢ HL2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_ffcc (fc_synr FL2 LL2 HL2 FR2' LR2 HR2) (fc_parr F1'' H1 N1')])
   | [g ⊢ fc_synl FL1 LL1 HL1 FR1 LR1 HR1] ⇒ (case [g ⊢ F2] of
@@ -233,14 +233,14 @@ case [g ⊢ F1] of
          let [g ⊢ s_ffoc FL2' F1''] = sp_ffoc [g ⊢ F1'] [g ⊢ FL2] [g ⊢ i_oc \a.I'] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V1)] = valid_in_fstep_op [g ⊢ F1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FL2] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HL2[..]] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HL2[..]] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FR2] [g ⊢ HR2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_ffoc (fc_synl FL2' LL2 HL2 FR2 LR2 HR2) (fo_parl F1'' (\a.H1) N1')]
        | [g ⊢ fc_synr FL2 LL2 HL2 FR2 LR2 HR2] ⇒ let [g,a:names ⊢ i_s1l I'] = [_ ⊢ I] in
          let [g ⊢ s_ffoc FL2' F1''] = sp_ffoc [g ⊢ F1'] [g ⊢ FL2] [g ⊢ i_oc \a.I'] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V1)] = valid_in_fstep_op [g ⊢ F1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FL2] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HL2[..]] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HL2[..]] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FR2] [g ⊢ HR2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_ffoc (fc_synr FL2' LL2 HL2 FR2 LR2 HR2) (fo_parl F1'' (\a.H1) N1')])
   | [g ⊢ fo_parr F1' (\a.H1) N1] ⇒ (case [g ⊢ F2] of
@@ -257,14 +257,14 @@ case [g ⊢ F1] of
          let [g ⊢ s_ffoc FR2' F1''] = sp_ffoc [g ⊢ F1'] [g ⊢ FR2] [g ⊢ i_oc \a.I'] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V1)] = valid_in_fstep_op [g ⊢ F1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FR2] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HR2[..]] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HR2[..]] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FL2] [g ⊢ HL2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_ffoc (fc_synl FL2 LL2 HL2 FR2' LR2 HR2) (fo_parr F1'' (\a.H1) N1')]
        | [g ⊢ fc_synr FL2 LL2 HL2 FR2 LR2 HR2] ⇒ let [g,a:names ⊢ i_s1r I'] = [_ ⊢ I] in
          let [g ⊢ s_ffoc FR2' F1''] = sp_ffoc [g ⊢ F1'] [g ⊢ FR2] [g ⊢ i_oc \a.I'] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V1)] = valid_in_fstep_op [g ⊢ F1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FR2] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HR2[..]] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HR2[..]] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FL2] [g ⊢ HL2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_ffoc (fc_synr FL2 LL2 HL2 FR2' LR2 HR2) (fo_parr F1'' (\a.H1) N1')])
   | [g ⊢ fo_nu_op \a.F1'] ⇒ let [g ⊢ fc_nu \a.F2'] = [g ⊢ F2] in
@@ -702,14 +702,14 @@ case [g ⊢ B1] of
          let [g ⊢ s_bfcc FL2' B1''] = sp_bfcc [g ⊢ B1'] [g ⊢ FL2] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ B1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FL2] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HL2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HL2] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FR2] [g ⊢ HR2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_bfcc (fc_synl FL2' LL2 HL2 FR2 LR2 HR2) (bc_parl B1'' H1 N1')]
        | [g ⊢ fc_synr FL2 LL2 HL2 FR2 LR2 HR2] ⇒ let [g ⊢ i_s1l I'] = [g ⊢ I] in
          let [g ⊢ s_bfcc FL2' B1''] = sp_bfcc [g ⊢ B1'] [g ⊢ FL2] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ B1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FL2] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HL2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HL2] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FR2] [g ⊢ HR2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_bfcc (fc_synr FL2' LL2 HL2 FR2 LR2 HR2) (bc_parl B1'' H1 N1')])
   | [g ⊢ bc_parr B1' H1 N1] ⇒ (case [g ⊢ F2] of
@@ -726,14 +726,14 @@ case [g ⊢ B1] of
          let [g ⊢ s_bfcc FR2' B1''] = sp_bfcc [g ⊢ B1'] [g ⊢ FR2] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ B1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FR2] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HR2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HR2] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FL2] [g ⊢ HL2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_bfcc (fc_synl FL2 LL2 HL2 FR2' LR2 HR2) (bc_parr B1'' H1 N1')]
        | [g ⊢ fc_synr FL2 LL2 HL2 FR2 LR2 HR2] ⇒ let [g ⊢ i_s1r I'] = [g ⊢ I] in
          let [g ⊢ s_bfcc FR2' B1''] = sp_bfcc [g ⊢ B1'] [g ⊢ FR2] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ B1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FR2] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HR2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ H1] [g ⊢ HR2] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FL2] [g ⊢ HL2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_bfcc (fc_synr FL2 LL2 HL2 FR2' LR2 HR2) (bc_parr B1'' H1 N1')])
   | [g ⊢ bc_synl BL1 LL1 HL1 BR1 LR1 HR1] ⇒ (case [g ⊢ F2] of
@@ -741,14 +741,14 @@ case [g ⊢ B1] of
          let [g ⊢ s_bfcc F2'' BL1'] = sp_bfcc [g ⊢ BL1] [g ⊢ F2'] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BL1] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ F2'] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ HL1] [g ⊢ H2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ HL1] [g ⊢ H2] in
          let [g ⊢ N2'] = notin_propagates_to_source_bc [g ⊢ BR1] [g ⊢ HR1] [g ⊢ N2] [g ⊢ N] in
          [g ⊢ s_bfcc (fc_parl F2'' H2 N2') (bc_synl BL1' LL1 HL1 BR1 LR1 HR1)]
        | [g ⊢ fc_parr F2' H2 N2] ⇒ let [g ⊢ i_s2r I'] = [g ⊢ I] in
          let [g ⊢ s_bfcc F2'' BR1'] = sp_bfcc [g ⊢ BR1] [g ⊢ F2'] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BR1] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ F2'] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ HR1] [g ⊢ H2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ HR1] [g ⊢ H2] in
          let [g ⊢ N2'] = notin_propagates_to_source_bc [g ⊢ BL1] [g ⊢ HL1] [g ⊢ N2] [g ⊢ N] in
          [g ⊢ s_bfcc (fc_parr F2'' H2 N2') (bc_synl BL1 LL1 HL1 BR1' LR1 HR1)]
        | [g ⊢ fc_synl FL2 LL2 HL2 FR2 LR2 HR2] ⇒ let [g ⊢ i_s3 IL IR] = [g ⊢ I] in
@@ -764,14 +764,14 @@ case [g ⊢ B1] of
          let [g ⊢ s_bfcc F2'' BL1'] = sp_bfcc [g ⊢ BL1] [g ⊢ F2'] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BL1] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ F2'] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ HL1] [g ⊢ H2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ HL1] [g ⊢ H2] in
          let [g ⊢ N2'] = notin_propagates_to_source_bc [g ⊢ BR1] [g ⊢ HR1] [g ⊢ N2] [g ⊢ N] in
          [g ⊢ s_bfcc (fc_parl F2'' H2 N2') (bc_synr BL1' LL1 HL1 BR1 LR1 HR1)]
        | [g ⊢ fc_parr F2' H2 N2] ⇒ let [g ⊢ i_s2r I'] = [g ⊢ I] in
          let [g ⊢ s_bfcc F2'' BR1'] = sp_bfcc [g ⊢ BR1] [g ⊢ F2'] [g ⊢ i_cc I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BR1] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ F2'] in
-         let [g ⊢ N] = indep_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ HR1] [g ⊢ H2] in
+         let [g ⊢ N] = indep_cl_impl_diff_keys [g ⊢ V1] [g ⊢ V2] [g ⊢ I'] [g ⊢ HR1] [g ⊢ H2] in
          let [g ⊢ N2'] = notin_propagates_to_source_bc [g ⊢ BL1] [g ⊢ HL1] [g ⊢ N2] [g ⊢ N] in
          [g ⊢ s_bfcc (fc_parr F2'' H2 N2') (bc_synr BL1 LL1 HL1 BR1' LR1 HR1)]
        | [g ⊢ fc_synl FL2 LL2 HL2 FR2 LR2 HR2] ⇒ let [g ⊢ i_s3 IL IR] = [g ⊢ I] in
@@ -832,14 +832,14 @@ case [g ⊢ F2] of
          let [g ⊢ s_bfco F2'' BL1'] = sp_bfco [g ⊢ BL1] [g ⊢ F2'] [g ⊢ i_co \a.I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BL1] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V2)] = valid_in_fstep_op [g ⊢ F2'] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1[..]] [_ ⊢ V2] [_ ⊢ I'] [_ ⊢ HL1[..]] [_ ⊢ H2] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1[..]] [_ ⊢ V2] [_ ⊢ I'] [_ ⊢ HL1[..]] [_ ⊢ H2] in
          let [g ⊢ N2'] = notin_propagates_to_source_bc [g ⊢ BR1] [g ⊢ HR1] [g ⊢ N2] [g ⊢ N] in
          [g ⊢ s_bfco (fo_parl F2'' (\a.H2) N2') (bc_synl BL1' LL1 HL1 BR1 LR1 HR1)]
        | [g ⊢ bc_synr BL1 LL1 HL1 BR1 LR1 HR1] ⇒ let [g,a:names ⊢ i_s2l I'] = [_ ⊢ I] in
          let [g ⊢ s_bfco F2'' BL1'] = sp_bfco [g ⊢ BL1] [g ⊢ F2'] [g ⊢ i_co \a.I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BL1] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V2)] = valid_in_fstep_op [g ⊢ F2'] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1[..]] [_ ⊢ V2] [_ ⊢ I'] [_ ⊢ HL1[..]] [_ ⊢ H2] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1[..]] [_ ⊢ V2] [_ ⊢ I'] [_ ⊢ HL1[..]] [_ ⊢ H2] in
          let [g ⊢ N2'] = notin_propagates_to_source_bc [g ⊢ BR1] [g ⊢ HR1] [g ⊢ N2] [g ⊢ N] in
          [g ⊢ s_bfco (fo_parl F2'' (\a.H2) N2') (bc_synr BL1' LL1 HL1 BR1 LR1 HR1)])
   | [g ⊢ fo_parr F2' (\a.H2) N2] ⇒ (case [g ⊢ B1] of
@@ -856,14 +856,14 @@ case [g ⊢ F2] of
          let [g ⊢ s_bfco F2'' BR1'] = sp_bfco [g ⊢ BR1] [g ⊢ F2'] [g ⊢ i_co \a.I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BR1] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V2)] = valid_in_fstep_op [g ⊢ F2'] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1[..]] [_ ⊢ V2] [_ ⊢ I'] [_ ⊢ HR1[..]] [_ ⊢ H2] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1[..]] [_ ⊢ V2] [_ ⊢ I'] [_ ⊢ HR1[..]] [_ ⊢ H2] in
          let [g ⊢ N2'] = notin_propagates_to_source_bc [g ⊢ BL1] [g ⊢ HL1] [g ⊢ N2] [g ⊢ N] in
          [g ⊢ s_bfco (fo_parr F2'' (\a.H2) N2') (bc_synl BL1 LL1 HL1 BR1' LR1 HR1)]
        | [g ⊢ bc_synr BL1 LL1 HL1 BR1 LR1 HR1] ⇒ let [g,a:names ⊢ i_s2r I'] = [_ ⊢ I] in
          let [g ⊢ s_bfco F2'' BR1'] = sp_bfco [g ⊢ BR1] [g ⊢ F2'] [g ⊢ i_co \a.I'] in
          let [g ⊢ V1] = valid_in_bstep_cl [g ⊢ BR1] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V2)] = valid_in_fstep_op [g ⊢ F2'] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1[..]] [_ ⊢ V2] [_ ⊢ I'] [_ ⊢ HR1[..]] [_ ⊢ H2] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1[..]] [_ ⊢ V2] [_ ⊢ I'] [_ ⊢ HR1[..]] [_ ⊢ H2] in
          let [g ⊢ N2'] = notin_propagates_to_source_bc [g ⊢ BL1] [g ⊢ HL1] [g ⊢ N2] [g ⊢ N] in
          [g ⊢ s_bfco (fo_parr F2'' (\a.H2) N2') (bc_synr BL1 LL1 HL1 BR1' LR1 HR1)])
   | [g ⊢ fo_nu_op \a.F2'] ⇒ let [g ⊢ bc_nu \a.B1'] = [g ⊢ B1] in
@@ -916,14 +916,14 @@ case [g ⊢ B1] of
          let [g ⊢ s_bfoc FL2' B1''] = sp_bfoc [g ⊢ B1'] [g ⊢ FL2] [g ⊢ i_oc \a.I'] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V1)] = valid_in_bstep_op [g ⊢ B1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FL2] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HL2[..]] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HL2[..]] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FR2] [g ⊢ HR2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_bfoc (fc_synl FL2' LL2 HL2 FR2 LR2 HR2) (bo_parl B1'' (\a.H1) N1')]
        | [g ⊢ fc_synr FL2 LL2 HL2 FR2 LR2 HR2] ⇒ let [g,a:names ⊢ i_s1l I'] = [_ ⊢ I] in
          let [g ⊢ s_bfoc FL2' B1''] = sp_bfoc [g ⊢ B1'] [g ⊢ FL2] [g ⊢ i_oc \a.I'] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V1)] = valid_in_bstep_op [g ⊢ B1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FL2] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HL2[..]] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HL2[..]] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FR2] [g ⊢ HR2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_bfoc (fc_synr FL2' LL2 HL2 FR2 LR2 HR2) (bo_parl B1'' (\a.H1) N1')])
   | [g ⊢ bo_parr B1' (\a.H1) N1] ⇒ (case [g ⊢ F2] of
@@ -940,14 +940,14 @@ case [g ⊢ B1] of
          let [g ⊢ s_bfoc FR2' B1''] = sp_bfoc [g ⊢ B1'] [g ⊢ FR2] [g ⊢ i_oc \a.I'] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V1)] = valid_in_bstep_op [g ⊢ B1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FR2] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HR2[..]] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HR2[..]] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FL2] [g ⊢ HL2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_bfoc (fc_synl FL2 LL2 HL2 FR2' LR2 HR2) (bo_parr B1'' (\a.H1) N1')]
        | [g ⊢ fc_synr FL2 LL2 HL2 FR2 LR2 HR2] ⇒ let [g,a:names ⊢ i_s1r I'] = [_ ⊢ I] in
          let [g ⊢ s_bfoc FR2' B1''] = sp_bfoc [g ⊢ B1'] [g ⊢ FR2] [g ⊢ i_oc \a.I'] in
          let [g ⊢ vo_base (\_._) (\_._) (\a.V1)] = valid_in_bstep_op [g ⊢ B1'] in
          let [g ⊢ V2] = valid_in_fstep_cl [g ⊢ FR2] in
-         let [g,a:names ⊢ N[..]] = indep_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HR2[..]] in
+         let [g,a:names ⊢ N[..]] = indep_cl_impl_diff_keys [g,a:names ⊢ V1] [_ ⊢ V2[..]] [_ ⊢ I'[..]] [_ ⊢ H1] [_ ⊢ HR2[..]] in
          let [g ⊢ N1'] = notin_propagates_to_target_fc [g ⊢ FL2] [g ⊢ HL2] [g ⊢ N1] (symmetric_neq [g ⊢ N]) in
          [g ⊢ s_bfoc (fc_synr FL2 LL2 HL2 FR2' LR2 HR2) (bo_parr B1'' (\a.H1) N1')])
   | [g ⊢ bo_nu_op \a.B1'] ⇒ let [g ⊢ fc_nu \a.F2'] = [g ⊢ F2] in

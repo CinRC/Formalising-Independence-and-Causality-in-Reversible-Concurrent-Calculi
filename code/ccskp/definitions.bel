@@ -55,6 +55,12 @@ LF key: pr_lab_cl → keys → type =
   | key_sync: key T1 K → key (pr_sync T1 T2) K
 ;
 
+% For some results, it is useful to extend the notion of key to proof labels
+LF key_pl: pr_lab → keys → type =
+  | key_cl: key T K → key_pl (p_cl T) K
+  | key_op: ({a:names} key (T a) K) → key_pl (p_op (open T)) K
+;
+
 % Occurrence of names in closed proof labels
 LF occurs: names → pr_lab_cl → type =
   | occ_basel: occurs A (pr_base (inp A) K)
