@@ -6,7 +6,7 @@ rec ccsk_ire: (g:ctx) {T:[g ⊢ ccsk.step X1 KL1 Y1]} {T':[g ⊢ ccsk.step X2 KL
 / total e (ccsk_ire _ _ _ _ _ _ _ _ _ _ _ _ e _) /
 mlam T,T',U ⇒ fn e,i ⇒ let [g ⊢ ccsk_ind_tr ENT' ENU I (ctr _ _ S'*)] = i in
 let [g ⊢ ex_en ENT] = total_enrich [g ⊢ T] in
-let [g ⊢ sl_et _] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ T'] e [g ⊢ ENT] [g ⊢ ENT'] in
+let [g ⊢ ct_eq _] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ T'] e [g ⊢ ENT] [g ⊢ ENT'] in
 let [g ⊢ ctr _ _ S*] = ccsk_equiv_tr_are_connected e in
 let [g ⊢ RT'] = ccsk_symmetric_step [g ⊢ T'] in [g ⊢ ccsk_ind_tr ENT ENU I (ctr _ _ (ccsk.tr_s* S* (ccsk.tr_s* (ccsk.st_s* RT') S'*)))]
 ;

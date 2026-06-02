@@ -10,7 +10,7 @@ rec ccsk_cire: (g:ctx) {T:[g ⊢ ccsk.step X1 KL1 Y1]} {T':[g ⊢ ccsk.step X2 K
 mlam T,T',U,U' ⇒ fn et,eu,i ⇒ let [g ⊢ ex_en ENT] = total_enrich [_ ⊢ T] in
 let [g ⊢ ex_en ENU] = total_enrich [g ⊢ U] in
 let [g ⊢ ccsk_ind_tr ENT' ENU' I _] = i in
-let [g ⊢ sl_et _] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ T'] et [g ⊢ ENT] [g ⊢ ENT'] in
-let [g ⊢ sl_et _] = enrich_preserves_equiv_tr [g ⊢ U] [g ⊢ U'] eu [g ⊢ ENU] [g ⊢ ENU'] in
+let [g ⊢ ct_eq _] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ T'] et [g ⊢ ENT] [g ⊢ ENT'] in
+let [g ⊢ ct_eq _] = enrich_preserves_equiv_tr [g ⊢ U] [g ⊢ U'] eu [g ⊢ ENU] [g ⊢ ENU'] in
 [g ⊢ ccsk_ind_tr ENT ENU I (ctr _ _ (ccsk.st_s* U))]
 ;

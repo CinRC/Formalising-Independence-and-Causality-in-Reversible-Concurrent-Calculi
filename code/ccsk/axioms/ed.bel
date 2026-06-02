@@ -5,5 +5,5 @@ rec ccsk_ed: (g:ctx) {T:[g ⊢ ccsk.step X KL Y1]} {U:[g ⊢ ccsk.step X KL Y2]}
 / total e (ccsk_ed _ _ _ _ _ _ _ e) /
 mlam T,U ⇒ fn e ⇒ let {ENT:[g ⊢ enrich T T+]}[g ⊢ ex_en ENT] = total_enrich [_ ⊢ T] in
 let {ENU:[g ⊢ enrich U U+]}[g ⊢ ex_en ENU] = total_enrich [_ ⊢ U] in
-let [g ⊢ sl_et E+] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ U] e [g ⊢ ENT] [g ⊢ ENU] in ed [g ⊢ T+] [g ⊢ U+] [g ⊢ E+]
+let [g ⊢ ct_eq E+] = enrich_preserves_equiv_tr [g ⊢ T] [g ⊢ U] e [g ⊢ ENT] [g ⊢ ENU] in ed [g ⊢ T+] [g ⊢ U+] [g ⊢ E+]
 ;

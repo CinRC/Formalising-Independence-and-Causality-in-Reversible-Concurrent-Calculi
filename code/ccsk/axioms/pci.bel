@@ -26,7 +26,7 @@ let [g ⊢ it T+ RT+] = [g ⊢ HR+] in
 % Since T+ and U+ are independent, U+ and T+ are also independent (symmetry of independence)
 let [g ⊢ I'] = symmetric_indep [g ⊢ I] in
 % Since U and U' are equivalent, U+ and U'+ are also equivalent
-let [g ⊢ sl_et EU+] = enrich_preserves_equiv_tr [g ⊢ U] [g ⊢ U']
+let [g ⊢ ct_eq EU+] = enrich_preserves_equiv_tr [g ⊢ U] [g ⊢ U']
     [g ⊢ ccsk_et_base (ccsk_etb SDU SDT (ccsk_ind_tr ENU ENT I' (ctr _ _ (ccsk.st_s* T))))] [g ⊢ ENU] [g ⊢ ENU'] in
 % We conclude by observing that U' and RT are independent, since the proof labels of their enriched versions are independent
 [g ⊢ ccsk_ind_tr ENU' ENRT I' (ctr _ _ (ccsk.st_s* RT))]
