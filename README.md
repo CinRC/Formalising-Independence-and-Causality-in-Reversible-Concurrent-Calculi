@@ -60,6 +60,8 @@ to perform the type reconstruction of the formalisation. Expected result, after 
 ## Type Reconstruction done:  run/../code/bijection/bijection.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/axioms/transitions-properties.bel ##
 ## Type Reconstruction done:  run/../code/ccskp/axioms/transitions-properties.bel ##
+## Type Reconstruction begin: run/../code/ccskp/axioms/events.bel ##
+## Type Reconstruction done:  run/../code/ccskp/axioms/events.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/axioms/bti.bel ##
 ## Type Reconstruction done:  run/../code/ccskp/axioms/bti.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/axioms/sp.bel ##
@@ -161,6 +163,7 @@ Optionally, for improved beli mode, [rlwrap](https://github.com/hanslub42/rlwrap
     * `lemmas-bijection.bel`: … auxiliary lemmas for the CCSK-CCSKP bijection
     * `axioms\`: … axioms, in particular …
       - `transitions-properties.bel`: … definitions and auxiliary lemmas for the axioms
+      - `events.bel`: … definition and properties of equivalent transitions
       - `bti.bel`: … BTI (backward transitions are independent)
       - `sp.bel`: … SP (square property)
       - `wf.bel`: … WF (well-foundedness)
@@ -222,6 +225,7 @@ can be used to count the lines of code (comments excluded):
 <!--
 Add the --md flag to the commands above to obtain a markdown-formatted table.
 -->
+[TO UPDATE]
 
 File|blank|comment|code
 :-------|-------:|-------:|-------:

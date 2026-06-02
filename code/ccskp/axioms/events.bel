@@ -1,0 +1,137 @@
+%%% Equivalence of transitions ~: two transitions are equivalent if they correspond to the same event
+
+% Base case of the definition of equivalence of transitions:
+% Since CCSKP is pre-reversible, we can use the simplified definition of events as in
+% Def. 4.8 of "An Axiomatic Theory for Reversible Computation" by I. Lanese et al.:
+% Two combined transitions with the same direction t: P --[α]--> Q and t': R --[α]--> S
+% are equivalent if there exist two combined transitions with the same direction
+% u: P --[β]--> R and u': Q --[β]--> S such that t and u are independent.
+
+LF equiv_tr_base: step P A Q → step R A S → type =
+  | etb: same_direction (T:step P A Q) (T':step R A S) → same_direction (U:step P B R) (U':step Q B S) → 
+         indep_tr T U → equiv_tr_base T T'
+;
+
+% We can show that this definition is equivalent to Def. 2.5 in the paper. In particular
+% we have to prove that, given t~t' as above:
+% 1) The pairs of transitions (inv(u), t'), (inv(t'),inv(u')) and (u', inv(t)) are independent
+% 2) The diamond is not degenerate: Q != R if t and u are both forward or backward, P !=S otherwise.
+
+% Given t,u,u',t' as in the definition of equiv_tr_base t t', then inv(u) and t' are independent
+LF ex_indep_tr_one: step P A Q → step P B R → step Q B S → step R A S → type =
+  | exi1: inv_tr U RU → indep_tr RU T' → ex_indep_tr_one T U U' T'
+;
+rec indep_tr_in_diamond_one: (g:ctx) (T:[g ⊢ step P A Q]) (U:[g ⊢ step P B R]) (U':[g ⊢ step Q B S])
+  (T':[g ⊢ step R A S]) [g ⊢ same_direction T T'] → [g ⊢ same_direction U U'] 
+  → [g ⊢ indep_tr T U] → [g ⊢ ex_indep_tr_one T U U' T'] =
+/ total t (indep_tr_in_diamond_one _ _ _ _ _ _ t _ _) /
+fn sd1,sd2,hi ⇒ let [g ⊢ ind_tr I (ct _ U _)] = hi in
+let [g ⊢ _]:[g ⊢ same_direction _ T'] = sd1 in
+let [g ⊢ I'] = symmetric_indep [g ⊢ I] in
+let [g ⊢ ex_iv HRU] = total_inv [g ⊢ U] in
+let [g ⊢ it _ _] = [g ⊢ HRU] in
+[g ⊢ exi1 HRU (ind_tr I' (ct _ _ (st_s* T')))]
+;
+
+% Given t,u,u',t' as in the definition of equiv_tr_base t t', then inv(t') and inv(u') are independent
+LF ex_indep_tr_two: step P A Q → step P B R → step Q B S → step R A S → type =
+  | exi2: inv_tr T' RT' → inv_tr U' RU' → indep_tr RT' RU' → ex_indep_tr_two T U U' T'
+;
+rec indep_tr_in_diamond_two: (g:ctx) (T:[g ⊢ step P A Q]) (U:[g ⊢ step P B R]) (U':[g ⊢ step Q B S])
+  (T':[g ⊢ step R A S]) [g ⊢ same_direction T T'] → [g ⊢ same_direction U U'] 
+  → [g ⊢ indep_tr T U] → [g ⊢ ex_indep_tr_two T U U' T'] =
+/ total t (indep_tr_in_diamond_two _ _ _ _ _ _ t _ _) /
+fn sd1,sd2,hi ⇒ let [g ⊢ ind_tr I (ct _ _ _)] = hi in
+let [g ⊢ _]:[g ⊢ same_direction _ T'] = sd1 in
+let [g ⊢ _]:[g ⊢ same_direction _ U'] = sd2 in
+let [g ⊢ ex_iv HRT'] = total_inv [g ⊢ T'] in
+let [g ⊢ it _ _] = [g ⊢ HRT'] in
+let [g ⊢ ex_iv HRU'] = total_inv [g ⊢ U'] in
+let [g ⊢ it _ RU'] = [g ⊢ HRU'] in
+[g ⊢ exi2 HRT' HRU' (ind_tr I (ct _ _ (st_s* RU')))]
+;
+
+% Given t,u,u',t' as in the definition of equiv_tr_base t t', then u' and inv(t) are independent
+LF ex_indep_tr_three: step P A Q → step P B R → step Q B S → step R A S → type =
+  | exi3: inv_tr T RT → indep_tr U' RT → ex_indep_tr_three T U U' T'
+;
+rec indep_tr_in_diamond_three: (g:ctx) (T:[g ⊢ step P A Q]) (U:[g ⊢ step P B R]) (U':[g ⊢ step Q B S])
+  (T':[g ⊢ step R A S]) [g ⊢ same_direction T T'] → [g ⊢ same_direction U U'] 
+  → [g ⊢ indep_tr T U] → [g ⊢ ex_indep_tr_three T U U' T'] =
+/ total t (indep_tr_in_diamond_three _ _ _ _ _ _ t _ _) /
+fn sd1,sd2,hi ⇒ let [g ⊢ ind_tr I (ct T _ _)] = hi in
+let [g ⊢ I'] = symmetric_indep [g ⊢ I] in
+let [g ⊢ ex_iv HRT] = total_inv [g ⊢ T] in
+let [g ⊢ it _ RT] = [g ⊢ HRT] in
+[g ⊢ exi3 HRT (ind_tr I' (ct _ _ (st_s* RT)))]
+;
+
+% To prove 2), we show that Q != R and P != S regardless of the directions of t and u.
+
+% If equiv_tr_base T T', then target(T) and source(T') are not equal processes.
+rec non_degenerate_diamonds_one: (g:ctx) (T:[g ⊢ step P A Q]) (T':[g ⊢ step R A S])
+  [g ⊢ equiv_tr_base T T'] → [g ⊢ eqp Q R] → [g ⊢ false] =
+/ total t (non_degenerate_diamonds_one _ _ _ _ _ _ t _ _ _) /
+fn he,e ⇒ let [g ⊢ refp] = e in
+let [g ⊢ etb SD1 _ _] = he in
+case [g ⊢ SD1] of
+  | [g ⊢ sdf HF HF'] ⇒ let [g ⊢ _]:[g ⊢ forw_to_comb F _] = [g ⊢ HF] in
+                        let [g ⊢ _]:[g ⊢ forw_to_comb F' _] = [g ⊢ HF'] in
+                        impossible no_composable_fw_tr_with_same_label [g ⊢ F] [g ⊢ F']
+  | [g ⊢ sdb HB HB'] ⇒ let [g ⊢ _]:[g ⊢ back_to_comb B _] = [g ⊢ HB] in
+                        let [g ⊢ _]:[g ⊢ back_to_comb B' _] = [g ⊢ HB'] in
+                        impossible no_composable_bw_tr_with_same_label [g ⊢ B] [g ⊢ B']
+;
+
+% If equiv_tr_base T T', then source(T) and target(T') are not equal processes.
+rec non_degenerate_diamonds_two: (g:ctx) (T:[g ⊢ step P A Q]) (T':[g ⊢ step R A S])
+  [g ⊢ equiv_tr_base T T'] → [g ⊢ eqp P S] → [g ⊢ false] =
+/ total t (non_degenerate_diamonds_two _ _ _ _ _ _ t _ _ _) /
+fn he,e ⇒ let [g ⊢ refp] = e in
+let [g ⊢ etb SD1 _ _] = he in
+case [g ⊢ SD1] of
+  | [g ⊢ sdf HF HF'] ⇒ let [g ⊢ _]:[g ⊢ forw_to_comb F _] = [g ⊢ HF] in
+                        let [g ⊢ _]:[g ⊢ forw_to_comb F' _] = [g ⊢ HF'] in
+                        impossible no_composable_fw_tr_with_same_label [g ⊢ F'] [g ⊢ F]
+  | [g ⊢ sdb HB HB'] ⇒ let [g ⊢ _]:[g ⊢ back_to_comb B _] = [g ⊢ HB] in
+                        let [g ⊢ _]:[g ⊢ back_to_comb B' _] = [g ⊢ HB'] in
+                        impossible no_composable_bw_tr_with_same_label [g ⊢ B'] [g ⊢ B]
+;
+
+
+% Equivalence of transitions ~:
+% Reflexive, symmetric and transitive closure of the equiv_tr_base relation.
+LF equiv_tr: step P A Q → step R A S → type =
+  | et_base: equiv_tr_base T T' → equiv_tr T T'
+  | et_refl: equiv_tr T T
+  | et_sym: equiv_tr T' T → equiv_tr T T'
+  | et_trans: equiv_tr T T' → equiv_tr T' T'' → equiv_tr T T''
+;
+
+% Equivalent transitions are connected
+rec equiv_tr_are_connected: (g:ctx) (T:[g ⊢ step P A Q]) (T':[g ⊢ step R A S])
+  [g ⊢ equiv_tr T T'] → [g ⊢ conn_tr T T'] =
+/ total e (equiv_tr_are_connected _ _ _ _ _ _ _ _ e) /
+fn e ⇒ case e of
+  | [_ ⊢ et_base (etb _ SD2 _)]:[_ ⊢ equiv_tr T T'] ⇒
+    let [_ ⊢ _]:[_ ⊢ same_direction U _] = [_ ⊢ SD2] in
+    [_ ⊢ ct T T' (tr_s* (st_s* U) (st_s* T'))]
+  | [_ ⊢ et_refl] ⇒ let [_ ⊢ _]:[_ ⊢ equiv_tr T T] = e in [_ ⊢ ct _ _ (st_s* T)]
+  | [_ ⊢ et_sym E'] ⇒ let [g ⊢ ct T' T S*] = equiv_tr_are_connected [_ ⊢ E'] in
+                 let [g ⊢ S*'] = symmetric_step* [g ⊢ S*] in [g ⊢ ct _ _ (tr_s* (st_s* T) (tr_s* S*' (st_s* T')))]
+  | [_ ⊢ et_trans E1 E2] ⇒ let [g ⊢ ct _ T S1*] = equiv_tr_are_connected [_ ⊢ E1] in
+                      let [g ⊢ ct _ _ S2*] = equiv_tr_are_connected [_ ⊢ E2] in
+                      let [g ⊢ RT] = symmetric_step [g ⊢ T] in [g ⊢ ct _ _ (tr_s* S1* (tr_s* (st_s* RT) S2*))]
+;
+
+% Equivalent transitions have the same direction
+rec equiv_tr_have_same_direction: (g:ctx) (T:[g ⊢ step P A Q]) (T':[g ⊢ step R A S])
+  [g ⊢ equiv_tr T T'] → [g ⊢ same_direction T T'] =
+/ total e (equiv_tr_have_same_direction _ _ _ _ _ _ _ _ e) /
+fn e ⇒ case e of
+  | [g ⊢ et_base (etb SD1 _ _)]:[g ⊢ equiv_tr T T'] ⇒ [g ⊢ SD1]
+  | [g ⊢ et_refl] ⇒ reflexive_same_direction [g ⊢ _]
+  | [g ⊢ et_sym E'] ⇒ symmetric_same_direction (equiv_tr_have_same_direction [g ⊢ E'])
+  | [g ⊢ et_trans E1 E2] ⇒ transitive_same_direction 
+       (equiv_tr_have_same_direction [g ⊢ E1]) (equiv_tr_have_same_direction [g ⊢ E2])
+;
