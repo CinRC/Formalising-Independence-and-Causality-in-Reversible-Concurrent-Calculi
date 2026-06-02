@@ -4,10 +4,10 @@
 
 This repository contains a formalisation of reversible concurrent calculi in [Beluga](https://complogic.cs.mcgill.ca/beluga/index.html).
 
-It extends and refines the [formalisation of CCSKP in Beluga](https://github.com/CinRC/A-Beluga-formalization-of-CCSKP) presented in [*A formalization of the Reversible Concurrent Calculus CCSKP in Beluga*](https://cgi.cse.unsw.edu.au/~eptcs/paper.cgi?ICE2025.5) with additional results from [*Independence and Causality in the Reversible Concurrent Setting*](https://doi.org/10.1007/978-3-031-97063-4_2).
+It extends and refines the [formalisation of CCSKP in Beluga](https://github.com/CinRC/A-Beluga-Formalization-of-CCSKP) presented in [*A Formalization of the Reversible Concurrent Calculus CCSKP in Beluga*](https://cgi.cse.unsw.edu.au/~eptcs/paper.cgi?ICE2025.5) with additional results from [*Independence and Causality in the Reversible Concurrent Setting*](https://doi.org/10.1007/978-3-031-97063-4_2).
 
-[![Code Type Reconstruction](https://github.com/CinRC/formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml/badge.svg)](https://github.com/CinRC/formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml)
-[![Example Tests](https://github.com/CinRC/formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml/badge.svg)](https://github.com/CinRC/formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml)
+[![Code Type Reconstruction](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml/badge.svg)](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml)
+[![Example Tests](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml/badge.svg)](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml)
 
 ## Usage instructions
 
@@ -36,14 +36,14 @@ to perform the type reconstruction of the formalisation. Expected result, after 
 ## Type Reconstruction done:  run/../code/ccskp/unique.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/basic-properties.bel ##
 ## Type Reconstruction done:  run/../code/ccskp/basic-properties.bel ##
-## Type Reconstruction begin: run/../code/ccskp/lemmas-connectivity-one.bel ##
-## Type Reconstruction done:  run/../code/ccskp/lemmas-connectivity-one.bel ##
-## Type Reconstruction begin: run/../code/ccskp/connectivity-relationship-one.bel ##
-## Type Reconstruction done:  run/../code/ccskp/connectivity-relationship-one.bel ##
-## Type Reconstruction begin: run/../code/ccskp/lemmas-connectivity-two.bel ##
-## Type Reconstruction done:  run/../code/ccskp/lemmas-connectivity-two.bel ##
-## Type Reconstruction begin: run/../code/ccskp/connectivity-relationship-two.bel ##
-## Type Reconstruction done:  run/../code/ccskp/connectivity-relationship-two.bel ##
+## Type Reconstruction begin: run/../code/ccskp/lemmas-connectedness-one.bel ##
+## Type Reconstruction done:  run/../code/ccskp/lemmas-connectedness-one.bel ##
+## Type Reconstruction begin: run/../code/ccskp/connectedness-relationship-one.bel ##
+## Type Reconstruction done:  run/../code/ccskp/connectedness-relationship-one.bel ##
+## Type Reconstruction begin: run/../code/ccskp/lemmas-connectedness-two.bel ##
+## Type Reconstruction done:  run/../code/ccskp/lemmas-connectedness-two.bel ##
+## Type Reconstruction begin: run/../code/ccskp/connectedness-relationship-two.bel ##
+## Type Reconstruction done:  run/../code/ccskp/connectedness-relationship-two.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/complementarity.bel ##
 ## Type Reconstruction done:  run/../code/ccskp/complementarity.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/unique-step.bel ##
@@ -128,7 +128,7 @@ In short, once [opam](https://opam.ocaml.org/doc/Install.html) version 2.1.4 and
 opam install beluga
 ```
 
-Optionally, for improved beli mode [rlwrap](https://github.com/hanslub42/rlwrap) can also be installed.
+Optionally, for improved beli mode, [rlwrap](https://github.com/hanslub42/rlwrap) can also be installed.
 
 ## Repository structure
 
@@ -137,7 +137,7 @@ Optionally, for improved beli mode [rlwrap](https://github.com/hanslub42/rlwrap)
   + `ex-processes.cfg`: … test examples on processes (in `examples/` folder)
   + `ex-proof-labels.cfg`: … test examples on proof labels (in `examples/` folder)
   + `ex-transitions.cfg`: … test examples on transitions (in `examples/` folder)
-  + `ex-causality-relations.cfg`: … test examples on connectivity, dependence and independence (in `examples/` folder)
+  + `ex-causality-relations.cfg`: … test examples on connectedness, dependence and independence (in `examples/` folder)
 - `code\`: Contains the Beluga formalisation of …
   + `shared\`: … shared …
     * `definitions.bel`: … definitions
@@ -152,10 +152,10 @@ Optionally, for improved beli mode [rlwrap](https://github.com/hanslub42/rlwrap)
     * `definitions.bel`: … definitions
     * `unique.bel`: … uniqueness of the derivation of predicates
     * `basic-properties.bel`: … basic properties (e.g. loop lemma, symmetry of transitions and paths)
-    * `lemmas-connectivity-one.bel`: … auxiliary lemmas for Proposition 4.4 (1)
-    * `connectivity-relationship-one.bel`: … Proposition 4.4 (1)
-    * `lemmas-connectivity-two.bel`: … auxiliary lemmas for Proposition 4.4 (2)
-    * `connectivity-relationship-two.bel`: … Proposition 4.4 (2)
+    * `lemmas-connectedness-one.bel`: … auxiliary lemmas for Proposition 4.4 (1)
+    * `connectedness-relationship-one.bel`: … Proposition 4.4 (1)
+    * `lemmas-connectedness-two.bel`: … auxiliary lemmas for Proposition 4.4 (2)
+    * `connectedness-relationship-two.bel`: … Proposition 4.4 (2)
     * `complementarity.bel`: … complementarity of dependence and independence
     * `unique-step.bel`: … uniqueness of the derivation of transitions
     * `lemmas-bijection.bel`: … auxiliary lemmas for the CCSK-CCSKP bijection
@@ -195,7 +195,7 @@ Optionally, for improved beli mode [rlwrap](https://github.com/hanslub42/rlwrap)
     * `stuck-keyed-ccskp.bel`: … proofs that some processes containing keys are stuck in CCSKP
     * `events.bel`: … transitions representing the same event
   + `causality-relations\`: … causality relations on proof labels, in particular …
-    * `connectivity.bel`: … connected proof labels
+    * `connectedness.bel`: … connected proof labels
     * `dependence.bel`: … dependent proof labels
     * `independence.bel`: … independent proof labels
 
@@ -228,18 +228,18 @@ File|blank|comment|code
 code/ccsk/axioms/transitions-properties.bel|86|126|2283
 code/ccskp/axioms/sp.bel|44|73|977
 code/ccskp/axioms/transitions-properties.bel|60|85|793
-code/ccskp/connectivity-relationship-one.bel|3|5|688
-code/ccskp/connectivity-relationship-two.bel|12|20|567
+code/ccskp/connectedness-relationship-one.bel|3|5|688
+code/ccskp/connectedness-relationship-two.bel|12|20|567
 code/ccskp/unique-step.bel|31|27|528
 code/ccskp/lemmas-bijection.bel|33|44|417
 code/ccskp/complementarity.bel|30|30|311
 code/bijection/totality.bel|21|26|298
 code/ccskp/axioms/bti.bel|19|38|296
-code/ccskp/lemmas-connectivity-one.bel|24|27|293
+code/ccskp/lemmas-connectedness-one.bel|24|27|293
 code/ccskp/definitions.bel|52|68|270
 code/ccsk/unique-step.bel|14|11|203
 code/ccskp/axioms/fld.bel|7|17|159
-code/ccskp/lemmas-connectivity-two.bel|12|24|141
+code/ccskp/lemmas-connectedness-two.bel|12|24|141
 code/bijection/bijection.bel|23|19|114
 code/ccskp/basic-properties.bel|15|16|112
 code/ccskp/axioms/ire.bel|15|25|110
@@ -273,7 +273,7 @@ examples/transitions/stuck-std-ccsk.bel|4|4|19
 examples/transitions/events.bel|0|3|17
 examples/processes/standard.bel|8|9|15
 examples/causality-relations/independence.bel|6|5|14
-examples/causality-relations/connectivity.bel|6|5|12
+examples/causality-relations/connectedness.bel|6|5|12
 examples/causality-relations/dependence.bel|6|5|12
 examples/proof-labels/valid.bel|13|12|12
 examples/processes/keyed.bel|6|7|6

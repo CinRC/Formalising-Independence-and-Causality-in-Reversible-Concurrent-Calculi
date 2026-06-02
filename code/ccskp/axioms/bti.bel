@@ -1,16 +1,16 @@
 %%% BTI: backward transitions are independent
 
-% Since, in the encoding, backward transitions are either closed or open,
-% and the statement of BTI involves two backward transitions, we first prove
-% BTI for each of the four cases where the two transitions are respectively
-% closed-closed, closed-open, open-closed and open-open.
-% We will then prove the original version of BTI for generic backward
-% transitions by applying these four subtheorems.
+% We first prove an equivalent formulation of BTI: any two backward transitions
+% are either identical or independent. Then, we prove that this result 
+% implies BTI: any two distinct backward transitions are independent.
 
-% Observe that, since Beluga does not present a negation operator at the LF level,
-% we prove a version of BTI which is different, but equivalent, to its paper version:
-% instead of proving that two different backward transitions are independent,
-% we prove that two backward transitions are either identical or independent.
+% Recall that, in the encoding, a backward transition is either closed or open.
+% Since BTI concerns pairs of backward transitions, we first prove its
+% equivalent formulation separately for the four possible combinations:
+% closed-closed, closed-open, open-closed and open-open. We then obtain the
+% general result by combining these four cases.
+
+
 
 % Given two backward closed transitions B1 and B2, id_or_ind_cc B1 B2 holds iff
 % either B1=B2, or their proof labels are independent. 

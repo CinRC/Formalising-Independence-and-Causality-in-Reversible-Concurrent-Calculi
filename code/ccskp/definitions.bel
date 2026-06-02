@@ -228,12 +228,12 @@ LF conn_tr: step X T1 X' → step Y T2 Y' → type =
   | ct: {S1:step X T1 X'}{S2: step Y T2 Y'} step* X Y' → conn_tr S1 S2
 ;
 
-%%% Connectivity, dependence and independence of proof labels %%%
+%%% Connectedness, dependence and independence of proof labels %%%
 
-% Connectivity, dependence and independence of closed proof labels are defined
+% Connectedness, dependence and independence of closed proof labels are defined
 % according to the rules in Fig. 9 and 10.
 
-% Connectivity of closed proof labels
+% Connectedness of closed proof labels
 LF conn_cl: pr_lab_cl → pr_lab_cl → type =
   | c_a1: conn_cl (pr_base A K) T
   | c_a2: conn_cl T (pr_base A K)
@@ -286,11 +286,11 @@ LF indep_cl: pr_lab_cl → pr_lab_cl → type =
   | i_s3: indep_cl T1 T1' → indep_cl T2 T2' → indep_cl (pr_sync T1 T2) (pr_sync T1' T2')
 ;
 
-% We extend the connectivity, dependence and independence relations to open proof labels 
+% We extend the connectedness, dependence and independence relations to open proof labels 
 % by universally quantifying over names and applying such name to the open proof label.
 % This corresponds to the choice of an arbitrary name for the proof label.
 
-% Connectivity of proof labels
+% Connectedness of proof labels
 LF conn: pr_lab → pr_lab → type =
   | c_cc: conn_cl T1 T2 → conn (p_cl T1) (p_cl T2)
   | c_oc: ({a:names} conn_cl (T1 a) T2) → conn (p_op (open T1)) (p_cl T2)

@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 # "workflow_dispatch" is here to allow the action to be triggered manually.
-# Go to https://github.com/CinRC/Formalizing-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/build.yaml
+# Go to https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/build.yaml
 # and click on "Run workflow" next to "This workflow has a workflow_dispatch event trigger."
 # to run the workflow manually, if needed.
 
