@@ -166,18 +166,3 @@ mlam F1 F2 ⇒ case [_ ⊢ F1] of
   | [g ⊢ fo F1'] ⇒ let [g ⊢ fo F2'] = [g ⊢ F2] in
     let [g ⊢ reffo] = fld_fo [g ⊢ F1'] [g ⊢ F2'] in [g ⊢ reff]
 ;
-
-% Backward label determinism:
-% Two coinitial backward transitions with the same proof label are equal.
-rec bld: (g:ctx) {B1:[g ⊢ bstep X T Y1]} {B2:[g ⊢ bstep X T Y2]} [g ⊢ eqb B1 B2] =
-/ total b1 (bld _ _ _ _ _ b1 _) /
-mlam B1,B2 ⇒ case bti_equiv [_ ⊢ B1] [_ ⊢ B2] of
-  | [g ⊢ bt_id refb] ⇒ [g ⊢ refb]
-  | [g ⊢ bt_ind C1 C2 (ind_tr I CT)] ⇒ let [g ⊢ C1]:[g ⊢ back_to_comb B1 S1] = [g ⊢ C1] in
-    let [g ⊢ C2]:[g ⊢ back_to_comb B2 S2] = [g ⊢ C2] in
-    let [g ⊢ sq S2' S1' SD1 SD2] = sp [g ⊢ S1] [g ⊢ S2] [g ⊢ ind_tr I CT] in
-    (case [g ⊢ SD1] of
-       | [g ⊢ sdf C1' _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ C1'] [g ⊢ C1]
-       | [g ⊢ sdb _ C1'] ⇒ let [g ⊢ C1']:[g ⊢ back_to_comb B1' S1'] = [g ⊢ C1'] in
-         impossible no_composable_bw_tr_with_same_label [g ⊢ B2] [g ⊢ B1'])
-;

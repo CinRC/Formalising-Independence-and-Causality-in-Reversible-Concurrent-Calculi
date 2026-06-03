@@ -206,7 +206,7 @@ Optionally, for improved beli mode, [rlwrap](https://github.com/hanslub42/rlwrap
       - `wf.bel`: … WF (well-foundedness)
       - `pci.bel`: … PCI (propagation of coinitial independence)
       - `id.bel`: … ID (independence of diamonds)
-      - `fld.bel`: … FLD (forward label determinism) and BLD (backward label determinism)
+      - `fld.bel`: … FLD (forward label determinism)
       - `ire.bel`: … IRE (independence respects events)
       - `cire.bel`: … CIRE (coinitial independence respects events)
       - `rpi.bel`: … RPI (reversing preserves independence)
