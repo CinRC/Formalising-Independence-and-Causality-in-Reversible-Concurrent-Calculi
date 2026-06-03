@@ -1,0 +1,67 @@
+%%% ID: independence of diamonds
+
+% Independence of diamonds (ID):
+% Given t:step X KL1 Y, u:step X KL2 Z, u':step Y KL2 W and t':step Z KL1 W,
+% where (t,t') and (u,u') have same direction, with
+% - Y != Z if (t,u) have the same direction,
+% - X != W if (t,u) have opposite directions,
+% then t and u are independent.
+
+% First, we define an additional predicate to encode the disjunction of the following:
+% - Y != Z if (t,u) have the same direction,
+% - X != W if (t,u) have opposite directions.
+LF ccsk_non_deg_diamonds: ccsk.step X KL1 Y → ccsk.step X KL2 Z → ccsk.step Y KL2 W → ccsk.step Z KL1 W → type =
+  | ccsk_sd_diam: ccsk_same_direction (T:ccsk.step X KL1 Y) (U:ccsk.step X KL2 Z) → (eqp Y Z → false)
+                  → ccsk_non_deg_diamonds T U (U':ccsk.step Y KL2 W) (T':ccsk.step Z KL1 W)
+  | ccsk_od_diam: ccsk_opp_direction (T:ccsk.step X KL1 Y) (U:ccsk.step X KL2 Z) → (eqp X W → false)
+                  → ccsk_non_deg_diamonds T U (U':ccsk.step Y KL2 W) (T':ccsk.step Z KL1 W)
+;
+
+% Independence of diamonds
+rec ccsk_id: (g:ctx) (T:[g ⊢ ccsk.step X KL1 Y]) (U:[g ⊢ ccsk.step X KL2 Z]) (U':[g ⊢ ccsk.step Y KL2 W])
+  (T':[g ⊢ ccsk.step Z KL1 W]) [g ⊢ ccsk_same_direction T T'] → [g ⊢ ccsk_same_direction U U'] →
+  [g ⊢ ccsk_non_deg_diamonds T U U' T'] → [g ⊢ ccsk_indep_tr T U] =
+/ total (ccsk_id _ _ _ _ _ _ _ t _ _ _ _ _) /
+fn sd1,sd2,nd ⇒ case nd of
+  | [g ⊢ ccsk_sd_diam (ccsk_sdf) \x.H]:[g ⊢ ccsk_non_deg_diamonds (fw FT) (fw FU) _ _] ⇒
+    let [g ⊢ ccsk_sdf]:[g ⊢ ccsk_same_direction (fw FT) (fw FT')] = sd1 in
+    let [g ⊢ ccsk_sdf]:[g ⊢ ccsk_same_direction (fw FU) (fw FU')] = sd2 in
+    let [g ⊢ BT] = ccsk_loop_lemma_one [g ⊢ FT] in
+    let [g ⊢ BU] = ccsk_loop_lemma_one [g ⊢ FU] in
+    let [g ⊢ BT'] = ccsk_loop_lemma_one [g ⊢ FT'] in
+    let [g ⊢ BU'] = ccsk_loop_lemma_one [g ⊢ FU'] in
+    (case ccsk_bti_equiv [g ⊢ BT'] [g ⊢ BU'] of
+       | [g ⊢ ccsk_bt_id refbs] ⇒ impossible [g, refp:eqp _ _ ⊢ H]
+       | [g ⊢ ccsk_bt_ind I] ⇒
+         let [g ⊢ I'] = ccsk_pci [g ⊢ bw BT'] [g ⊢ bw BU'] [g ⊢ bw BU] [g ⊢ bw BT]
+           [g ⊢ ccsk_sdb] [g ⊢ ccsk_sdb] [g ⊢ I] [g ⊢ ccsk_it (bw BT') (fw FT')] in
+         ccsk_pci [g ⊢ bw BU] [g ⊢ fw FT'] [g ⊢ fw FT] [g ⊢ bw BU'] [g ⊢ ccsk_sdb]
+           [g ⊢ ccsk_sdf] [g ⊢ I'] [g ⊢ ccsk_it (bw BU) (fw FU)])
+  | [g ⊢ ccsk_sd_diam (ccsk_sdb) \x.H]:[g ⊢ ccsk_non_deg_diamonds (bw BT) (bw BU) _ _] ⇒ 
+    (case ccsk_bti_equiv [g ⊢ BT] [g ⊢ BU] of
+       | [g ⊢ ccsk_bt_id refbs] ⇒ impossible [g, refp:eqp _ _ ⊢ H]
+       | [g ⊢ ccsk_bt_ind I] ⇒ [g ⊢ I])
+  | [g ⊢ ccsk_od_diam (ccsk_odfb) \x.H]:[g ⊢ ccsk_non_deg_diamonds (fw FT) (bw BU) _ _] ⇒ 
+    let [g ⊢ ccsk_sdf]:[g ⊢ ccsk_same_direction (fw FT) (fw FT')] = sd1 in
+    let [g ⊢ ccsk_sdb]:[g ⊢ ccsk_same_direction (bw BU) (bw BU')] = sd2 in
+    let [g ⊢ BT] = ccsk_loop_lemma_one [g ⊢ FT] in
+    let [g ⊢ BT'] = ccsk_loop_lemma_one [g ⊢ FT'] in
+    (case ccsk_bti_equiv [g ⊢ BT] [g ⊢ BU'] of
+       | [g ⊢ ccsk_bt_id refbs] ⇒ impossible [g, refp:eqp _ _ ⊢ H]
+       | [g ⊢ ccsk_bt_ind I] ⇒
+         let [g ⊢ ccsk_ind_tr ENU ENT I' _] = ccsk_pci [g ⊢ bw BT] [g ⊢ bw BU'] [g ⊢ bw BU] [g ⊢ bw BT']
+           [g ⊢ ccsk_sdb] [g ⊢ ccsk_sdb] [g ⊢ I] [g ⊢ ccsk_it (bw BT) (fw FT)] in
+         let [g ⊢ I''] = symmetric_indep [g ⊢ I'] in
+           [g ⊢ ccsk_ind_tr ENT ENU I'' (ctr _ _ (ccsk.st_s* (bw BU)))])
+  | [g ⊢ ccsk_od_diam (ccsk_odbf) \x.H]:[g ⊢ ccsk_non_deg_diamonds (bw BT) (fw FU) _ _] ⇒
+    let [g ⊢ ccsk_sdb]:[g ⊢ ccsk_same_direction (bw BT) (bw BT')] = sd1 in
+    let [g ⊢ ccsk_sdf]:[g ⊢ ccsk_same_direction (fw FU) (fw FU')] = sd2 in
+    let [g ⊢ BU] = ccsk_loop_lemma_one [g ⊢ FU] in
+    let [g ⊢ BU'] = ccsk_loop_lemma_one [g ⊢ FU'] in
+    let [g ⊢ FT] = ccsk_loop_lemma_two [g ⊢ BT] in
+    let [g ⊢ FT'] = ccsk_loop_lemma_two [g ⊢ BT'] in
+    (case ccsk_bti_equiv [g ⊢ BU] [g ⊢ BT'] of
+       | [g ⊢ ccsk_bt_id refbs] ⇒ impossible [g, refp:eqp _ _ ⊢ H]
+       | [g ⊢ ccsk_bt_ind I] ⇒ ccsk_pci [g ⊢ bw BU] [g ⊢ bw BT'] [g ⊢ bw BT] [g ⊢ bw BU']
+         [g ⊢ ccsk_sdb] [g ⊢ ccsk_sdb] [g ⊢ I] [g ⊢ ccsk_it (bw BU) (fw FU)])
+;

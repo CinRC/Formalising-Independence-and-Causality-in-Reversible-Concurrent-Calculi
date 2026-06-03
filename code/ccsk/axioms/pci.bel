@@ -2,18 +2,17 @@
 % Given t:step X KL1 Y, u:step X KL2 Z, u':step Y KL2 W and t':step Z KL1 W,
 % where (t,t') and (u,u') have same direction,
 % if t and u are independent, then u' and inv_tr(t) are independent.
-rec ccsk_pci: (g:ctx) (T:[g ⊢ ccsk.step X KL1 Y]) (U:[g ⊢ ccsk.step X KL2 Z])
-  (U':[g ⊢ ccsk.step Y KL2 W]) (T':[g ⊢ ccsk.step Z KL1 W]) (RT:[g ⊢ ccsk.step Y KL1 X])
+rec ccsk_pci: (g:ctx) {T:[g ⊢ ccsk.step X KL1 Y]} {U:[g ⊢ ccsk.step X KL2 Z]}
+  {U':[g ⊢ ccsk.step Y KL2 W]} {T':[g ⊢ ccsk.step Z KL1 W]} (RT:[g ⊢ ccsk.step Y KL1 X])
   [g ⊢ ccsk_same_direction T T'] → [g ⊢ ccsk_same_direction U U'] → [g ⊢ ccsk_indep_tr T U] → 
   [g ⊢ ccsk_inv_tr T RT] → [g ⊢ ccsk_indep_tr U' RT] =
 / total (ccsk_pci _ _ _ _ _ _ _ t _ _ _ _ _ _) /
-fn sdt,sdu,i,hr ⇒
+mlam T,U,U',T' ⇒ fn sdt,sdu,i,hr ⇒
 % Inversion on i: ENT and ENU map t and u to their enriched versions t+ and u+; I denotes independence of t+ and u+
 let [g ⊢ ccsk_ind_tr ENT ENU I _] = i in
-% t,u,u' and t' are not explicit parameters of the function ccsk_pci.
-% We give an explicit annotation of the types of sdt and sdu, to obtain explicit names T,U,U' and T'
-let [g ⊢ SDT]:[g ⊢ ccsk_same_direction T T'] = sdt in
-let [g ⊢ SDU]:[g ⊢ ccsk_same_direction U U'] = sdu in
+% We create contextual metavariables SDT and SDU to use sdt and sdu inside boxes
+let [g ⊢ SDT] = sdt in
+let [g ⊢ SDU] = sdu in
 % We apply the enrich map from ccsk to ccskp to obtain U'+, enriched transitions of U'
 let {ENU':[g ⊢ enrich U' U'+]}[g ⊢ ex_en ENU'] = total_enrich [g ⊢ U'] in
 % Inversion on hr to obtain RT, the reverse transition of T

@@ -100,6 +100,8 @@ to perform the type reconstruction of the formalisation. Expected result, after 
 ## Type Reconstruction done:  run/../code/ccsk/axioms/wf.bel ##
 ## Type Reconstruction begin: run/../code/ccsk/axioms/pci.bel ##
 ## Type Reconstruction done:  run/../code/ccsk/axioms/pci.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/id.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/id.bel ##
 ## Type Reconstruction begin: run/../code/ccsk/axioms/ire.bel ##
 ## Type Reconstruction done:  run/../code/ccsk/axioms/ire.bel ##
 ## Type Reconstruction begin: run/../code/ccsk/axioms/cire.bel ##
@@ -183,6 +185,7 @@ Optionally, for improved beli mode, [rlwrap](https://github.com/hanslub42/rlwrap
       - `sp.bel`: … SP (square property)
       - `wf.bel`: … WF (well-foundedness)
       - `pci.bel`: … PCI (propagation of coinitial independence)
+      - `id.bel`: … ID (independence of diamonds)
       - `ire.bel`: … IRE (independence respects events)
       - `cire.bel`: … CIRE (coinitial independence respects events)
       - `rpi.bel`: … RPI (reversing preserves independence)
