@@ -12,8 +12,18 @@ LF equiv_tr_base: step P A Q → step R A S → type =
          indep_tr T U → equiv_tr_base T T'
 ;
 
+% Equivalence of transitions ~:
+% Reflexive, symmetric and transitive closure of the equiv_tr_base relation.
+LF equiv_tr: step P A Q → step R A S → type =
+  | et_base: equiv_tr_base T T' → equiv_tr T T'
+  | et_refl: equiv_tr T T
+  | et_sym: equiv_tr T' T → equiv_tr T T'
+  | et_trans: equiv_tr T T' → equiv_tr T' T'' → equiv_tr T T''
+;
+
+
 % We can show that this definition is equivalent to Def. 2.5 in the paper. In particular
-% we have to prove that, given t~t' as above:
+% we have to prove that, given equiv_tr_base t t' as above:
 % 1) The pairs of transitions (inv(u), t'), (inv(t'),inv(u')) and (u', inv(t)) are independent
 % 2) The diamond is not degenerate: Q != R if t and u are both forward or backward, P !=S otherwise.
 
@@ -99,14 +109,6 @@ case [g ⊢ SD1] of
 ;
 
 
-% Equivalence of transitions ~:
-% Reflexive, symmetric and transitive closure of the equiv_tr_base relation.
-LF equiv_tr: step P A Q → step R A S → type =
-  | et_base: equiv_tr_base T T' → equiv_tr T T'
-  | et_refl: equiv_tr T T
-  | et_sym: equiv_tr T' T → equiv_tr T T'
-  | et_trans: equiv_tr T T' → equiv_tr T' T'' → equiv_tr T T''
-;
 
 % Equivalent transitions are connected
 rec equiv_tr_are_connected: (g:ctx) (T:[g ⊢ step P A Q]) (T':[g ⊢ step R A S])
