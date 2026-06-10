@@ -126,6 +126,9 @@ fn e ⇒ case e of
                       let [g ⊢ RT] = symmetric_step [g ⊢ T] in [g ⊢ ct _ _ (tr_s* S1* (tr_s* (st_s* RT) S2*))]
 ;
 
+%{
+% This result is not needed anymore
+
 % Equivalent transitions have the same direction
 rec equiv_tr_have_same_direction: (g:ctx) (T:[g ⊢ step P A Q]) (T':[g ⊢ step R A S])
   [g ⊢ equiv_tr T T'] → [g ⊢ same_direction T T'] =
@@ -136,4 +139,4 @@ fn e ⇒ case e of
   | [g ⊢ et_sym E'] ⇒ symmetric_same_direction (equiv_tr_have_same_direction [g ⊢ E'])
   | [g ⊢ et_trans E1 E2] ⇒ transitive_same_direction 
        (equiv_tr_have_same_direction [g ⊢ E1]) (equiv_tr_have_same_direction [g ⊢ E2])
-;
+;}%
