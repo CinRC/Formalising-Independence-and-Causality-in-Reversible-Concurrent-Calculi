@@ -60,8 +60,8 @@ to perform the type reconstruction of the formalisation. Expected result, after 
 ## Type Reconstruction done:  run/../code/bijection/totality.bel ##
 ## Type Reconstruction begin: run/../code/bijection/bijection.bel ##
 ## Type Reconstruction done:  run/../code/bijection/bijection.bel ##
-## Type Reconstruction begin: run/../code/ccskp/axioms/transitions-properties.bel ##
-## Type Reconstruction done:  run/../code/ccskp/axioms/transitions-properties.bel ##
+## Type Reconstruction begin: run/../code/ccskp/axioms/defs-and-properties.bel ##
+## Type Reconstruction done:  run/../code/ccskp/axioms/defs-and-properties.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/axioms/events.bel ##
 ## Type Reconstruction done:  run/../code/ccskp/axioms/events.bel ##
 ## Type Reconstruction begin: run/../code/ccskp/axioms/bti.bel ##
@@ -86,8 +86,8 @@ to perform the type reconstruction of the formalisation. Expected result, after 
 ## Type Reconstruction done:  run/../code/ccskp/axioms/ed.bel ##
 ## Type Reconstruction begin: run/../code/ccsk/complementarity.bel ##
 ## Type Reconstruction done:  run/../code/ccsk/complementarity.bel ##
-## Type Reconstruction begin: run/../code/ccsk/axioms/transitions-properties.bel ##
-## Type Reconstruction done:  run/../code/ccsk/axioms/transitions-properties.bel ##
+## Type Reconstruction begin: run/../code/ccsk/axioms/defs-and-properties.bel ##
+## Type Reconstruction done:  run/../code/ccsk/axioms/defs-and-properties.bel ##
 ## Type Reconstruction begin: run/../code/ccsk/axioms/events.bel ##
 ## Type Reconstruction done:  run/../code/ccsk/axioms/events.bel ##
 ## Type Reconstruction begin: run/../code/bijection/lemmas-lifting.bel ##
@@ -179,7 +179,7 @@ Optionally, for improved beli mode, [rlwrap](https://github.com/hanslub42/rlwrap
     * `unique-step.bel`: … uniqueness of the derivation of transitions
     * `complementarity.bel`: … complementarity of dependence and independence
     * `axioms\`: … axioms, in particular …
-      - `transitions-properties.bel`: … definitions and auxiliary lemmas for the axioms
+      - `defs-and-properties.bel`: … definitions and auxiliary lemmas for the axioms
       - `events.bel`: … definition and properties of equivalent transitions
       - `bti.bel`: … BTI (backward transitions are independent)
       - `sp.bel`: … SP (square property)
@@ -202,7 +202,7 @@ Optionally, for improved beli mode, [rlwrap](https://github.com/hanslub42/rlwrap
     * `unique-step.bel`: … uniqueness of the derivation of transitions
     * `lemmas-bijection.bel`: … auxiliary lemmas for the CCSK-CCSKP bijection
     * `axioms\`: … axioms, in particular …
-      - `transitions-properties.bel`: … definitions and auxiliary lemmas for the axioms
+      - `defs-and-properties.bel`: … definitions and auxiliary lemmas for the axioms
       - `events.bel`: … definition and properties of equivalent transitions
       - `bti.bel`: … BTI (backward transitions are independent)
       - `sp.bel`: … SP (square property)
@@ -271,9 +271,9 @@ Add the --md flag to the commands above to obtain a markdown-formatted table.
 
 File|blank|comment|code
 :-------|-------:|-------:|-------:
-code/ccsk/axioms/transitions-properties.bel|86|126|2283
+code/ccsk/axioms/defs-and-properties.bel|86|126|2283
 code/ccskp/axioms/sp.bel|44|73|977
-code/ccskp/axioms/transitions-properties.bel|60|85|793
+code/ccskp/axioms/defs-and-properties.bel|60|85|793
 code/ccskp/connectedness-relationship-one.bel|3|5|688
 code/ccskp/connectedness-relationship-two.bel|12|20|567
 code/ccskp/unique-step.bel|31|27|528

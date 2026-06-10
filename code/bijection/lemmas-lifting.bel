@@ -143,7 +143,7 @@ LF ccskp_tr_are_equiv: ccskp.step X T Y → ccskp.step Z T' W → type =
 ;
 
 % If two CCSK transitions t and t' are equivalent, then enrich(t) and enrich(t') are equivalent.
-% This proposition makes use of the auxiliary lemma unique_diamonds in ccsk/transitions-properties.bel.
+% This proposition makes use of the auxiliary lemma unique_diamonds in ccsk/defs-and-properties.bel.
 rec enrich_preserves_equiv_tr: (g:ctx) {T:[g ⊢ ccsk.step X KL Y]} {T':[g ⊢ ccsk.step Z KL W]}
   (T+:[g ⊢ ccskp.step X T1 Y]) (T'+:[g ⊢ ccskp.step Z T2 W]) [g ⊢ ccsk_equiv_tr T T']
   → [g ⊢ enrich T T+] → [g ⊢ enrich T' T'+] → [g ⊢ ccskp_tr_are_equiv T+ T'+] =
