@@ -3,15 +3,15 @@
 
 % Existence of transitions closing a square diagram for the 
 % forward-forward, closed-closed case
-LF square_ffcc: fstep_cl X T1 X1 → fstep_cl X1 T2 Y → type =
-  | s_ffcc: fstep_cl X T2 X2 → fstep_cl X2 T1 Y → square_ffcc (F1:fstep_cl X T1 X1) (F2:fstep_cl X1 T2 Y)
+LF square_ffcc: fstep_cl X θ1 X1 → fstep_cl X1 θ2 Y → type =
+  | s_ffcc: fstep_cl X θ2 X2 → fstep_cl X2 θ1 Y → square_ffcc (F1:fstep_cl X θ1 X1) (F2:fstep_cl X1 θ2 Y)
 ;
 
 % First auxiliary lemma for SP, closed-closed case:
 % Given two composable forward closed transitions with independent proof labels,
 % there exist two forward closed transitions closing the square diagram.
-rec sp_ffcc: (g:ctx) {F1:[g ⊢ fstep_cl X T1 X1]} {F2:[g ⊢ fstep_cl X1 T2 Y]}
-  [g ⊢ indep (p_cl T1) (p_cl T2)] → [g ⊢ square_ffcc F1 F2] =
+rec sp_ffcc: (g:ctx) {F1:[g ⊢ fstep_cl X θ1 X1]} {F2:[g ⊢ fstep_cl X1 θ2 Y]}
+  [g ⊢ indep (p_cl θ1) (p_cl θ2)] → [g ⊢ square_ffcc F1 F2] =
 / total f1 (sp_ffcc _ _ _ _ _ _ f1 _ _) /
 mlam F1,F2 ⇒ fn i ⇒ let [g ⊢ i_cc I] = i in
 case [g ⊢ F1] of
@@ -119,15 +119,15 @@ case [g ⊢ F1] of
 
 % Existence of transitions closing a square diagram for the 
 % forward-forward, closed-open case
-LF square_ffco: fstep_cl X T1 X1 → fstep_op X1 T2 Y → type =
-  | s_ffco: fstep_op X T2 X2 → fstep_cl X2 T1 Y → square_ffco (F1:fstep_cl X T1 X1) (F2:fstep_op X1 T2 Y)
+LF square_ffco: fstep_cl X θ1 X1 → fstep_op X1 θ2 Y → type =
+  | s_ffco: fstep_op X θ2 X2 → fstep_cl X2 θ1 Y → square_ffco (F1:fstep_cl X θ1 X1) (F2:fstep_op X1 θ2 Y)
 ;
 
 % First auxiliary lemma for SP, closed-open case:
 % Given two composable forward transitions, respectively closed and open, with independent
 % proof labels, there exist two forward transitions closing the square diagram.
-rec sp_ffco: (g:ctx) {F1:[g ⊢ fstep_cl X T1 X1]} {F2:[g ⊢ fstep_op X1 T2 Y]}
-  [g ⊢ indep (p_cl T1) (p_op T2)] → [g ⊢ square_ffco F1 F2] =
+rec sp_ffco: (g:ctx) {F1:[g ⊢ fstep_cl X θ1 X1]} {F2:[g ⊢ fstep_op X1 θ2 Y]}
+  [g ⊢ indep (p_cl θ1) (p_op θ2)] → [g ⊢ square_ffco F1 F2] =
 / total f2 (sp_ffco _ _ _ _ _ _ _ f2 _) /
 mlam F1,F2 ⇒ fn i ⇒ let [g ⊢ i_co \a.I] = i in
 case [g ⊢ F2] of
@@ -191,15 +191,15 @@ case [g ⊢ F2] of
 
 % Existence of transitions closing a square diagram for the 
 % forward-forward, open-closed case
-LF square_ffoc: fstep_op X T1 X1 → fstep_cl X1 T2 Y → type =
-  | s_ffoc: fstep_cl X T2 X2 → fstep_op X2 T1 Y → square_ffoc (F1:fstep_op X T1 X1) (F2:fstep_cl X1 T2 Y)
+LF square_ffoc: fstep_op X θ1 X1 → fstep_cl X1 θ2 Y → type =
+  | s_ffoc: fstep_cl X θ2 X2 → fstep_op X2 θ1 Y → square_ffoc (F1:fstep_op X θ1 X1) (F2:fstep_cl X1 θ2 Y)
 ;
 
 % First auxiliary lemma for SP, open-closed case:
 % Given two composable forward transitions, respectively open and closed, with independent
 % proof labels, there exist two forward transitions closing the square diagram.
-rec sp_ffoc: (g:ctx) {F1:[g ⊢ fstep_op X T1 X1]} {F2:[g ⊢ fstep_cl X1 T2 Y]}
-  [g ⊢ indep (p_op T1) (p_cl T2)] → [g ⊢ square_ffoc F1 F2] =
+rec sp_ffoc: (g:ctx) {F1:[g ⊢ fstep_op X θ1 X1]} {F2:[g ⊢ fstep_cl X1 θ2 Y]}
+  [g ⊢ indep (p_op θ1) (p_cl θ2)] → [g ⊢ square_ffoc F1 F2] =
 / total f1 (sp_ffoc _ _ _ _ _ _ f1 _ _) /
 mlam F1,F2 ⇒ fn i ⇒ let [g ⊢ i_oc \a.I] = i in
 case [g ⊢ F1] of
@@ -275,16 +275,16 @@ case [g ⊢ F1] of
 
 % Existence of transitions closing a square diagram for the 
 % forward-forward, open-open case
-LF square_ffoo: fstep_op X T1 X1 → fstep_op X1 T2 Y → type =
-  | s_ffoo: fstep_op X T2 X2 → fstep_op X2 T1 Y → square_ffoo (F1:fstep_op X T1 X1) (F2:fstep_op X1 T2 Y)
+LF square_ffoo: fstep_op X θ1 X1 → fstep_op X1 θ2 Y → type =
+  | s_ffoo: fstep_op X θ2 X2 → fstep_op X2 θ1 Y → square_ffoo (F1:fstep_op X θ1 X1) (F2:fstep_op X1 θ2 Y)
 ;
 
 
 % First auxiliary lemma for SP, open-open case:
 % Given two composable open forward transitions with independent proof labels,
 % there exist two forward open transitions closing the square diagram.
-rec sp_ffoo: (g:ctx) {F1:[g ⊢ fstep_op X T1 X1]} {F2:[g ⊢ fstep_op X1 T2 Y]}
-  [g ⊢ indep (p_op T1) (p_op T2)] → [g ⊢ square_ffoo F1 F2] =
+rec sp_ffoo: (g:ctx) {F1:[g ⊢ fstep_op X θ1 X1]} {F2:[g ⊢ fstep_op X1 θ2 Y]}
+  [g ⊢ indep (p_op θ1) (p_op θ2)] → [g ⊢ square_ffoo F1 F2] =
 / total f1 (sp_ffoo _ _ _ _ _ _ f1 _ _) /
 mlam F1,F2 ⇒ fn i ⇒ let [g ⊢ i_oo \a.I[..,a]] = i in
 case [g ⊢ F1] of
@@ -342,16 +342,16 @@ case [g ⊢ F1] of
 
 % Existence of transitions closing a square diagram for the 
 % forward-backward, closed-closed case
-LF square_fbcc: fstep_cl X T1 X1 → bstep_cl X1 T2 Y → type =
-  | s_fbcc: bstep_cl X T2 X2 → fstep_cl X2 T1 Y → square_fbcc (F1:fstep_cl X T1 X1) (B2:bstep_cl X1 T2 Y)
+LF square_fbcc: fstep_cl X θ1 X1 → bstep_cl X1 θ2 Y → type =
+  | s_fbcc: bstep_cl X θ2 X2 → fstep_cl X2 θ1 Y → square_fbcc (F1:fstep_cl X θ1 X1) (B2:bstep_cl X1 θ2 Y)
 ;
 
 % Second auxiliary lemma for SP, closed-closed case:
 % Given two composable transitions, where the former is forward closed and the latter is
 % backward closed, and with independent proof labels, there exist a forward and
 % a backward transition closing the square diagram.
-rec sp_fbcc: (g:ctx) {F1:[g ⊢ fstep_cl X T1 X1]} {B2:[g ⊢ bstep_cl X1 T2 Y]}
-  [g ⊢ indep (p_cl T1) (p_cl T2)] → [g ⊢ square_fbcc F1 B2] =
+rec sp_fbcc: (g:ctx) {F1:[g ⊢ fstep_cl X θ1 X1]} {B2:[g ⊢ bstep_cl X1 θ2 Y]}
+  [g ⊢ indep (p_cl θ1) (p_cl θ2)] → [g ⊢ square_fbcc F1 B2] =
 / total f1 (sp_fbcc _ _ _ _ _ _ f1 _ _) /
 mlam F1,B2 ⇒ fn i ⇒ let [g ⊢ i_cc I] = i in
 case [g ⊢ F1] of
@@ -448,16 +448,16 @@ case [g ⊢ F1] of
 
 % Existence of transitions closing a square diagram for the 
 % forward-backward, closed-open case
-LF square_fbco: fstep_cl X T1 X1 → bstep_op X1 T2 Y → type =
-  | s_fbco: bstep_op X T2 X2 → fstep_cl X2 T1 Y → square_fbco (F1:fstep_cl X T1 X1) (B2:bstep_op X1 T2 Y)
+LF square_fbco: fstep_cl X θ1 X1 → bstep_op X1 θ2 Y → type =
+  | s_fbco: bstep_op X θ2 X2 → fstep_cl X2 θ1 Y → square_fbco (F1:fstep_cl X θ1 X1) (B2:bstep_op X1 θ2 Y)
 ;
 
 % Second auxiliary lemma for SP, closed-open case:
 % Given two composable transitions, where the former is forward closed and the latter is
 % backward open, and with independent proof labels, there exist a forward and
 % a backward transition closing the square diagram.
-rec sp_fbco: (g:ctx) {F1:[g ⊢ fstep_cl X T1 X1]} {B2:[g ⊢ bstep_op X1 T2 Y]}
-  [g ⊢ indep (p_cl T1) (p_op T2)] → [g ⊢ square_fbco F1 B2] =
+rec sp_fbco: (g:ctx) {F1:[g ⊢ fstep_cl X θ1 X1]} {B2:[g ⊢ bstep_op X1 θ2 Y]}
+  [g ⊢ indep (p_cl θ1) (p_op θ2)] → [g ⊢ square_fbco F1 B2] =
 / total b2 (sp_fbco _ _ _ _ _ _ _ b2 _) /
 mlam F1,B2 ⇒ fn i ⇒ let [g ⊢ i_co \a.I] = i in
 case [g ⊢ B2] of
@@ -521,16 +521,16 @@ case [g ⊢ B2] of
 
 % Existence of transitions closing a square diagram for the 
 % forward-backward, open-closed case
-LF square_fboc: fstep_op X T1 X1 → bstep_cl X1 T2 Y → type =
-  | s_fboc: bstep_cl X T2 X2 → fstep_op X2 T1 Y → square_fboc (F1:fstep_op X T1 X1) (B2:bstep_cl X1 T2 Y)
+LF square_fboc: fstep_op X θ1 X1 → bstep_cl X1 θ2 Y → type =
+  | s_fboc: bstep_cl X θ2 X2 → fstep_op X2 θ1 Y → square_fboc (F1:fstep_op X θ1 X1) (B2:bstep_cl X1 θ2 Y)
 ;
 
 % Second auxiliary lemma for SP, open-closed case:
 % Given two composable transitions, where the former is forward open and the latter is
 % backward closed, and with independent proof labels, there exist a forward and
 % a backward transition closing the square diagram.
-rec sp_fboc: (g:ctx) {F1:[g ⊢ fstep_op X T1 X1]} {B2:[g ⊢ bstep_cl X1 T2 Y]}
-  [g ⊢ indep (p_op T1) (p_cl T2)] → [g ⊢ square_fboc F1 B2] =
+rec sp_fboc: (g:ctx) {F1:[g ⊢ fstep_op X θ1 X1]} {B2:[g ⊢ bstep_cl X1 θ2 Y]}
+  [g ⊢ indep (p_op θ1) (p_cl θ2)] → [g ⊢ square_fboc F1 B2] =
 / total f1 (sp_fboc _ _ _ _ _ _ f1 _ _) /
 mlam F1,B2 ⇒ fn i ⇒ let [g ⊢ i_oc \a.I] = i in
 case [g ⊢ F1] of
@@ -594,8 +594,8 @@ case [g ⊢ F1] of
 
 % Existence of transitions closing a square diagram for the 
 % forward-backward, open-open case
-LF square_fboo: fstep_op X T1 X1 → bstep_op X1 T2 Y → type =
-  | s_fboo: bstep_op X T2 X2 → fstep_op X2 T1 Y → square_fboo (F1:fstep_op X T1 X1) (B2:bstep_op X1 T2 Y)
+LF square_fboo: fstep_op X θ1 X1 → bstep_op X1 θ2 Y → type =
+  | s_fboo: bstep_op X θ2 X2 → fstep_op X2 θ1 Y → square_fboo (F1:fstep_op X θ1 X1) (B2:bstep_op X1 θ2 Y)
 ;
 
 
@@ -603,8 +603,8 @@ LF square_fboo: fstep_op X T1 X1 → bstep_op X1 T2 Y → type =
 % Given two composable transitions, where the former is forward open and the latter is
 % backward open, and with independent proof labels, there exist a forward and
 % a backward transition closing the square diagram.
-rec sp_fboo: (g:ctx) {F1:[g ⊢ fstep_op X T1 X1]} {B2:[g ⊢ bstep_op X1 T2 Y]}
-  [g ⊢ indep (p_op T1) (p_op T2)] → [g ⊢ square_fboo F1 B2] =
+rec sp_fboo: (g:ctx) {F1:[g ⊢ fstep_op X θ1 X1]} {B2:[g ⊢ bstep_op X1 θ2 Y]}
+  [g ⊢ indep (p_op θ1) (p_op θ2)] → [g ⊢ square_fboo F1 B2] =
 / total f1 (sp_fboo _ _ _ _ _ _ f1 _ _) /
 mlam F1,B2 ⇒ fn i ⇒ let [g ⊢ i_oo \a.I[..,a]] = i in
 case [g ⊢ F1] of
@@ -661,16 +661,16 @@ case [g ⊢ F1] of
 
 % Existence of transitions closing a square diagram for the 
 % backward-forward, closed-closed case
-LF square_bfcc: bstep_cl X T1 X1 → fstep_cl X1 T2 Y → type =
-  | s_bfcc: fstep_cl X T2 X2 → bstep_cl X2 T1 Y → square_bfcc (B1:bstep_cl X T1 X1) (F2:fstep_cl X1 T2 Y)
+LF square_bfcc: bstep_cl X θ1 X1 → fstep_cl X1 θ2 Y → type =
+  | s_bfcc: fstep_cl X θ2 X2 → bstep_cl X2 θ1 Y → square_bfcc (B1:bstep_cl X θ1 X1) (F2:fstep_cl X1 θ2 Y)
 ;
 
 % Third auxiliary lemma for SP, closed-closed case:
 % Given two composable transitions, where the former is backward closed and the latter is
 % forward closed, and with independent proof labels, there exist a forward
 % and a backward transition closing the square diagram.
-rec sp_bfcc: (g:ctx) {B1:[g ⊢ bstep_cl X T1 X1]} {F2:[g ⊢ fstep_cl X1 T2 Y]}
-  [g ⊢ indep (p_cl T1) (p_cl T2)] → [g ⊢ square_bfcc B1 F2] =
+rec sp_bfcc: (g:ctx) {B1:[g ⊢ bstep_cl X θ1 X1]} {F2:[g ⊢ fstep_cl X1 θ2 Y]}
+  [g ⊢ indep (p_cl θ1) (p_cl θ2)] → [g ⊢ square_bfcc B1 F2] =
 / total b1 (sp_bfcc _ _ _ _ _ _ b1 _ _) /
 mlam B1,F2 ⇒ fn i ⇒ let [g ⊢ i_cc I] = i in
 case [g ⊢ B1] of
@@ -789,16 +789,16 @@ case [g ⊢ B1] of
 
 % Existence of transitions closing a square diagram for the 
 % backward-forward, closed-open case
-LF square_bfco: bstep_cl X T1 X1 → fstep_op X1 T2 Y → type =
-  | s_bfco: fstep_op X T2 X2 → bstep_cl X2 T1 Y → square_bfco (B1:bstep_cl X T1 X1) (F2:fstep_op X1 T2 Y)
+LF square_bfco: bstep_cl X θ1 X1 → fstep_op X1 θ2 Y → type =
+  | s_bfco: fstep_op X θ2 X2 → bstep_cl X2 θ1 Y → square_bfco (B1:bstep_cl X θ1 X1) (F2:fstep_op X1 θ2 Y)
 ;
 
 % Third auxiliary lemma for SP, closed-open case:
 % Given two composable transitions, where the former is backward closed and the latter is
 % forward open, and with independent proof labels, there exist a forward
 % and a backward transition closing the square diagram.
-rec sp_bfco: (g:ctx) {B1:[g ⊢ bstep_cl X T1 X1]} {F2:[g ⊢ fstep_op X1 T2 Y]}
-  [g ⊢ indep (p_cl T1) (p_op T2)] → [g ⊢ square_bfco B1 F2] =
+rec sp_bfco: (g:ctx) {B1:[g ⊢ bstep_cl X θ1 X1]} {F2:[g ⊢ fstep_op X1 θ2 Y]}
+  [g ⊢ indep (p_cl θ1) (p_op θ2)] → [g ⊢ square_bfco B1 F2] =
 / total f2 (sp_bfco _ _ _ _ _ _ _ f2 _) /
 mlam B1,F2 ⇒ fn i ⇒ let [g ⊢ i_co \a.I] = i in
 case [g ⊢ F2] of
@@ -873,16 +873,16 @@ case [g ⊢ F2] of
 
 % Existence of transitions closing a square diagram for the 
 % backward-forward, open-closed case
-LF square_bfoc: bstep_op X T1 X1 → fstep_cl X1 T2 Y → type =
-  | s_bfoc: fstep_cl X T2 X2 → bstep_op X2 T1 Y → square_bfoc (B1:bstep_op X T1 X1) (F2:fstep_cl X1 T2 Y)
+LF square_bfoc: bstep_op X θ1 X1 → fstep_cl X1 θ2 Y → type =
+  | s_bfoc: fstep_cl X θ2 X2 → bstep_op X2 θ1 Y → square_bfoc (B1:bstep_op X θ1 X1) (F2:fstep_cl X1 θ2 Y)
 ;
 
 % Third auxiliary lemma for SP, open-closed case:
 % Given two composable transitions, where the former is backward open and the latter is
 % forward closed, and with independent proof labels, there exist a forward
 % and a backward transition closing the square diagram.
-rec sp_bfoc: (g:ctx) {B1:[g ⊢ bstep_op X T1 X1]} {F2:[g ⊢ fstep_cl X1 T2 Y]}
-  [g ⊢ indep (p_op T1) (p_cl T2)] → [g ⊢ square_bfoc B1 F2] =
+rec sp_bfoc: (g:ctx) {B1:[g ⊢ bstep_op X θ1 X1]} {F2:[g ⊢ fstep_cl X1 θ2 Y]}
+  [g ⊢ indep (p_op θ1) (p_cl θ2)] → [g ⊢ square_bfoc B1 F2] =
 / total b1 (sp_bfoc _ _ _ _ _ _ b1 _ _) /
 mlam B1,F2 ⇒ fn i ⇒ let [g ⊢ i_oc \a.I] = i in
 case [g ⊢ B1] of
@@ -957,8 +957,8 @@ case [g ⊢ B1] of
 
 % Existence of transitions closing a square diagram for the 
 % backward-forward, open-open case
-LF square_bfoo: bstep_op X T1 X1 → fstep_op X1 T2 Y → type =
-  | s_bfoo: fstep_op X T2 X2 → bstep_op X2 T1 Y → square_bfoo (B1:bstep_op X T1 X1) (F2:fstep_op X1 T2 Y)
+LF square_bfoo: bstep_op X θ1 X1 → fstep_op X1 θ2 Y → type =
+  | s_bfoo: fstep_op X θ2 X2 → bstep_op X2 θ1 Y → square_bfoo (B1:bstep_op X θ1 X1) (F2:fstep_op X1 θ2 Y)
 ;
 
 
@@ -966,8 +966,8 @@ LF square_bfoo: bstep_op X T1 X1 → fstep_op X1 T2 Y → type =
 % Given two composable transitions, where the former is backward open and the latter is
 % forward open, and with independent proof labels, there exist a forward
 % and a backward transition closing the square diagram.
-rec sp_bfoo: (g:ctx) {B1:[g ⊢ bstep_op X T1 X1]} {F2:[g ⊢ fstep_op X1 T2 Y]}
-  [g ⊢ indep (p_op T1) (p_op T2)] → [g ⊢ square_bfoo B1 F2] =
+rec sp_bfoo: (g:ctx) {B1:[g ⊢ bstep_op X θ1 X1]} {F2:[g ⊢ fstep_op X1 θ2 Y]}
+  [g ⊢ indep (p_op θ1) (p_op θ2)] → [g ⊢ square_bfoo B1 F2] =
 / total b1 (sp_bfoo _ _ _ _ _ _ b1 _ _) /
 mlam B1,F2 ⇒ fn i ⇒ let [g ⊢ i_oo \a.I[..,a]] = i in
 case [g ⊢ B1] of
@@ -1023,16 +1023,16 @@ case [g ⊢ B1] of
 
 
 % Existence of combined transitions closing a square diagram
-LF square: step X T1 X1 → step X T2 X2 → type =
-  | sq: {S2':step X1 T2 Y} {S1':step X2 T1 Y} same_direction (S1:step X T1 X1) S1' → 
-        same_direction (S2:step X T2 X2) S2' → square S1 S2
+LF square: step X θ1 X1 → step X θ2 X2 → type =
+  | sq: {S2':step X1 θ2 Y} {S1':step X2 θ1 Y} same_direction (S1:step X θ1 X1) S1' → 
+        same_direction (S2:step X θ2 X2) S2' → square S1 S2
 ;
 
 
 % Square property (SP):
 % Given two independent coinitial combined transitions,
 % there exist two cofinal combined transition closing the square diagram.
-rec sp: (g:ctx) {S1:[g ⊢ step X T1 X1]} {S2:[g ⊢ step X T2 X2]}
+rec sp: (g:ctx) {S1:[g ⊢ step X θ1 X1]} {S2:[g ⊢ step X θ2 X2]}
   [g ⊢ indep_tr S1 S2] → [g ⊢ square S1 S2] =
 / total s1 (sp _ _ _ _ _ _ s1 _ _) /
 mlam S1,S2 ⇒ fn i ⇒ let [g ⊢ ind_tr J _] = i in

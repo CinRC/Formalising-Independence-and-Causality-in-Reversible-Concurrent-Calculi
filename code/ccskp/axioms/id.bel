@@ -1,7 +1,7 @@
 %%% ID: independence of diamonds
 
 % Independence of diamonds (ID):
-% Given t:step X T1 Y, u:step X T2 Z, u':step Y T2 W and t':step Z T1 W,
+% Given t:step X θ1 Y, u:step X θ2 Z, u':step Y θ2 W and t':step Z θ1 W,
 % where (t,t') and (u,u') have same direction, with
 % - Y != Z if (t,u) have the same direction,
 % - X != W if (t,u) have opposite directions,
@@ -10,16 +10,16 @@
 % First, we define an additional predicate to encode the disjunction of the following:
 % - Y != Z if (t,u) have the same direction,
 % - X != W if (t,u) have opposite directions.
-LF non_deg_diamonds: step X T1 Y → step X T2 Z → step Y T2 W → step Z T1 W → type =
-  | sd_diam: same_direction (T:step X T1 Y) (U:step X T2 Z) → (eqp Y Z → false)
-             → non_deg_diamonds T U (U':step Y T2 W) (T':step Z T1 W)
-  | od_diam: opp_direction (T:step X T1 Y) (U:step X T2 Z) → (eqp X W → false)
-             → non_deg_diamonds T U (U':step Y T2 W) (T':step Z T1 W)
+LF non_deg_diamonds: step X θ1 Y → step X θ2 Z → step Y θ2 W → step Z θ1 W → type =
+  | sd_diam: same_direction (T:step X θ1 Y) (U:step X θ2 Z) → (eqp Y Z → false)
+             → non_deg_diamonds T U (U':step Y θ2 W) (T':step Z θ1 W)
+  | od_diam: opp_direction (T:step X θ1 Y) (U:step X θ2 Z) → (eqp X W → false)
+             → non_deg_diamonds T U (U':step Y θ2 W) (T':step Z θ1 W)
 ;
 
 % Independence of diamonds
-rec id: (g:ctx) (T:[g ⊢ step X T1 Y]) (U:[g ⊢ step X T2 Z]) (U':[g ⊢ step Y T2 W])
-  (T':[g ⊢ step Z T1 W]) [g ⊢ same_direction T T'] → [g ⊢ same_direction U U'] →
+rec id: (g:ctx) (T:[g ⊢ step X θ1 Y]) (U:[g ⊢ step X θ2 Z]) (U':[g ⊢ step Y θ2 W])
+  (T':[g ⊢ step Z θ1 W]) [g ⊢ same_direction T T'] → [g ⊢ same_direction U U'] →
   [g ⊢ non_deg_diamonds T U U' T'] → [g ⊢ indep_tr T U] =
 / total (id _ _ _ _ _ _ _ t _ _ _ _ _) /
 fn sd1,sd2,nd ⇒ case nd of
@@ -32,7 +32,7 @@ fn sd1,sd2,nd ⇒ case nd of
               let [g ⊢ BU'] = loop_lemma_one [g ⊢ FU'] in
               (case bti_equiv [g ⊢ BT'] [g ⊢ BU'] of
                 | [g ⊢ bt_id refb] ⇒ impossible [g, refp:eqp _ _ ⊢ H]
-                | [g ⊢ bt_ind BCT2' BCU2' (ind_tr I _)] ⇒ [g ⊢ ind_tr I (ct _ _ (st_s* U))])
+                | [g ⊢ bt_ind _ _ (ind_tr I _)] ⇒ [g ⊢ ind_tr I (ct _ _ (st_s* U))])
             | [g ⊢ sdb BCU _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCU] [g ⊢ BCU])
        | [g ⊢ sdb BCT _] ⇒ impossible disjoint_forw_back_to_comb [g ⊢ FCT] [g ⊢ BCT])
   | [g ⊢ sd_diam (sdb BCT BCU) \x.H] ⇒ (case sd1 of

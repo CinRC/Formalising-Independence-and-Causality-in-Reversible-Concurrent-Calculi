@@ -19,12 +19,12 @@ fn s ⇒ case s of
 
 % Type family encoding prefixes and keyed prefixes
 LF is_pref_or_kpref: labels → proc → type =
-  | or_pref: is_pref_or_kpref A (pref A X)
-  | or_kpref: is_pref_or_kpref A (kpref A K X)
+  | or_pref: is_pref_or_kpref α (pref α X)
+  | or_kpref: is_pref_or_kpref α (kpref α K X)
 ;
 
 % A path starting from a prefix ends in a prefix or keyed prefix
-rec step*_from_pref: (g:ctx) [g ⊢ step* (pref A X) Y] → [g ⊢ is_pref_or_kpref A Y] =
+rec step*_from_pref: (g:ctx) [g ⊢ step* (pref α X) Y] → [g ⊢ is_pref_or_kpref α Y] =
 / total s (step*_from_pref _ _ _ _ s) /
 fn s ⇒ case s of
   | [g ⊢ id_s*] ⇒ [g ⊢ or_pref]
@@ -38,7 +38,7 @@ fn s ⇒ case s of
        | [g ⊢ or_kpref] ⇒ step*_from_kpref [g ⊢ S2*])
 
 % A path starting from a keyed prefix ends in a prefix or keyed prefix
-and rec step*_from_kpref: (g:ctx) [g ⊢ step* (kpref A K[] X) Y] → [g ⊢ is_pref_or_kpref A Y] =
+and rec step*_from_kpref: (g:ctx) [g ⊢ step* (kpref α K[] X) Y] → [g ⊢ is_pref_or_kpref α Y] =
 / total s (step*_from_kpref _ _ _ _ _ s) /
 fn s ⇒ case s of 
   | [g ⊢ id_s*] ⇒ [g ⊢ or_kpref]
@@ -137,7 +137,7 @@ fn s ⇒ case s of
 % it is possible to build a path between their subprocesses.
 
 % Given a path between prefixes, there is a path between their subprocesses
-rec step*_betw_prefs: (g:ctx) [g ⊢ step* (pref A X) (pref A Y)] → [g ⊢ step* X Y] =
+rec step*_betw_prefs: (g:ctx) [g ⊢ step* (pref α X) (pref α Y)] → [g ⊢ step* X Y] =
 / total s (step*_betw_prefs _ _ _ _ s) /
 fn s ⇒ case s of
   | [g ⊢ id_s*] ⇒ [g ⊢ id_s*]
@@ -153,7 +153,7 @@ fn s ⇒ case s of
             let [g ⊢ S2*'] = step*_betw_kpref_and_pref [g ⊢ S2*] in [g ⊢ tr_s* S1*' S2*'])
 
 % Given a path between a prefix and a keyed prefix, there is a path between their subprocesses
-and rec step*_betw_pref_and_kpref: (g:ctx) [g ⊢ step* (pref A X) (kpref A K[] Y)] → [g ⊢ step* X Y] =
+and rec step*_betw_pref_and_kpref: (g:ctx) [g ⊢ step* (pref α X) (kpref α K[] Y)] → [g ⊢ step* X Y] =
 / total s (step*_betw_pref_and_kpref _ _ _ _ _ s) /
 fn s ⇒ case s of
   | [g ⊢ st_s* S] ⇒ (case [g ⊢ S] of
@@ -168,7 +168,7 @@ fn s ⇒ case s of
             let [g ⊢ S2*'] = step*_betw_kprefs [g ⊢ S2*] in [g ⊢ tr_s* S1*' S2*'])
 
 % Given a path between a keyed prefix and a prefix, there is a path between their subprocesses
-and rec step*_betw_kpref_and_pref: (g:ctx) [g ⊢ step* (kpref A K[] X) (pref A Y)] → [g ⊢ step* X Y] =
+and rec step*_betw_kpref_and_pref: (g:ctx) [g ⊢ step* (kpref α K[] X) (pref α Y)] → [g ⊢ step* X Y] =
 / total s (step*_betw_kpref_and_pref _ _ _ _ _ s) /
 fn s ⇒ case s of
   | [g ⊢ st_s* S] ⇒ (case [g ⊢ S] of
@@ -183,7 +183,7 @@ fn s ⇒ case s of
             let [g ⊢ S2*'] = step*_betw_kpref_and_pref [g ⊢ S2*] in [g ⊢ tr_s* S1*' S2*'])
 
 % Given a path between keyed prefixes, there is a path between their subprocesses
-and rec step*_betw_kprefs: (g:ctx) [g ⊢ step* (kpref A K[] X) (kpref A M[] Y)] → [g ⊢ step* X Y] =
+and rec step*_betw_kprefs: (g:ctx) [g ⊢ step* (kpref α K[] X) (kpref α M[] Y)] → [g ⊢ step* X Y] =
 / total s (step*_betw_kprefs _ _ _ _ _ _ s) /
 fn s ⇒ case s of
   | [g ⊢ id_s*] ⇒ [g ⊢ id_s*]
@@ -319,10 +319,10 @@ fn s ⇒ case s of
 ;
 
 
-% In a subcase of Thm. 2.1(i) there are derivations of connectedness "conn_cl T1 T2" in a context
-% context [g,a:names], without T1 and T2 depending on a: in such cases we need a technical lemma
+% In a subcase of Thm. 2.1(i) there are derivations of connectedness "conn_cl θ1 θ2" in a context
+% context [g,a:names], without θ1 and θ2 depending on a: in such cases we need a technical lemma
 % (strengthening lemma) to get rid of the spurious dependence on the name a.
-rec str_conn: (g:ctx) [g,a:names ⊢ conn_cl T1[..] T2[..]] → [g ⊢ conn_cl T1 T2] =
+rec str_conn: (g:ctx) [g,a:names ⊢ conn_cl θ1[..] θ2[..]] → [g ⊢ conn_cl θ1 θ2] =
 / total c (str_conn _ _ _ c) /
 fn c ⇒ case c of
   | [g,a:names ⊢ c_a1] ⇒ [g ⊢ c_a1]

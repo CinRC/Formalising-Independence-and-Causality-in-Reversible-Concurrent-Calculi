@@ -2,7 +2,7 @@
 
 % Forward label determinism for closed transitions:
 % Two coinitial forward closed transitions with the same proof label are equal.
-rec fld_fc: (g:ctx) {F1:[g ⊢ fstep_cl X T Y1]} {F2:[g ⊢ fstep_cl X T Y2]} [g ⊢ eqfc F1 F2] =
+rec fld_fc: (g:ctx) {F1:[g ⊢ fstep_cl X θ Y1]} {F2:[g ⊢ fstep_cl X θ Y2]} [g ⊢ eqfc F1 F2] =
 / total f1 (fld_fc _ _ _ _ _ f1 _) /
 mlam F1 F2 ⇒ case [_ ⊢ F1] of
   | [g ⊢ fc_pref D1] ⇒ let [g ⊢ fc_pref D2] = [g ⊢ F2] in
@@ -47,14 +47,14 @@ mlam F1 F2 ⇒ case [_ ⊢ F1] of
     let [g,a:names ⊢ reffc] = fld_fc [g,a:names ⊢ F1'] [g,a:names ⊢ F2'] in [g ⊢ reffc]
 ;
 
-% To prove fld for forward open transitions, we need an auxiliary lemma to solve the restriction subcases.
+% To prove FLD for forward open transitions, we need an auxiliary lemma to solve the restriction subcases.
 % This, in turn, needs a technical lemma to be proved.
 
 % Technical lemma: given two forward closed coinitial transitions in a context [g,a:names,b:names],
-% respectively using the proof label T[..,a] (meaning that T does not depend on b) and T[..,b]
-% (meaning that T does not depend on a), if b occurs in T[..,b], then we have a contradiction.
-rec no_trans_diff_dependency: (g:ctx) [g,a:names,b:names ⊢ fstep_cl X T[..,a] Y1] →
-  [g,a:names,b:names ⊢ fstep_cl X T[..,b] Y2] → [g,a:names,b:names ⊢ occurs b T[..,b]] → [g ⊢ false] =
+% respectively using the proof label θ[..,a] (meaning that θ does not depend on b) and θ[..,b]
+% (meaning that θ does not depend on a), if b occurs in θ[..,b], then we have a contradiction.
+rec no_trans_diff_dependency: (g:ctx) [g,a:names,b:names ⊢ fstep_cl X θ[..,a] Y1] →
+  [g,a:names,b:names ⊢ fstep_cl X θ[..,b] Y2] → [g,a:names,b:names ⊢ occurs b θ[..,b]] → [g ⊢ false] =
 / total f1 (no_trans_diff_dependency _ _ _ _ _ _ f1 _) /
 fn f1,f2,o ⇒ case f1 of
   | [g,a:names,b:names ⊢ fc_pref D1] ⇒ let [g,a:names,b:names ⊢ fc_pref D2] = f2 in impossible occur_imp o
@@ -86,10 +86,10 @@ fn f1,f2,o ⇒ case f1 of
 ;
 
 % Auxiliary lemma for fld, open case: given two forward open coinitial transitions using the same
-% proof label T, if one is obtained via the rule fo_nu_cl and the other via the rule fo_nu_op,
+% proof label θ, if one is obtained via the rule fo_nu_cl and the other via the rule fo_nu_op,
 % then we have a contradiction.
-rec no_fstep_cl_and_op_fld: (g:ctx) [g,a:names ⊢ fstep_cl X T Y1] → [g,a:names ⊢ fstep_op X (open \a.T[..]) Y2] →
- [g,a:names ⊢ occurs a T] → [g,a:names ⊢ lab T A[..]] → [g ⊢ false] =
+rec no_fstep_cl_and_op_fld: (g:ctx) [g,a:names ⊢ fstep_cl X θ Y1] → [g,a:names ⊢ fstep_op X (open \a.θ[..]) Y2] →
+ [g,a:names ⊢ occurs a θ] → [g,a:names ⊢ lab θ α[..]] → [g ⊢ false] =
 / total f1 (no_fstep_cl_and_op_fld _ _ _ _ _ _ f1 _ _ _) /
 fn f1,f2,o1,l1 ⇒ case f1 of
   | [g,a:names ⊢ fc_pref D1] ⇒ impossible f2
@@ -124,7 +124,7 @@ fn f1,f2,o1,l1 ⇒ case f1 of
 
 % Forward label determinism for open transitions:
 % Two coinitial forward open transitions with the same proof label are equal.
-rec fld_fo: (g:ctx) {F1:[g ⊢ fstep_op X T Y1]} {F2:[g ⊢ fstep_op X T Y2]} [g ⊢ eqfo F1 F2] =
+rec fld_fo: (g:ctx) {F1:[g ⊢ fstep_op X θ Y1]} {F2:[g ⊢ fstep_op X θ Y2]} [g ⊢ eqfo F1 F2] =
 / total f1 (fld_fo _ _ _ _ _ f1 _) /
 mlam F1 F2 ⇒ case [_ ⊢ F1] of
   | [g ⊢ fo_nu_cl (\a.O1) (\a.L1) (\a.F1')] ⇒ (case [g ⊢ F2] of
@@ -158,7 +158,7 @@ mlam F1 F2 ⇒ case [_ ⊢ F1] of
 
 % Forward label determinism:
 % Two coinitial forward transitions with the same proof label are equal.
-rec fld: (g:ctx) {F1:[g ⊢ fstep X T Y1]} {F2:[g ⊢ fstep X T Y2]} [g ⊢ eqf F1 F2] =
+rec fld: (g:ctx) {F1:[g ⊢ fstep X θ Y1]} {F2:[g ⊢ fstep X θ Y2]} [g ⊢ eqf F1 F2] =
 / total f1 (fld _ _ _ _ _ f1 _) /
 mlam F1 F2 ⇒ case [_ ⊢ F1] of
   | [g ⊢ fc F1'] ⇒ let [g ⊢ fc F2'] = [g ⊢ F2] in

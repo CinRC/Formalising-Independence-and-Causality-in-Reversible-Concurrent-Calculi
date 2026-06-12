@@ -3,7 +3,7 @@
 
 % If two CCSKP transitions s1 and s2 have the same direction, then their corresponding
 % CCSK transitions forget(s1) and forget(s2) have the same direction.
-rec forget_preserves_same_direction: (g:ctx) (S1+:[g ⊢ ccskp.step X1 T1 Y1]) (S2+:[g ⊢ ccskp.step X2 T2+ Y2])
+rec forget_preserves_same_direction: (g:ctx) (S1+:[g ⊢ ccskp.step X1 θ1 Y1]) (S2+:[g ⊢ ccskp.step X2 θ2 Y2])
   (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2]) [g ⊢ same_direction S1+ S2+]
   → [g ⊢ forget S1+ S1] → [g ⊢ forget S2+ S2] → [g ⊢ ccsk_same_direction S1 S2] =
 / total s (forget_preserves_same_direction _ _ _ _ _ _ _ _ _ s _ _ _ _ _ _) /
@@ -27,7 +27,7 @@ fn sd+,fg1,fg2 ⇒ case sd+ of
 % If two CCSK transitions s1 and s2 have the same direction, then their corresponding
 % CCSKP transitions enrich(s1) and enrich(s2) have the same direction.
 rec enrich_preserves_same_direction: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2])
-  (S1+:[g ⊢ ccskp.step X1 T1 Y1]) (S2+:[g ⊢ ccskp.step X2 T2+ Y2]) [g ⊢ ccsk_same_direction S1 S2]
+  (S1+:[g ⊢ ccskp.step X1 θ1 Y1]) (S2+:[g ⊢ ccskp.step X2 θ2 Y2]) [g ⊢ ccsk_same_direction S1 S2]
   → [g ⊢ enrich S1 S1+] → [g ⊢ enrich S2 S2+] → [g ⊢ same_direction S1+ S2+] =
 / total s (enrich_preserves_same_direction _ _ _ _ _ _ _ _ _ s _ _ _ _ _ _) /
 fn sd,en1,en2 ⇒ case sd of
@@ -51,7 +51,7 @@ fn sd,en1,en2 ⇒ case sd of
 % Given a CCSK transition t with inverse transition ccsk_inv(t), then their corresponding
 % CCSKP transitions enrich(t) and enrich(ccsk_inv(t)) are also mutual inverses.
 rec enrich_preserves_inv_tr: (g:ctx) (T:[g ⊢ ccsk.step X KL Y]) (RT:[g ⊢ ccsk.step Y KL X])
-  (T+:[g ⊢ ccskp.step X T1 Y]) (RT+:[g ⊢ ccskp.step Y T2 X]) [g ⊢ ccsk_inv_tr T RT]
+  (T+:[g ⊢ ccskp.step X θ1 Y]) (RT+:[g ⊢ ccskp.step Y θ2 X]) [g ⊢ ccsk_inv_tr T RT]
   → [g ⊢ enrich T T+] → [g ⊢ enrich RT RT+] → [g ⊢ inv_tr T+ RT+] =
 / total hi (enrich_preserves_inv_tr _ _ _ _ _ _ _ _ _ _ hi _ _) /
 fn hr,en1,en2 ⇒
@@ -78,7 +78,7 @@ let [g ⊢ refst] = unique_step [g ⊢ RT+] [g ⊢ RT'+] in [g ⊢ it T+ RT+]
 
 % If t and t' have the same proof label, then their corresponding
 % CCSK transitions forget(t) and forget(t') have the same keyed label.
-rec injective_forget_on_labels: (g:ctx) (S1+:[g ⊢ ccskp.step X1 T Y1]) (S2+:[g ⊢ ccskp.step X2 T Y2])
+rec injective_forget_on_labels: (g:ctx) (S1+:[g ⊢ ccskp.step X1 θ Y1]) (S2+:[g ⊢ ccskp.step X2 θ Y2])
   (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2]) [g ⊢ forget S1+ S1] → [g ⊢ forget S2+ S2] →
   [g ⊢ eqkl KL1 KL2] =
 / total (injective_forget_on_labels) /
@@ -107,11 +107,11 @@ fn fg1,fg2 ⇒ case fg1 of
 % we introduce the auxiliary type ccsk_tr_are_equiv, which wraps ccsk_equiv_tr while
 % allowing the keyed labels of t◦ and t'◦ to differ initially.
 LF ccsk_tr_are_equiv: ccsk.step X KL Y → ccsk.step Z KL' W → type =
-  | ctr_eq: ccsk_equiv_tr (T◦:ccsk.step X T Y) (T'◦:ccsk.step Z T W) → ccsk_tr_are_equiv T◦ T'◦
+  | ctr_eq: ccsk_equiv_tr (T◦:ccsk.step X KL Y) (T'◦:ccsk.step Z KL W) → ccsk_tr_are_equiv T◦ T'◦
 ;
 
 % If two CCSKP transitions t and t' are equivalent, then forget(t) and forget(t') are equivalent.
-rec forget_preserves_equiv_tr: (g:ctx) {T:[g ⊢ ccskp.step X T1 Y]} {T':[g ⊢ ccskp.step Z T1 W]}
+rec forget_preserves_equiv_tr: (g:ctx) {T:[g ⊢ ccskp.step X θ1 Y]} {T':[g ⊢ ccskp.step Z θ1 W]}
   (T◦:[g ⊢ ccsk.step X KL1 Y]) (T'◦:[g ⊢ ccsk.step Z KL2 W]) [g ⊢ equiv_tr T T']
   → [g ⊢ forget T T◦] → [g ⊢ forget T' T'◦] → [g ⊢ ccsk_tr_are_equiv T◦ T'◦] =
 mlam T,T' ⇒ fn e,fgt,fgt' ⇒ case e of
@@ -138,14 +138,14 @@ mlam T,T' ⇒ fn e,fgt,fgt' ⇒ case e of
 
 % Part i)
 
-LF ccskp_tr_are_equiv: ccskp.step X T Y → ccskp.step Z T' W → type =
-  | ct_eq: equiv_tr (T+:ccskp.step X T Y) (T'+:ccskp.step Z T W) → ccskp_tr_are_equiv T+ T'+
+LF ccskp_tr_are_equiv: ccskp.step X θ Y → ccskp.step Z θ' W → type =
+  | ct_eq: equiv_tr (T+:ccskp.step X θ Y) (T'+:ccskp.step Z θ W) → ccskp_tr_are_equiv T+ T'+
 ;
 
 % If two CCSK transitions t and t' are equivalent, then enrich(t) and enrich(t') are equivalent.
 % This proposition makes use of the auxiliary lemma unique_diamonds in ccsk/defs-and-properties.bel.
 rec enrich_preserves_equiv_tr: (g:ctx) {T:[g ⊢ ccsk.step X KL Y]} {T':[g ⊢ ccsk.step Z KL W]}
-  (T+:[g ⊢ ccskp.step X T1 Y]) (T'+:[g ⊢ ccskp.step Z T2 W]) [g ⊢ ccsk_equiv_tr T T']
+  (T+:[g ⊢ ccskp.step X θ1 Y]) (T'+:[g ⊢ ccskp.step Z θ2 W]) [g ⊢ ccsk_equiv_tr T T']
   → [g ⊢ enrich T T+] → [g ⊢ enrich T' T'+] → [g ⊢ ccskp_tr_are_equiv T+ T'+] =
 / total e (enrich_preserves_equiv_tr _ _ _ _ _ _ _ _ _ _ _ _ e _ _) /
 mlam T,T' ⇒ fn e,ent,ent' ⇒ case e of

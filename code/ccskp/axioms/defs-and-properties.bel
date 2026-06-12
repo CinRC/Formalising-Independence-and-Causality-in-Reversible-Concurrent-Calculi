@@ -3,17 +3,17 @@
 %%% Coercions from forward and backward transitions to combined transitions
 
 % Coercion from forward transitions to combined transitions
-LF forw_to_comb: fstep X T Y → step X T Y → type =
-  | ftc_cl: {F:fstep_cl X T Y} forw_to_comb (fc F) (sc (fwc F))
-  | ftc_op: {F:fstep_op X T Y} forw_to_comb (fo F) (so (fwo F))
+LF forw_to_comb: fstep X θ Y → step X θ Y → type =
+  | ftc_cl: {F:fstep_cl X θ Y} forw_to_comb (fc F) (sc (fwc F))
+  | ftc_op: {F:fstep_op X θ Y} forw_to_comb (fo F) (so (fwo F))
 ;
 
 % Totality of forw_to_comb: given a forward transition F,
 % there exists at least one combined transition S such that forw_to_comb(F)=S.
-LF ex_ftc: fstep X T Y → type =
+LF ex_ftc: fstep X θ Y → type =
   | ftc: forw_to_comb F S → ex_ftc F
 ;
-rec total_forw_to_comb: (g:ctx) {F:[g ⊢ fstep X T Y]} [g ⊢ ex_ftc F] =
+rec total_forw_to_comb: (g:ctx) {F:[g ⊢ fstep X θ Y]} [g ⊢ ex_ftc F] =
 / total f (total_forw_to_comb _ _ _ _ f) /
 mlam F ⇒ case [_ ⊢ F] of
   | [g ⊢ fc F'] ⇒ [g ⊢ ftc (ftc_cl F')]
@@ -22,7 +22,7 @@ mlam F ⇒ case [_ ⊢ F] of
 
 % Functionality of forw_to_comb: given a forward transition F,
 % there is at most one combined transition S such that forw_to_comb(F)=S.
-rec functional_forw_to_comb: (g:ctx) (F:[g ⊢ fstep X T Y]) (S1:[g ⊢ step X T Y]) (S2:[g ⊢ step X T Y])
+rec functional_forw_to_comb: (g:ctx) (F:[g ⊢ fstep X θ Y]) (S1:[g ⊢ step X θ Y]) (S2:[g ⊢ step X θ Y])
   [g ⊢ forw_to_comb F S1] → [g ⊢ forw_to_comb F S2] → [g ⊢ eqst S1 S2] =
 / total r1 (functional_forw_to_comb _ _ _ _ r1 _) /
 fn r1,r2 ⇒ case r1 of
@@ -32,17 +32,17 @@ fn r1,r2 ⇒ case r1 of
 
 
 % Coercion from backward transitions to combined transitions
-LF back_to_comb: bstep X T Y → step X T Y → type =
-  | btc_cl: {B:bstep_cl X T Y} back_to_comb (bc B) (sc (bwc B))
-  | btc_op: {B:bstep_op X T Y} back_to_comb (bo B) (so (bwo B))
+LF back_to_comb: bstep X θ Y → step X θ Y → type =
+  | btc_cl: {B:bstep_cl X θ Y} back_to_comb (bc B) (sc (bwc B))
+  | btc_op: {B:bstep_op X θ Y} back_to_comb (bo B) (so (bwo B))
 ;
 
 % Totality of back_to_comb: given a backward transition B,
 % there exists at least one combined transition S such that back_to_comb(B)=S.
-LF ex_btc: bstep X T Y → type =
+LF ex_btc: bstep X θ Y → type =
   | btc: back_to_comb B S → ex_btc B
 ;
-rec total_back_to_comb: (g:ctx) {B:[g ⊢ bstep X T Y]} [g ⊢ ex_btc B] =
+rec total_back_to_comb: (g:ctx) {B:[g ⊢ bstep X θ Y]} [g ⊢ ex_btc B] =
 / total b (total_back_to_comb _ _ _ _ b) /
 mlam B ⇒ case [_ ⊢ B] of
   | [g ⊢ bc B'] ⇒ [g ⊢ btc (btc_cl B')]
@@ -51,7 +51,7 @@ mlam B ⇒ case [_ ⊢ B] of
 
 % Functionality of back_to_comb: given a backward transition B,
 % there is at most one combined transition S such that back_to_comb(B)=S.
-rec functional_back_to_comb: (g:ctx) (B:[g ⊢ bstep X T Y]) (S1:[g ⊢ step X T Y]) (S2:[g ⊢ step X T Y])
+rec functional_back_to_comb: (g:ctx) (B:[g ⊢ bstep X θ Y]) (S1:[g ⊢ step X θ Y]) (S2:[g ⊢ step X θ Y])
   [g ⊢ back_to_comb B S1] → [g ⊢ back_to_comb B S2] → [g ⊢ eqst S1 S2] =
 / total r1 (functional_back_to_comb _ _ _ _ r1 _) /
 fn r1,r2 ⇒ case r1 of
@@ -63,12 +63,12 @@ fn r1,r2 ⇒ case r1 of
 % Surjectivity of the union of forw_to_comb and back_to_comb: given a combined transition S,
 % there exist either a forward transition F such that forw_to_comb(F)=S,
 % or a backward transition B such that back_to_comb(B)=S.
-LF forw_or_back: step X T Y → type =
+LF forw_or_back: step X θ Y → type =
   | or_fw: forw_to_comb F S → forw_or_back S
   | or_bw: back_to_comb B S → forw_or_back S
 ;
 
-rec surjective_forw_back_to_comb: (g:ctx) {S:[g ⊢ step X T Y]} [g ⊢ forw_or_back S] =
+rec surjective_forw_back_to_comb: (g:ctx) {S:[g ⊢ step X θ Y]} [g ⊢ forw_or_back S] =
 / total s (surjective_forw_back_to_comb _ _ _ _ s) /
 mlam S ⇒ case [_ ⊢ S] of
   | [g ⊢ sc (fwc F)] ⇒ [_ ⊢ or_fw (ftc_cl F)]
@@ -78,7 +78,7 @@ mlam S ⇒ case [_ ⊢ S] of
 ;
 
 % The images of forw_to_comb and back_to_comb are disjoint:
-rec disjoint_forw_back_to_comb: (g:ctx) (F:[g ⊢ fstep X T Y]) (B:[g ⊢ bstep X T Y]) (S:[g ⊢ step X T Y])
+rec disjoint_forw_back_to_comb: (g:ctx) (F:[g ⊢ fstep X θ Y]) (B:[g ⊢ bstep X θ Y]) (S:[g ⊢ step X θ Y])
   [g ⊢ forw_to_comb F S] → [g ⊢ back_to_comb B S] → [g ⊢ false] =
 / total f (disjoint_forw_back_to_comb _ _ _ _ f _ _ _ _) /
 fn hf,hb ⇒ case hf of
@@ -89,16 +89,16 @@ fn hf,hb ⇒ case hf of
 
 % Injectivity of forw_to_comb: given two forward transitions F1 and F2,
 % if forw_to_comb(F1)=forw_to_comb(F2), then F1=F2.
-rec injective_forw_to_comb: (g:ctx) (F1:[g ⊢ fstep X T Y]) (F2:[g ⊢ fstep X T Y])
-  (S:[g ⊢ step X T Y]) [g ⊢ forw_to_comb F1 S] → [g ⊢ forw_to_comb F2 S] → [g ⊢ eqf F1 F2] =
+rec injective_forw_to_comb: (g:ctx) (F1:[g ⊢ fstep X θ Y]) (F2:[g ⊢ fstep X θ Y])
+  (S:[g ⊢ step X θ Y]) [g ⊢ forw_to_comb F1 S] → [g ⊢ forw_to_comb F2 S] → [g ⊢ eqf F1 F2] =
 / total f1 (injective_forw_to_comb _ _ _ _ f1 _ _ _ _) /
 fn hf1,hf2 ⇒ unique_fstep [_ ⊢ _] [_ ⊢ _]
 ;
 
 % Injectivity of back_to_comb: given two backward transitions B1 and B2,
 % if back_to_comb(B1)=back_to_comb(B2), then B1=B2.
-rec injective_back_to_comb: (g:ctx) (B1:[g ⊢ bstep X T Y]) (B2:[g ⊢ bstep X T Y])
-  (S:[g ⊢ step X T Y]) [g ⊢ back_to_comb B1 S] → [g ⊢ back_to_comb B2 S] → [g ⊢ eqb B1 B2] =
+rec injective_back_to_comb: (g:ctx) (B1:[g ⊢ bstep X θ Y]) (B2:[g ⊢ bstep X θ Y])
+  (S:[g ⊢ step X θ Y]) [g ⊢ back_to_comb B1 S] → [g ⊢ back_to_comb B2 S] → [g ⊢ eqb B1 B2] =
 / total b1 (injective_back_to_comb _ _ _ _ b1 _ _ _ _) /
 fn hb1,hb2 ⇒ unique_bstep [_ ⊢ _] [_ ⊢ _]
 ;
@@ -107,21 +107,21 @@ fn hb1,hb2 ⇒ unique_bstep [_ ⊢ _] [_ ⊢ _]
 %%% Inverse of a transition
 
 % Inverse of a transition: inv_tr S1 S2 holds iff S2 is the inverse of S1
-LF inv_tr: step X T1 X' → step Y T2 Y' → type =
-  | it: {S1:step X T X'} {S2:step X' T X} inv_tr S1 S2
+LF inv_tr: step X θ1 X' → step Y θ2 Y' → type =
+  | it: {S1:step X θ X'} {S2:step X' θ X} inv_tr S1 S2
 ;
 
 % We show that, thanks to the loop lemma, inv_tr is a function and, in particular, an involution (inv_tr ∘ inv_tr = id).
 % Additionally, we show that t and inv_tr(t) have opposite directions.
 
 % Existential type denoting existence of an inverse transition
-LF ex_inv: step X T X' → type =
+LF ex_inv: step X θ X' → type =
   | ex_iv: inv_tr S1 S2 → ex_inv S1
 ;
 
 % Totality of inv_tr: given a transition S,
 % there exists at least one transition S' such that inv_tr(S)=S'.
-rec total_inv: (g:ctx) {S:[g ⊢ step X T X']} [g ⊢ ex_inv S] =
+rec total_inv: (g:ctx) {S:[g ⊢ step X θ X']} [g ⊢ ex_inv S] =
 / total (total_inv) /
 mlam S ⇒ case [_ ⊢ S] of
   | [g ⊢ sc (fwc F)] ⇒ let [g ⊢ B] = loop_lemma_one_cl [g ⊢ F] in [g ⊢ ex_iv (it S (sc (bwc B)))]
@@ -132,7 +132,7 @@ mlam S ⇒ case [_ ⊢ S] of
 
 % Functionality of inv_tr: given a transition S,
 % there is at most one transition S' such that inv_tr(S)=S'.
-rec functional_inv: (g:ctx) (S:[g ⊢ step X T X']) (S1:[g ⊢ step Y1 T1 Y1']) (S2:[g ⊢ step Y2 T2 Y2'])
+rec functional_inv: (g:ctx) (S:[g ⊢ step X θ X']) (S1:[g ⊢ step Y1 θ1 Y1']) (S2:[g ⊢ step Y2 θ2 Y2'])
   [g ⊢ inv_tr S S1] → [g ⊢ inv_tr S S2] → [g ⊢ eqst S1 S2] =
 / total r1 (functional_inv _ _ _ _ r1 _) /
 fn r1,r2 ⇒ let [g ⊢ it _ S1] = r1 in
@@ -140,8 +140,8 @@ let [g ⊢ it _ S2] = r2 in unique_step [g ⊢ S1] [g ⊢ S2]
 ;
 
 % inv_tr is an involution: inv_tr ∘ inv_tr = id.
-rec involution_inv: (g:ctx) (S1:[g ⊢ step X1 T1 X1']) (S2:[g ⊢ step X2 T2 X2'])
-  (S3:[g ⊢ step X3 T3 X3']) [g ⊢ inv_tr S1 S2] → [g ⊢ inv_tr S2 S3] → [g ⊢ eqst S1 S3] =
+rec involution_inv: (g:ctx) (S1:[g ⊢ step X1 θ1 X1']) (S2:[g ⊢ step X2 θ2 X2'])
+  (S3:[g ⊢ step X3 θ3 X3']) [g ⊢ inv_tr S1 S2] → [g ⊢ inv_tr S2 S3] → [g ⊢ eqst S1 S3] =
 / total s1 (involution_inv _ _ _ _ _ _ _ _ _ _ s1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ it S1 S2] = d1 in
 let [g ⊢ it S2 S3] = d2 in unique_step [g ⊢ S1] [g ⊢ S3]
@@ -151,25 +151,25 @@ let [g ⊢ it S2 S3] = d2 in unique_step [g ⊢ S1] [g ⊢ S3]
 %%% Same and opposite direction of transitions
 
 % Type family relating two combined transitions having the same direction
-LF same_direction: step X1 T1 Y1 → step X2 T2 Y2 → type =
+LF same_direction: step X1 θ1 Y1 → step X2 θ2 Y2 → type =
   | sdf: forw_to_comb F1 S1 → forw_to_comb F2 S2 → same_direction S1 S2
   | sdb: back_to_comb B1 S1 → back_to_comb B2 S2 → same_direction S1 S2
 ;
 
 % Type family relating two combined transitions having opposite directions
-LF opp_direction: step X1 T1 Y1 → step X2 T2 Y2 → type =
+LF opp_direction: step X1 θ1 Y1 → step X2 θ2 Y2 → type =
   | odfb: forw_to_comb F1 S1 → back_to_comb B2 S2 → opp_direction S1 S2
   | odbf: back_to_comb B1 S1 → forw_to_comb F2 S2 → opp_direction S1 S2
 ;
 
 % Type family relating couples of combined transitions with same or opposite directions
-LF ex_same_or_opp_direction: step X1 T1 Y1 → step X2 T2 Y2 → type =
+LF ex_same_or_opp_direction: step X1 θ1 Y1 → step X2 θ2 Y2 → type =
   | or_sd: same_direction S1 S2 → ex_same_or_opp_direction S1 S2
   | or_od: opp_direction S1 S2 → ex_same_or_opp_direction S1 S2
 ;
 
 % Given two combined transitions, they either have the same direction or opposite directions.
-rec same_or_opp_direction: (g:ctx) {S1:[g ⊢ step X1 T1 X1']} {S2:[g ⊢ step X2 T2 X2']}
+rec same_or_opp_direction: (g:ctx) {S1:[g ⊢ step X1 θ1 X1']} {S2:[g ⊢ step X2 θ2 X2']}
   [g ⊢ ex_same_or_opp_direction S1 S2] =
 / total s1 (same_or_opp_direction _ _ _ _ _ _ _ s1 _ ) /
 mlam S1,S2 ⇒ case [_ ⊢ S1] of
@@ -196,7 +196,7 @@ mlam S1,S2 ⇒ case [_ ⊢ S1] of
 ;
 
 % Given two combined transitions, they cannot both have the same direction and opposite directions.
-rec not_same_and_opp_direction: (g:ctx) (S1:[g ⊢ step X1 T1 X1']) (S2:[g ⊢ step X2 T2 X2'])
+rec not_same_and_opp_direction: (g:ctx) (S1:[g ⊢ step X1 θ1 X1']) (S2:[g ⊢ step X2 θ2 X2'])
   [g ⊢ same_direction S1 S2] → [g ⊢ opp_direction S1 S2] → [g ⊢ false] =
 / total sd (not_same_and_opp_direction _ _ _ _ _ _ _ _ _ sd _) /
 fn sd,od ⇒ case sd of
@@ -227,7 +227,7 @@ fn sd,od ⇒ case sd of
 ;
 
 % Given a combined transition S, it has the same direction as itself.
-rec reflexive_same_direction: (g:ctx) {S:[g ⊢ step X T Y]} [g ⊢ same_direction S S] =
+rec reflexive_same_direction: (g:ctx) {S:[g ⊢ step X θ Y]} [g ⊢ same_direction S S] =
 / total (reflexive_same_direction) /
 mlam S ⇒ case [_ ⊢ S] of
   | [g ⊢ sc (fwc F)] ⇒ [g ⊢ sdf (ftc_cl F) (ftc_cl F)]
@@ -237,7 +237,7 @@ mlam S ⇒ case [_ ⊢ S] of
 ;
 
 % If two combined transitions S1 and S2 have same directions, then S2 and S1 have the same directions.
-rec symmetric_same_direction: (g:ctx) (S1:[g ⊢ step X1 T1 Y1]) (S2:[g ⊢ step X2 T2 Y2])
+rec symmetric_same_direction: (g:ctx) (S1:[g ⊢ step X1 θ1 Y1]) (S2:[g ⊢ step X2 θ2 Y2])
   [g ⊢ same_direction S1 S2] → [g ⊢ same_direction S2 S1] =
 / total (symmetric_same_direction) /
 fn sd ⇒ case sd of
@@ -246,7 +246,7 @@ fn sd ⇒ case sd of
 ;
 
 % If S1 and S2 have same directions, and S2 and S3 have same directions, then S1 and S3 have same directions.
-rec transitive_same_direction: (g:ctx) (S1:[g ⊢ step X1 T1 Y1]) (S2:[g ⊢ step X2 T2 Y2]) (S3:[g ⊢ step X3 T3 Y3])
+rec transitive_same_direction: (g:ctx) (S1:[g ⊢ step X1 θ1 Y1]) (S2:[g ⊢ step X2 θ2 Y2]) (S3:[g ⊢ step X3 θ3 Y3])
   [g ⊢ same_direction S1 S2] → [g ⊢ same_direction S2 S3] → [g ⊢ same_direction S1 S3] =
 / total (transitive_same_direction) /
 fn sd1,sd2 ⇒ case sd1 of
@@ -266,8 +266,8 @@ fn sd1,sd2 ⇒ case sd1 of
 %%% Auxiliary lemmas for BTI
 
 % If a key K does not occur in a process, and such process makes a backward closed transition
-% labelled by T, then K is different from key(T).
-rec key_in_bstep_cl: (g:ctx) [g ⊢ notin K[] X] → [g ⊢ bstep_cl X T Y] → [g ⊢ key T M[]] → [g ⊢ neq K[] M[]] =
+% labelled by θ, then K is different from key(θ).
+rec key_in_bstep_cl: (g:ctx) [g ⊢ notin K[] X] → [g ⊢ bstep_cl X θ Y] → [g ⊢ key θ M[]] → [g ⊢ neq K[] M[]] =
 / total n (key_in_bstep_cl _ _ _ _ _ _ n _ _) /
 fn n,b,h ⇒ case n of
   | [g ⊢ not_null] ⇒ impossible b
@@ -291,8 +291,8 @@ fn n,b,h ⇒ case n of
 ;
 
 % If a key K does not occur in a process, and such process makes a backward open transition
-% labelled by T, then K is different from key(T).
-rec key_in_bstep_op: (g:ctx) [g ⊢ notin K[] X] → [g ⊢ bstep_op X (open \a.T) Y] → [g,a:names ⊢ key T M[]] → [g ⊢ neq K[] M[]] =
+% labelled by θ, then K is different from key(θ).
+rec key_in_bstep_op: (g:ctx) [g ⊢ notin K[] X] → [g ⊢ bstep_op X (open \a.θ) Y] → [g,a:names ⊢ key θ M[]] → [g ⊢ neq K[] M[]] =
 / total n (key_in_bstep_op _ _ _ _ _ _ n _ _) /
 fn n,b,h ⇒ case n of
   | [g ⊢ not_null] ⇒ impossible b
@@ -316,7 +316,7 @@ fn n,b,h ⇒ case n of
 ;
 
 % Strengthening lemma for indep_cl 
-rec str_indep: (g:ctx) [g,a:names ⊢ indep_cl T1[..] T2[..]] → [g ⊢ indep_cl T1 T2] =
+rec str_indep: (g:ctx) [g,a:names ⊢ indep_cl θ1[..] θ2[..]] → [g ⊢ indep_cl θ1 θ2] =
 / total i (str_indep _ _ _ i) /
 fn i ⇒ case i of
   | [g,a:names ⊢ i_c1l I] ⇒ let [g ⊢ I'] = str_indep [_ ⊢ I] in [g ⊢ i_c1l I']
@@ -342,7 +342,7 @@ fn i ⇒ case i of
 % If a process X makes a closed forward transition F into the process X',
 % and a key K does not occur in X' (i.e., notin K X' holds), then K does
 % not occur in X as well (notin K X).
-rec notin_propagates_to_source_fc: (g:ctx) [g ⊢ fstep_cl X T X'] →
+rec notin_propagates_to_source_fc: (g:ctx) [g ⊢ fstep_cl X θ X'] →
    [g ⊢ notin K[] X'] → [g ⊢ notin K[] X] =
 / total f (notin_propagates_to_source_fc _ _ _ _ _ f _) /
 fn f,n ⇒ case f of
@@ -370,7 +370,7 @@ fn f,n ⇒ case f of
 % If a process X makes an open forward transition F into the process X',
 % and a key K does not occur in X' (i.e., notin K X' holds), then K does
 % not occur in X as well (notin K X).
-rec notin_propagates_to_source_fo: (g:ctx) [g ⊢ fstep_op X T X'] →
+rec notin_propagates_to_source_fo: (g:ctx) [g ⊢ fstep_op X θ X'] →
    [g ⊢ notin K[] X'] → [g ⊢ notin K[] X] =
 / total f (notin_propagates_to_source_fo _ _ _ _ _ f _) /
 fn f,n ⇒ case f of
@@ -390,11 +390,11 @@ fn f,n ⇒ case f of
     let [g,a:names ⊢ N'] = notin_propagates_to_source_fo [_ ⊢ F] [_ ⊢ N] in [g ⊢ not_nu \a.N']
 ;
 
-% If a process X makes a closed forward transition F via the proof label T
+% If a process X makes a closed forward transition F via the proof label θ
 % into the process X', a key K does not occur in X (i.e., notin K X holds),
-% and key(T) is different from K, then K does not occur in X' (notin K X').
-rec notin_propagates_to_target_fc: (g:ctx) [g ⊢ fstep_cl X T X'] →
-  [g ⊢ key T M[]] → [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
+% and key(θ) is different from K, then K does not occur in X' (notin K X').
+rec notin_propagates_to_target_fc: (g:ctx) [g ⊢ fstep_cl X θ X'] →
+  [g ⊢ key θ M[]] → [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
 / total f (notin_propagates_to_target_fc _ _ _ _ _ _ f _ _ _) /
 fn f,h,n,i ⇒ case f of
   | [g ⊢ fc_pref _] ⇒ let [g ⊢ key_base] = h in
@@ -430,11 +430,11 @@ fn f,h,n,i ⇒ case f of
     let [g,a:names ⊢ N'] = notin_propagates_to_target_fc [_ ⊢ F] [_ ⊢ H[..]] [_ ⊢ N] [_ ⊢ I[..]] in [g ⊢ not_nu \a.N']
 ;
 
-% If a process X makes an open forward transition F via the proof label T
+% If a process X makes an open forward transition F via the proof label θ
 % into the process X', a key K does not occur in X (i.e., notin K X holds),
-% and key(T) is different from K, then K does not occur in X' (notin K X').
-rec notin_propagates_to_target_fo: (g:ctx) [g ⊢ fstep_op X (open \a.T) X'] →
-  [g,a:names ⊢ key T M[]] → [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
+% and key(θ) is different from K, then K does not occur in X' (notin K X').
+rec notin_propagates_to_target_fo: (g:ctx) [g ⊢ fstep_op X (open \a.θ) X'] →
+  [g,a:names ⊢ key θ M[]] → [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
 / total f (notin_propagates_to_target_fo _ _ _ _ _ _ f _ _ _) /
 fn f,h,n,i ⇒ case f of
   | [g ⊢ fo_nu_cl (\a.O) (\a.L) (\a.F)] ⇒ let [g ⊢ not_nu \a.N] = n in
@@ -464,8 +464,8 @@ fn f,h,n,i ⇒ case f of
 % If a process X' makes a closed backward transition B into the process X,
 % and a key K does not occur in X (i.e., notin K X holds), then
 % then any key different than K does not occur in X' (notin K X').
-rec notin_propagates_to_source_bc: (g:ctx) [g ⊢ bstep_cl X' T X] →
-  [g ⊢ key T M[]] → [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
+rec notin_propagates_to_source_bc: (g:ctx) [g ⊢ bstep_cl X' θ X] →
+  [g ⊢ key θ M[]] → [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
 / total b (notin_propagates_to_source_bc _ _ _ _ _ _ b _ _ _) /
 fn b,h,n,i ⇒ let [g ⊢ F] = loop_lemma_two_cl b in
 notin_propagates_to_target_fc [g ⊢ F] h n i
@@ -474,8 +474,8 @@ notin_propagates_to_target_fc [g ⊢ F] h n i
 % If a process X' makes an open backward transition B into the process X,
 % and a key K does not occur in X (i.e., notin K X holds), then
 % then any key different than K does not occur in X' (notin K X').
-rec notin_propagates_to_source_bo: (g:ctx) [g ⊢ bstep_op X' (open \a.T) X] →
-  [g,a:names ⊢ key T M[]] → [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
+rec notin_propagates_to_source_bo: (g:ctx) [g ⊢ bstep_op X' (open \a.θ) X] →
+  [g,a:names ⊢ key θ M[]] → [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
 / total b (notin_propagates_to_source_bo _ _ _ _ _ _ b _ _ _) /
 fn b,h,n,i ⇒ let [g ⊢ F] = loop_lemma_two_op b in
 notin_propagates_to_target_fo [g ⊢ F] h n i
@@ -484,7 +484,7 @@ notin_propagates_to_target_fo [g ⊢ F] h n i
 % If a process X' makes a closed backward transition B into the process X,
 % and a key K does not occur in X' (i.e., notin K X' holds), then K does
 % not occur in X as well (notin K X).
-rec notin_propagates_to_target_bc: (g:ctx) [g ⊢ bstep_cl X' T X] →
+rec notin_propagates_to_target_bc: (g:ctx) [g ⊢ bstep_cl X' θ X] →
   [g ⊢ notin K[] X'] → [g ⊢ notin K[] X] =
 / total b (notin_propagates_to_target_bc _ _ _ _ _ b _) /
 fn b,n ⇒ let [g ⊢ F] = loop_lemma_two_cl b in
@@ -494,7 +494,7 @@ notin_propagates_to_source_fc [g ⊢ F] n
 % If a process X' makes an open backward transition B into the process X,
 % and a key K does not occur in X' (i.e., notin K X' holds), then K does
 % not occur in X as well (notin K X).
-rec notin_propagates_to_target_bo: (g:ctx) [g ⊢ bstep_op X' (open \a.T) X] →
+rec notin_propagates_to_target_bo: (g:ctx) [g ⊢ bstep_op X' (open \a.θ) X] →
   [g ⊢ notin K[] X'] → [g ⊢ notin K[] X] =
 / total b (notin_propagates_to_target_bo _ _ _ _ _ b _) /
 fn b,n ⇒ let [g ⊢ F] = loop_lemma_two_op b in
@@ -504,7 +504,7 @@ notin_propagates_to_source_fo [g ⊢ F] n
 
 % If two closed proof labels depending on a name "a" are independent,
 % they remain independent even if we replace one of the two "a"s with a fresh name "b".
-rec ind_rename: (g:ctx) [g,a:names ⊢ indep_cl T1 T2] → [g,a:names,b:names ⊢ indep_cl T1[..,a] T2[..,b]] =
+rec ind_rename: (g:ctx) [g,a:names ⊢ indep_cl θ1 θ2] → [g,a:names,b:names ⊢ indep_cl θ1[..,a] θ2[..,b]] =
 / total i (ind_rename _ _ _ i) /
 fn i ⇒ case i of
   | [g,a:names ⊢ i_c1l I] ⇒ let [g,a:names,b:names ⊢ I'] = ind_rename [_ ⊢ I] in [_ ⊢ i_c1l I']
@@ -524,9 +524,9 @@ fn i ⇒ case i of
 
 %%% Auxiliary lemmas for IRE
 
-% Given a forward closed transition F: X --[T]--> Y, the target process Y contains the key key(T).
-% More precisely, we prove that notin (key(T)) Y gives a contradiction.
-rec key_in_target_of_fstep_cl: (g:ctx) [g ⊢ fstep_cl X T Y] → [g ⊢ key T K[]] → [g ⊢ notin K[] Y] → [g ⊢ false] =
+% Given a forward closed transition F: X --[θ]--> Y, the target process Y contains the key key(θ).
+% More precisely, we prove that notin (key(θ)) Y gives a contradiction.
+rec key_in_target_of_fstep_cl: (g:ctx) [g ⊢ fstep_cl X θ Y] → [g ⊢ key θ K[]] → [g ⊢ notin K[] Y] → [g ⊢ false] =
 / total f (key_in_target_of_fstep_cl _ _ _ _ _ f _ _) /
 fn f,h,n ⇒ case f of
   | [g ⊢ fc_pref _] ⇒ let [g ⊢ key_base] = h in
@@ -549,9 +549,9 @@ fn f,h,n ⇒ case f of
     let [g ⊢ not_nu \a.N] = n in impossible key_in_target_of_fstep_cl [_ ⊢ F] [_ ⊢ H[..]] [_ ⊢ N]
 ;
 
-% Given a forward open transition F: X --[T]--> Y, the target process Y contains the key key(T).
-% More precisely, we prove that notin (key(T)) Y gives a contradiction.
-rec key_in_target_of_fstep_op: (g:ctx) [g ⊢ fstep_op X (open \a.T) Y] → [g,a:names ⊢ key T K[]] → [g ⊢ notin K[] Y] → [g ⊢ false] =
+% Given a forward open transition F: X --[θ]--> Y, the target process Y contains the key key(θ).
+% More precisely, we prove that notin (key(θ)) Y gives a contradiction.
+rec key_in_target_of_fstep_op: (g:ctx) [g ⊢ fstep_op X (open \a.θ) Y] → [g,a:names ⊢ key θ K[]] → [g ⊢ notin K[] Y] → [g ⊢ false] =
 / total f (key_in_target_of_fstep_op _ _ _ _ _ f _ _) /
 fn f,h,n ⇒ case f of
   | [g ⊢ fo_nu_cl (\_._) (\_._) (\a.F)] ⇒ let [g,a:names ⊢ H] = h in
@@ -571,8 +571,8 @@ fn f,h,n ⇒ case f of
 ;
 
 % Two forward composable transitions cannot have the same key.
-rec no_composable_fw_tr_with_same_key: (g:ctx) [g ⊢ fstep X T1 Y] → [g ⊢ fstep Y T2 Z] →
-  [g ⊢ key_pl T1 K[]] → [g ⊢ key_pl T2 K[]] → [g ⊢ false] =
+rec no_composable_fw_tr_with_same_key: (g:ctx) [g ⊢ fstep X θ1 Y] → [g ⊢ fstep Y θ2 Z] →
+  [g ⊢ key_pl θ1 K[]] → [g ⊢ key_pl θ2 K[]] → [g ⊢ false] =
 / total x (no_composable_fw_tr_with_same_key x _ _ _ _ _ _ _ _ _ _) /
 fn fs1,fs2,h1,h2 ⇒ case fs1 of
   | [g ⊢ fc F1] ⇒ let [g ⊢ key_cl H1] = h1 in
@@ -806,8 +806,8 @@ fn fs1,fs2,h1,h2 ⇒ case fs1 of
 ;
 
 % Two backward composable transitions cannot have the same key.
-rec no_composable_bw_tr_with_same_key: (g:ctx) [g ⊢ bstep Z T2 Y] → [g ⊢ bstep Y T1 X] →
-  [g ⊢ key_pl T2 K[]] → [g ⊢ key_pl T1 K[]] → [g ⊢ false] =
+rec no_composable_bw_tr_with_same_key: (g:ctx) [g ⊢ bstep Z θ2 Y] → [g ⊢ bstep Y θ1 X] →
+  [g ⊢ key_pl θ2 K[]] → [g ⊢ key_pl θ1 K[]] → [g ⊢ false] =
 / total x (no_composable_bw_tr_with_same_key x _ _ _ _ _ _ _ _ _ _) /
 fn bs1,bs2,h1,h2 ⇒ case bs1 of
   | [g ⊢ bc B1] ⇒ let [g ⊢ F1] = loop_lemma_two_cl [g ⊢ B1] in
@@ -825,27 +825,27 @@ fn bs1,bs2,h1,h2 ⇒ case bs1 of
 ;
 
 % Two forward composable transitions cannot have the same proof label.
-rec no_composable_fw_tr_with_same_label: (g:ctx) [g ⊢ fstep X T Y] → [g ⊢ fstep Y T Z] → [g ⊢ false] =
+rec no_composable_fw_tr_with_same_label: (g:ctx) [g ⊢ fstep X θ Y] → [g ⊢ fstep Y θ Z] → [g ⊢ false] =
 / total x (no_composable_fw_tr_with_same_label x _ _ _ _ _) /
 fn fs1,fs2 ⇒ case fs1 of
-  | [g ⊢ fc F1]:[g ⊢ fstep _ (p_cl T) _] ⇒ let [g ⊢ ex_k H] = total_key [g ⊢ T] in
+  | [g ⊢ fc F1]:[g ⊢ fstep _ (p_cl θ) _] ⇒ let [g ⊢ ex_k H] = total_key [g ⊢ θ] in
     let [g ⊢ fc F2] = fs2 in impossible no_composable_fw_tr_with_same_key [g ⊢ fc F1] [g ⊢ fc F2] [g ⊢ key_cl H] [g ⊢ key_cl H]
-  | [g ⊢ fo F1]:[g ⊢ fstep _ (p_op (open \a.T)) _] ⇒ let [g,a:names ⊢ ex_k H] = total_key [_ ⊢ T] in
+  | [g ⊢ fo F1]:[g ⊢ fstep _ (p_op (open \a.θ)) _] ⇒ let [g,a:names ⊢ ex_k H] = total_key [_ ⊢ θ] in
     let [g ⊢ fo F2] = fs2 in impossible no_composable_fw_tr_with_same_key [g ⊢ fo F1] [g ⊢ fo F2] [g ⊢ key_op \a.H] [g ⊢ key_op \a.H]
 ;
 
 % Two backward composable transitions cannot have the same proof label.
-rec no_composable_bw_tr_with_same_label: (g:ctx) [g ⊢ bstep X T Y] → [g ⊢ bstep Y T Z] → [g ⊢ false] =
+rec no_composable_bw_tr_with_same_label: (g:ctx) [g ⊢ bstep X θ Y] → [g ⊢ bstep Y θ Z] → [g ⊢ false] =
 / total x (no_composable_bw_tr_with_same_label x _ _ _ _ _) /
 fn bs1,bs2 ⇒ case bs1 of
-  | [g ⊢ bc F1]:[g ⊢ bstep _ (p_cl T) _] ⇒ let [g ⊢ ex_k H] = total_key [g ⊢ T] in
+  | [g ⊢ bc F1]:[g ⊢ bstep _ (p_cl θ) _] ⇒ let [g ⊢ ex_k H] = total_key [g ⊢ θ] in
     let [g ⊢ bc F2] = bs2 in impossible no_composable_bw_tr_with_same_key [g ⊢ bc F1] [g ⊢ bc F2] [g ⊢ key_cl H] [g ⊢ key_cl H]
-  | [g ⊢ bo F1]:[g ⊢ bstep _ (p_op (open \a.T)) _] ⇒ let [g,a:names ⊢ ex_k H] = total_key [_ ⊢ T] in
+  | [g ⊢ bo F1]:[g ⊢ bstep _ (p_op (open \a.θ)) _] ⇒ let [g,a:names ⊢ ex_k H] = total_key [_ ⊢ θ] in
     let [g ⊢ bo F2] = bs2 in impossible no_composable_bw_tr_with_same_key [g ⊢ bo F1] [g ⊢ bo F2] [g ⊢ key_op \a.H] [g ⊢ key_op \a.H]
 ;
 
 % Given a combined transition t, t and inv_tr(t) have opposite directions.
-rec inv_tr_have_opp_direction: (g:ctx) (S1:[g ⊢ step X1 T1 X1']) (S2:[g ⊢ step X2 T2 X2'])
+rec inv_tr_have_opp_direction: (g:ctx) (S1:[g ⊢ step X1 θ1 X1']) (S2:[g ⊢ step X2 θ2 X2'])
   [g ⊢ inv_tr S1 S2] → [g ⊢ opp_direction S1 S2] =
 / total hr (inv_tr_have_opp_direction _ _ _ _ _ _ _ _ _ hr) /
 fn hr ⇒ let [g ⊢ it S1 S2] = hr in

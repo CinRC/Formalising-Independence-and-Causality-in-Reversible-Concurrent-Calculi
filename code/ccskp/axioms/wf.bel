@@ -15,15 +15,15 @@
 % Type family encoding accessibility of CCSKP processes
 inductive acc: (g:ctx) [g ⊢ proc] → ctype =
   | acc_intro: {g:ctx} {X':[g ⊢ proc]}
-    ({X:[g ⊢ proc]} {T:[g ⊢ pr_lab]} [g ⊢ fstep X T X'] → acc [g ⊢ X]) → acc [g ⊢ X']
+    ({X:[g ⊢ proc]} {θ:[g ⊢ pr_lab]} [g ⊢ fstep X θ X'] → acc [g ⊢ X]) → acc [g ⊢ X']
 ;
 
-% If X is accessible, then A[K].X is accessible
-rec acc_kpref: (g:ctx) {A:[g ⊢ labels]} {K:[⊢ keys]} acc [g ⊢ X] → acc [g ⊢ kpref A K[] X] =
+% If X is accessible, then α[K].X is accessible
+rec acc_kpref: (g:ctx) {α:[g ⊢ labels]} {K:[⊢ keys]} acc [g ⊢ X] → acc [g ⊢ kpref α K[] X] =
 / total a (acc_kpref _ _ _ _ a) /
-mlam A,K ⇒ fn a ⇒ let acc_intro [g] [g ⊢ X] h = a in
-acc_intro [g] [g ⊢ kpref A K[] X] (mlam Y,T ⇒ fn f ⇒ (case f of 
-       | [g ⊢ fc (fc_pref _)] ⇒ acc_intro [g] [_ ⊢ pref A X] (mlam _,_ ⇒ fn f' ⇒
+mlam α,K ⇒ fn a ⇒ let acc_intro [g] [g ⊢ X] h = a in
+acc_intro [g] [g ⊢ kpref α K[] X] (mlam Y,θ ⇒ fn f ⇒ (case f of 
+       | [g ⊢ fc (fc_pref _)] ⇒ acc_intro [g] [_ ⊢ pref α X] (mlam _,_ ⇒ fn f' ⇒
          (case f' of
             | [g ⊢ fc F'] ⇒ impossible [g ⊢ F']
             | [g ⊢ fo F'] ⇒ impossible [g ⊢ F']))
@@ -74,10 +74,10 @@ mlam X ⇒ case [_ ⊢ X] of
   | [g ⊢ null] ⇒ acc_intro [g] [_ ⊢ null] (mlam _,_ ⇒ fn f ⇒ (case f of 
        | [g ⊢ fc F] ⇒ impossible [g ⊢ F]
        | [g ⊢ fo F] ⇒ impossible [g ⊢ F]))
-  | [g ⊢ pref A X1] ⇒ acc_intro [g] [_ ⊢ pref A X1] (mlam _,_ ⇒ fn f ⇒ (case f of 
+  | [g ⊢ pref α X1] ⇒ acc_intro [g] [_ ⊢ pref α X1] (mlam _,_ ⇒ fn f ⇒ (case f of 
        | [g ⊢ fc F] ⇒ impossible [g ⊢ F]
        | [g ⊢ fo F] ⇒ impossible [g ⊢ F]))
-  | [g ⊢ kpref A K[] X1] ⇒ acc_kpref [_ ⊢ _] [_ ⊢ _] (wf [g ⊢ X1])
+  | [g ⊢ kpref α K[] X1] ⇒ acc_kpref [_ ⊢ _] [_ ⊢ _] (wf [g ⊢ X1])
   | [g ⊢ sum X1 X2] ⇒ acc_sum (wf [g ⊢ X1]) (wf [g ⊢ X2])
   | [g ⊢ par X1 X2] ⇒ acc_par (wf [g ⊢ X1]) (wf [g ⊢ X2])
   | [g ⊢ nu \a.X1] ⇒ acc_nu (wf [_ ⊢ X1])

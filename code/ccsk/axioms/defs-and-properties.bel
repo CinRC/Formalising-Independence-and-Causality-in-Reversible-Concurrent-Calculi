@@ -146,10 +146,10 @@ fn f,n ⇒ case f of
     let [g,a:names ⊢ N'] = notin_propagates_to_source [_ ⊢ F] [_ ⊢ N] in [g ⊢ not_nu \a.N']
 ;
 
-% If a process X makes a forward transition F via the keyed label A[M]
+% If a process X makes a forward transition F via the keyed label α[M]
 % into the process X', a key K does not occur in X (i.e., notin K X holds),
 % and M is different from K, then K does not occur in X' (notin K X').
-rec notin_propagates_to_target: (g:ctx) [g ⊢ ccsk.fstep X (kl_base A M[]) X'] →
+rec notin_propagates_to_target: (g:ctx) [g ⊢ ccsk.fstep X (kl_base α M[]) X'] →
   [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
 / total f (notin_propagates_to_target _ _ _ _ _ _ f _ _) /
 fn f,n,i ⇒ case f of
@@ -176,9 +176,9 @@ fn f,n,i ⇒ case f of
     let [g,a:names ⊢ N'] = notin_propagates_to_target [_ ⊢ F] [_ ⊢ N] [_ ⊢ I[..]] in [g ⊢ not_nu \a.N']
 ;
 
-% Given a forward transition F: X --[A K]--> Y, the target process Y contains the key K.
+% Given a forward transition F: X --[α K]--> Y, the target process Y contains the key K.
 % More precisely, we prove that notin K Y gives a contradiction.
-rec key_in_target_of_fstep: (g:ctx) [g ⊢ ccsk.fstep X (kl_base A K[]) Y] → [g ⊢ notin K[] Y] → [g ⊢ false] =
+rec key_in_target_of_fstep: (g:ctx) [g ⊢ ccsk.fstep X (kl_base α K[]) Y] → [g ⊢ notin K[] Y] → [g ⊢ false] =
 / total f (key_in_target_of_fstep _ _ _ _ _ f _) /
 fn f,n ⇒ case f of
   | [g ⊢ fs_pref _] ⇒ let [g ⊢ not_kpref I _] = n in impossible irreflexive_neq [g ⊢ I]
@@ -201,8 +201,8 @@ fn f,n ⇒ case f of
 ;
 
 % Two forward composable transitions cannot have the same key.
-rec ccsk_no_composable_fw_tr_with_same_key: (g:ctx) [g ⊢ ccsk.fstep X (kl_base A1 K[]) Y] →
-  [g ⊢ ccsk.fstep Y (kl_base A2 K[]) Z] → [g ⊢ false] =
+rec ccsk_no_composable_fw_tr_with_same_key: (g:ctx) [g ⊢ ccsk.fstep X (kl_base α1 K[]) Y] →
+  [g ⊢ ccsk.fstep Y (kl_base α2 K[]) Z] → [g ⊢ false] =
 / total x (ccsk_no_composable_fw_tr_with_same_key _ x _ _ _ _ _ _ _) /
 fn f1,f2 ⇒ let [g ⊢ F1] = f1 in
 let [g ⊢ F2] = f2 in
@@ -246,16 +246,16 @@ case [_ ⊢ S1] of
 ;
 
 
-% Given CCSK combined transitions T1: step X (kl_base A K) Z1, T2: step X (kl_base C K) Z2,
-% U1: step Y (kl_base B M) Z1] and U2: step Y (kl_base D M) Z2, that use distinct keys K and M
+% Given CCSK combined transitions T1: step X (kl_base α K) Z1, T2: step X (kl_base γ K) Z2,
+% U1: step Y (kl_base β M) Z1] and U2: step Y (kl_base δ M) Z2, that use distinct keys K and M
 % and such that (T1,T2) and (U1,U2) have same direction, then the two processes Z1 and Z2 are equal.
 % As a consequence, for the uniqueness of derivation trees of transitions, T1=T2 and U1=U2.
 
 % We first prove the result by cases, according to the direction of Ti and Ui, i=1,2.
 
 % (T1,T2) and (U1,U2) are all forward
-rec unique_diamonds_ff: (g:ctx) {F1:[g ⊢ ccsk.fstep X (kl_base A K[]) Z1]} {F2:[g ⊢ ccsk.fstep X (kl_base C K[]) Z2]}
-  {G1:[g ⊢ ccsk.fstep Y (kl_base B M[]) Z1]} {G2:[g ⊢ ccsk.fstep Y (kl_base D M[]) Z2]} [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
+rec unique_diamonds_ff: (g:ctx) {F1:[g ⊢ ccsk.fstep X (kl_base α K[]) Z1]} {F2:[g ⊢ ccsk.fstep X (kl_base γ K[]) Z2]}
+  {G1:[g ⊢ ccsk.fstep Y (kl_base β M[]) Z1]} {G2:[g ⊢ ccsk.fstep Y (kl_base δ M[]) Z2]} [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
 / total t1 (unique_diamonds_ff _ _ _ _ _ _ _ _ _ _ _ t1 _ _ _ _) /
 mlam F1,F2,G1,G2 ⇒ fn i ⇒ case [_ ⊢ F1] of
   | [g ⊢ fs_pref DF1] ⇒ (case [g ⊢ G1] of
@@ -1046,8 +1046,8 @@ mlam F1,F2,G1,G2 ⇒ fn i ⇒ case [_ ⊢ F1] of
 % (T1,T2) and (U1,U2) have opposite directions.
 % Thanks to the loop lemma, we can reverse the backward transitions
 % and equivalently state the result using only forward transitions.
-rec unique_diamonds_fb: (g:ctx) {F1:[g ⊢ ccsk.fstep X (kl_base A K[]) Z1]} {F2:[g ⊢ ccsk.fstep X (kl_base C K[]) Z2]}
-  {G1:[g ⊢ ccsk.fstep Z1 (kl_base B M[]) Y]} {G2:[g ⊢ ccsk.fstep Z2 (kl_base D M[]) Y]} [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
+rec unique_diamonds_fb: (g:ctx) {F1:[g ⊢ ccsk.fstep X (kl_base α K[]) Z1]} {F2:[g ⊢ ccsk.fstep X (kl_base γ K[]) Z2]}
+  {G1:[g ⊢ ccsk.fstep Z1 (kl_base β M[]) Y]} {G2:[g ⊢ ccsk.fstep Z2 (kl_base δ M[]) Y]} [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
 / total t1 (unique_diamonds_fb _ _ _ _ _ _ _ _ _ _ _ t1 _ _ _ _) /
 mlam F1,F2,G1,G2 ⇒ fn i ⇒ case [_ ⊢ F1] of
   | [g ⊢ fs_pref DF1] ⇒ let [g ⊢ fs_pref DF2] = [g ⊢ F2] in
@@ -1726,8 +1726,8 @@ mlam F1,F2,G1,G2 ⇒ fn i ⇒ case [_ ⊢ F1] of
 ;
 
 % (T1,T2) and (U1,U2) are all backward
-rec unique_diamonds_bb: (g:ctx) {F1:[g ⊢ ccsk.fstep Z1 (kl_base A K[]) X]} {F2:[g ⊢ ccsk.fstep Z2 (kl_base C K[]) X]}
-  {G1:[g ⊢ ccsk.fstep Z1 (kl_base B M[]) Y]} {G2:[g ⊢ ccsk.fstep Z2 (kl_base D M[]) Y]} [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
+rec unique_diamonds_bb: (g:ctx) {F1:[g ⊢ ccsk.fstep Z1 (kl_base α K[]) X]} {F2:[g ⊢ ccsk.fstep Z2 (kl_base γ K[]) X]}
+  {G1:[g ⊢ ccsk.fstep Z1 (kl_base β M[]) Y]} {G2:[g ⊢ ccsk.fstep Z2 (kl_base δ M[]) Y]} [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
 / total t1 (unique_diamonds_bb _ _ _ _ _ _ _ _ _ _ _ t1 _ _ _ _) /
 mlam F1,F2,G1,G2 ⇒ fn i ⇒ case [_ ⊢ F1] of
   | [g ⊢ fs_pref _] ⇒ let [g ⊢ fs_pref _] = [g ⊢ G1] in (case [g ⊢ F2] of
@@ -1963,8 +1963,8 @@ mlam F1,F2,G1,G2 ⇒ fn i ⇒ case [_ ⊢ F1] of
 ;
 
 % Unique diamonds lemma for combined CCSK transitions
-rec unique_diamonds: (g:ctx) {T1:[g ⊢ ccsk.step X (kl_base A K[]) Z1]} {T2:[g ⊢ ccsk.step X (kl_base C K[]) Z2]}
-  {U1:[g ⊢ ccsk.step Y (kl_base B M[]) Z1]} {U2:[g ⊢ ccsk.step Y (kl_base D M[]) Z2]}
+rec unique_diamonds: (g:ctx) {T1:[g ⊢ ccsk.step X (kl_base α K[]) Z1]} {T2:[g ⊢ ccsk.step X (kl_base γ K[]) Z2]}
+  {U1:[g ⊢ ccsk.step Y (kl_base β M[]) Z1]} {U2:[g ⊢ ccsk.step Y (kl_base δ M[]) Z2]}
   [g ⊢ ccsk_same_direction T1 T2] → [g ⊢ ccsk_same_direction U1 U2] → [g ⊢ neq K[] M[]] → [g ⊢ eqp Z1 Z2] =
 / total (unique_diamonds) /
 mlam T1,T2,U1,U2 ⇒ fn sdt,sdu,i ⇒ case sdt of

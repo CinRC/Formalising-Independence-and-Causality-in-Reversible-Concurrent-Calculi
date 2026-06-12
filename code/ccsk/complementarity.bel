@@ -4,18 +4,18 @@
 % Two CCSK transitions s1 and s2 are independent if they are connected and the proof labels
 % of their corresponding CCSKP transitions enrich(s1) and enrich(s2) are independent.
 LF ccsk_indep_tr: ccsk.step X KL1 X' → ccsk.step Y KL2 Y' → type =
-  | ccsk_ind_tr: enrich (S1:ccsk.step X KL1 X') (S1+:ccskp.step X T1 X') →
-    enrich (S2:ccsk.step Y KL2 Y') (S2+:ccskp.step Y T2 Y') →
-    indep T1 T2 → ccsk.conn_tr S1 S2 → ccsk_indep_tr S1 S2
+  | ccsk_ind_tr: enrich (S1:ccsk.step X KL1 X') (S1+:ccskp.step X θ1 X') →
+    enrich (S2:ccsk.step Y KL2 Y') (S2+:ccskp.step Y θ2 Y') →
+    indep θ1 θ2 → ccsk.conn_tr S1 S2 → ccsk_indep_tr S1 S2
 ;
 
 % Dependence of CCSK transitions:
 % Two CCSK transitions s1 and s2 are dependent if they are connected and the proof labels
 % of their corresponding CCSKP transitions enrich(s1) and enrich(s2) are dependent.
 LF ccsk_dep_tr: ccsk.step X KL1 X' → ccsk.step Y KL2 Y' → type =
-  | ccsk_dp_tr: enrich (S1:ccsk.step X KL1 X') (S1+:ccskp.step X T1 X') →
-    enrich (S2:ccsk.step Y KL2 Y') (S2+:ccskp.step Y T2 Y') →
-    dep T1 T2 → ccsk.conn_tr S1 S2 → ccsk_dep_tr S1 S2
+  | ccsk_dp_tr: enrich (S1:ccsk.step X KL1 X') (S1+:ccskp.step X θ1 X') →
+    enrich (S2:ccsk.step Y KL2 Y') (S2+:ccskp.step Y θ2 Y') →
+    dep θ1 θ2 → ccsk.conn_tr S1 S2 → ccsk_dep_tr S1 S2
 ;
 
 

@@ -37,39 +37,39 @@ LF pr_lab: type =
 
 % Label of a closed proof label
 LF lab: pr_lab_cl → labels → type =
-  | lab_base: lab (pr_base A K) A
-  | lab_suml: lab T A → lab (pr_suml T) A
-  | lab_sumr: lab T A → lab (pr_sumr T) A
-  | lab_parl: lab T A → lab (pr_parl T) A
-  | lab_parr: lab T A → lab (pr_parr T) A
-  | lab_sync: lab (pr_sync T1 T2) tau
+  | lab_base: lab (pr_base α K) α
+  | lab_suml: lab θ α → lab (pr_suml θ) α
+  | lab_sumr: lab θ α → lab (pr_sumr θ) α
+  | lab_parl: lab θ α → lab (pr_parl θ) α
+  | lab_parr: lab θ α → lab (pr_parr θ) α
+  | lab_sync: lab (pr_sync θ1 θ2) tau
 ;
 
 % Key of a closed proof label
 LF key: pr_lab_cl → keys → type =
-  | key_base: key (pr_base A K) K
-  | key_suml: key T K → key (pr_suml T) K
-  | key_sumr: key T K → key (pr_sumr T) K
-  | key_parl: key T K → key (pr_parl T) K
-  | key_parr: key T K → key (pr_parr T) K
-  | key_sync: key T1 K → key (pr_sync T1 T2) K
+  | key_base: key (pr_base α K) K
+  | key_suml: key θ K → key (pr_suml θ) K
+  | key_sumr: key θ K → key (pr_sumr θ) K
+  | key_parl: key θ K → key (pr_parl θ) K
+  | key_parr: key θ K → key (pr_parr θ) K
+  | key_sync: key θ1 K → key (pr_sync θ1 θ2) K
 ;
 
 % For some results, it is useful to extend the notion of key to proof labels
 LF key_pl: pr_lab → keys → type =
-  | key_cl: key T K → key_pl (p_cl T) K
-  | key_op: ({a:names} key (T a) K) → key_pl (p_op (open T)) K
+  | key_cl: key θ K → key_pl (p_cl θ) K
+  | key_op: ({a:names} key (θ a) K) → key_pl (p_op (open θ)) K
 ;
 
 % Occurrence of names in closed proof labels
 LF occurs: names → pr_lab_cl → type =
   | occ_basel: occurs A (pr_base (inp A) K)
   | occ_baser: occurs A (pr_base (out A) K)
-  | occ_suml: occurs A T → occurs A (pr_suml T)
-  | occ_sumr: occurs A T → occurs A (pr_sumr T)
-  | occ_parl: occurs A T → occurs A (pr_parl T)
-  | occ_parr: occurs A T → occurs A (pr_parr T)
-  | occ_sync: occurs A T1 → occurs A (pr_sync T1 T2)
+  | occ_suml: occurs A θ → occurs A (pr_suml θ)
+  | occ_sumr: occurs A θ → occurs A (pr_sumr θ)
+  | occ_parl: occurs A θ → occurs A (pr_parl θ)
+  | occ_parr: occurs A θ → occurs A (pr_parr θ)
+  | occ_sync: occurs A θ1 → occurs A (pr_sync θ1 θ2)
 ;
 
 % The chosen encoding of proof labels is operationally simpler, but pays the price
@@ -79,27 +79,27 @@ LF occurs: names → pr_lab_cl → type =
 
 % Valid closed proof labels
 LF valid_cl: pr_lab_cl → type =
-  | v_base: valid_cl (pr_base A K)
-  | v_suml: valid_cl T → valid_cl (pr_suml T)
-  | v_sumr: valid_cl T → valid_cl (pr_sumr T)
-  | v_parl: valid_cl T → valid_cl (pr_parl T)
-  | v_parr: valid_cl T → valid_cl (pr_parr T)
-  | v_synl: valid_cl T1 → valid_cl T2 → lab T1 (inp A) → key T1 K
-          → lab T2 (out A) → key T2 K → valid_cl (pr_sync T1 T2)
-  | v_synr: valid_cl T1 → valid_cl T2 → lab T1 (out A) → key T1 K
-          → lab T2 (inp A) → key T2 K → valid_cl (pr_sync T1 T2)
+  | v_base: valid_cl (pr_base α K)
+  | v_suml: valid_cl θ → valid_cl (pr_suml θ)
+  | v_sumr: valid_cl θ → valid_cl (pr_sumr θ)
+  | v_parl: valid_cl θ → valid_cl (pr_parl θ)
+  | v_parr: valid_cl θ → valid_cl (pr_parr θ)
+  | v_synl: valid_cl θ1 → valid_cl θ2 → lab θ1 (inp A) → key θ1 K
+          → lab θ2 (out A) → key θ2 K → valid_cl (pr_sync θ1 θ2)
+  | v_synr: valid_cl θ1 → valid_cl θ2 → lab θ1 (out A) → key θ1 K
+          → lab θ2 (inp A) → key θ2 K → valid_cl (pr_sync θ1 θ2)
 ;
 
 % Valid open proof labels
 LF valid_op: pr_lab_op → type =
-  | vo_base: ({a:names} occurs a (T a)) → ({a:names} lab (T a) A)
-           → ({a:names} valid_cl (T a)) → valid_op (open T)
+  | vo_base: ({a:names} occurs a (θ a)) → ({a:names} lab (θ a) α)
+           → ({a:names} valid_cl (θ a)) → valid_op (open θ)
 ;
 
 % Valid proof labels
 LF valid: pr_lab → type =
-  | v_cl: valid_cl T → valid (p_cl T)
-  | v_op: valid_op T → valid (p_op T)
+  | v_cl: valid_cl θ → valid (p_cl θ)
+  | v_op: valid_op θ → valid (p_op θ)
 ;
 
 
@@ -110,117 +110,117 @@ LF valid: pr_lab → type =
 
 % Closed forward transitions
 LF fstep_cl: proc → pr_lab_cl → proc → type =
-  | fc_pref: std X → fstep_cl (pref A X) (pr_base A K) (kpref A K X)
-  | fc_kpref: fstep_cl X T X' → key T M → neq K M
-            → fstep_cl (kpref A K X) T (kpref A K X')
-  | fc_suml: fstep_cl X T X' → std Y → fstep_cl (sum X Y) (pr_suml T) (sum X' Y)
-  | fc_sumr: fstep_cl Y T Y' → std X → fstep_cl (sum X Y) (pr_sumr T) (sum X Y')
-  | fc_parl: fstep_cl X T X' → key T K → notin K Y
-           → fstep_cl (par X Y) (pr_parl T) (par X' Y)
-  | fc_parr: fstep_cl Y T Y' → key T K → notin K X
-           → fstep_cl (par X Y) (pr_parr T) (par X Y')
-  | fc_synl: fstep_cl X T1 X' → lab T1 (inp L) → key T1 K
-           → fstep_cl Y T2 Y' → lab T2 (out L) → key T2 K
-           → fstep_cl (par X Y) (pr_sync T1 T2) (par X' Y')
-  | fc_synr: fstep_cl X T1 X' → lab T1 (out L) → key T1 K
-           → fstep_cl Y T2 Y' → lab T2 (inp L) → key T2 K
-           → fstep_cl (par X Y) (pr_sync T1 T2) (par X' Y')
-  | fc_nu: ({a:names} fstep_cl (X a) T (X' a)) → fstep_cl (nu X) T (nu X')
+  | fc_pref: std X → fstep_cl (pref α X) (pr_base α K) (kpref α K X)
+  | fc_kpref: fstep_cl X θ X' → key θ M → neq K M
+            → fstep_cl (kpref α K X) θ (kpref α K X')
+  | fc_suml: fstep_cl X θ X' → std Y → fstep_cl (sum X Y) (pr_suml θ) (sum X' Y)
+  | fc_sumr: fstep_cl Y θ Y' → std X → fstep_cl (sum X Y) (pr_sumr θ) (sum X Y')
+  | fc_parl: fstep_cl X θ X' → key θ K → notin K Y
+           → fstep_cl (par X Y) (pr_parl θ) (par X' Y)
+  | fc_parr: fstep_cl Y θ Y' → key θ K → notin K X
+           → fstep_cl (par X Y) (pr_parr θ) (par X Y')
+  | fc_synl: fstep_cl X θ1 X' → lab θ1 (inp L) → key θ1 K
+           → fstep_cl Y θ2 Y' → lab θ2 (out L) → key θ2 K
+           → fstep_cl (par X Y) (pr_sync θ1 θ2) (par X' Y')
+  | fc_synr: fstep_cl X θ1 X' → lab θ1 (out L) → key θ1 K
+           → fstep_cl Y θ2 Y' → lab θ2 (inp L) → key θ2 K
+           → fstep_cl (par X Y) (pr_sync θ1 θ2) (par X' Y')
+  | fc_nu: ({a:names} fstep_cl (X a) θ (X' a)) → fstep_cl (nu X) θ (nu X')
 ;
 
 % Open forward transitions
 LF fstep_op: proc → pr_lab_op → proc → type =
-  | fo_nu_cl: ({a:names} occurs a (T a)) → ({a:names} lab (T a) A)
-            → ({a:names} fstep_cl (X a) (T a) (X' a))
-            → fstep_op (nu X) (open T) (nu X')
-  | fo_kpref: fstep_op X (open T) X' → ({a:names} key (T a) M) → neq K M
-            → fstep_op (kpref A K X) (open T) (kpref A K X')
-  | fo_suml: fstep_op X (open \a.(T a)) X' → std Y
-           → fstep_op (sum X Y) (open \a.(pr_suml (T a))) (sum X' Y)
-  | fo_sumr: fstep_op Y (open \a.(T a)) Y' → std X
-           → fstep_op (sum X Y) (open \a.(pr_sumr (T a))) (sum X Y')
-  | fo_parl: fstep_op X (open \a.(T a)) X' → ({a:names} key (T a) K) → notin K Y
-           → fstep_op (par X Y) (open \a.(pr_parl (T a))) (par X' Y)
-  | fo_parr: fstep_op Y (open \a.(T a)) Y' → ({a:names} key (T a) K) → notin K X
-           → fstep_op (par X Y) (open \a.(pr_parr (T a))) (par X Y')
-  | fo_nu_op: ({a:names} fstep_op (X a) T (X' a))
-            → fstep_op (nu X) T (nu X')
+  | fo_nu_cl: ({a:names} occurs a (θ a)) → ({a:names} lab (θ a) α)
+            → ({a:names} fstep_cl (X a) (θ a) (X' a))
+            → fstep_op (nu X) (open θ) (nu X')
+  | fo_kpref: fstep_op X (open θ) X' → ({a:names} key (θ a) M) → neq K M
+            → fstep_op (kpref α K X) (open θ) (kpref α K X')
+  | fo_suml: fstep_op X (open \a.(θ a)) X' → std Y
+           → fstep_op (sum X Y) (open \a.(pr_suml (θ a))) (sum X' Y)
+  | fo_sumr: fstep_op Y (open \a.(θ a)) Y' → std X
+           → fstep_op (sum X Y) (open \a.(pr_sumr (θ a))) (sum X Y')
+  | fo_parl: fstep_op X (open \a.(θ a)) X' → ({a:names} key (θ a) K) → notin K Y
+           → fstep_op (par X Y) (open \a.(pr_parl (θ a))) (par X' Y)
+  | fo_parr: fstep_op Y (open \a.(θ a)) Y' → ({a:names} key (θ a) K) → notin K X
+           → fstep_op (par X Y) (open \a.(pr_parr (θ a))) (par X Y')
+  | fo_nu_op: ({a:names} fstep_op (X a) θ (X' a))
+            → fstep_op (nu X) θ (nu X')
 ;
 
 % Forward transitions
 LF fstep: proc → pr_lab → proc → type =
-  | fc: fstep_cl X T X' → fstep X (p_cl T) X'
-  | fo: fstep_op X T X' → fstep X (p_op T) X'
+  | fc: fstep_cl X θ X' → fstep X (p_cl θ) X'
+  | fo: fstep_op X θ X' → fstep X (p_op θ) X'
 ;
 
 % Closed backward transitions
 LF bstep_cl: proc → pr_lab_cl → proc → type =
-  | bc_pref: std X → bstep_cl (kpref A K X) (pr_base A K) (pref A X)
-  | bc_kpref: bstep_cl X' T X → key T M → neq K M
-            → bstep_cl (kpref A K X') T (kpref A K X)
-  | bc_suml: bstep_cl X' T X → std Y → bstep_cl (sum X' Y) (pr_suml T) (sum X Y)
-  | bc_sumr: bstep_cl Y' T Y → std X → bstep_cl (sum X Y') (pr_sumr T) (sum X Y)
-  | bc_parl: bstep_cl X' T X → key T K → notin K Y
-           → bstep_cl (par X' Y) (pr_parl T) (par X Y)
-  | bc_parr: bstep_cl Y' T Y → key T K → notin K X
-           → bstep_cl (par X Y') (pr_parr T) (par X Y)
-  | bc_synl: bstep_cl X' T1 X → lab T1 (inp L) → key T1 K
-           → bstep_cl Y' T2 Y → lab T2 (out L) → key T2 K
-           → bstep_cl (par X' Y') (pr_sync T1 T2) (par X Y)
-  | bc_synr: bstep_cl X' T1 X → lab T1 (out L) → key T1 K
-           → bstep_cl Y' T2 Y → lab T2 (inp L) → key T2 K
-           → bstep_cl (par X' Y') (pr_sync T1 T2) (par X Y)
-  | bc_nu: ({a:names} bstep_cl (X' a) T (X a)) → bstep_cl (nu X') T (nu X)
+  | bc_pref: std X → bstep_cl (kpref α K X) (pr_base α K) (pref α X)
+  | bc_kpref: bstep_cl X' θ X → key θ M → neq K M
+            → bstep_cl (kpref α K X') θ (kpref α K X)
+  | bc_suml: bstep_cl X' θ X → std Y → bstep_cl (sum X' Y) (pr_suml θ) (sum X Y)
+  | bc_sumr: bstep_cl Y' θ Y → std X → bstep_cl (sum X Y') (pr_sumr θ) (sum X Y)
+  | bc_parl: bstep_cl X' θ X → key θ K → notin K Y
+           → bstep_cl (par X' Y) (pr_parl θ) (par X Y)
+  | bc_parr: bstep_cl Y' θ Y → key θ K → notin K X
+           → bstep_cl (par X Y') (pr_parr θ) (par X Y)
+  | bc_synl: bstep_cl X' θ1 X → lab θ1 (inp L) → key θ1 K
+           → bstep_cl Y' θ2 Y → lab θ2 (out L) → key θ2 K
+           → bstep_cl (par X' Y') (pr_sync θ1 θ2) (par X Y)
+  | bc_synr: bstep_cl X' θ1 X → lab θ1 (out L) → key θ1 K
+           → bstep_cl Y' θ2 Y → lab θ2 (inp L) → key θ2 K
+           → bstep_cl (par X' Y') (pr_sync θ1 θ2) (par X Y)
+  | bc_nu: ({a:names} bstep_cl (X' a) θ (X a)) → bstep_cl (nu X') θ (nu X)
 ;
 
 % Open backward transitions
 LF bstep_op: proc → pr_lab_op → proc → type =
-  | bo_nu_cl: ({a:names} occurs a (T a))
-            → ({a:names} lab (T a) A)
-            → ({a:names} bstep_cl (X' a) (T a) (X a))
-            → bstep_op (nu X') (open T) (nu X)
-  | bo_kpref: bstep_op X' (open T) X → ({a:names} key (T a) M) → neq K M
-            → bstep_op (kpref A K X') (open T) (kpref A K X)
-  | bo_suml: bstep_op X' (open \a.(T a)) X → std Y
-           → bstep_op (sum X' Y) (open \a.(pr_suml (T a))) (sum X Y)
-  | bo_sumr: bstep_op Y' (open \a.(T a)) Y → std X
-           → bstep_op (sum X Y') (open \a.(pr_sumr (T a))) (sum X Y)
-  | bo_parl: bstep_op X' (open \a.(T a)) X → ({a:names} key (T a) K) → notin K Y
-           → bstep_op (par X' Y) (open \a.(pr_parl (T a))) (par X Y)
-  | bo_parr: bstep_op Y' (open \a.(T a)) Y → ({a:names} key (T a) K) → notin K X
-           → bstep_op (par X Y') (open \a.(pr_parr (T a))) (par X Y)
-  | bo_nu_op: ({a:names} bstep_op (X' a) T (X a))
-            → bstep_op (nu X') T (nu X)
+  | bo_nu_cl: ({a:names} occurs a (θ a))
+            → ({a:names} lab (θ a) α)
+            → ({a:names} bstep_cl (X' a) (θ a) (X a))
+            → bstep_op (nu X') (open θ) (nu X)
+  | bo_kpref: bstep_op X' (open θ) X → ({a:names} key (θ a) M) → neq K M
+            → bstep_op (kpref α K X') (open θ) (kpref α K X)
+  | bo_suml: bstep_op X' (open \a.(θ a)) X → std Y
+           → bstep_op (sum X' Y) (open \a.(pr_suml (θ a))) (sum X Y)
+  | bo_sumr: bstep_op Y' (open \a.(θ a)) Y → std X
+           → bstep_op (sum X Y') (open \a.(pr_sumr (θ a))) (sum X Y)
+  | bo_parl: bstep_op X' (open \a.(θ a)) X → ({a:names} key (θ a) K) → notin K Y
+           → bstep_op (par X' Y) (open \a.(pr_parl (θ a))) (par X Y)
+  | bo_parr: bstep_op Y' (open \a.(θ a)) Y → ({a:names} key (θ a) K) → notin K X
+           → bstep_op (par X Y') (open \a.(pr_parr (θ a))) (par X Y)
+  | bo_nu_op: ({a:names} bstep_op (X' a) θ (X a))
+            → bstep_op (nu X') θ (nu X)
 ;
 
 % Backward transitions
 LF bstep: proc → pr_lab → proc → type =
-  | bc: bstep_cl X T X' → bstep X (p_cl T) X'
-  | bo: bstep_op X T X' → bstep X (p_op T) X'
+  | bc: bstep_cl X θ X' → bstep X (p_cl θ) X'
+  | bo: bstep_op X θ X' → bstep X (p_op θ) X'
 ;
 
 % Closed combined transitions
 LF step_cl: proc → pr_lab_cl → proc → type =
-  | fwc: fstep_cl X T X' → step_cl X T X'
-  | bwc: bstep_cl X' T X → step_cl X' T X
+  | fwc: fstep_cl X θ X' → step_cl X θ X'
+  | bwc: bstep_cl X' θ X → step_cl X' θ X
 ;
 
 % Open combined transitions
 LF step_op: proc → pr_lab_op → proc → type =
-  | fwo: fstep_op X T X' → step_op X T X'
-  | bwo: bstep_op X' T X → step_op X' T X
+  | fwo: fstep_op X θ X' → step_op X θ X'
+  | bwo: bstep_op X' θ X → step_op X' θ X
 ;
 
 % Combined transitions
 LF step: proc → pr_lab → proc → type =
-  | sc: step_cl X T X' → step X (p_cl T) X'
-  | so: step_op X T X' → step X (p_op T) X'
+  | sc: step_cl X θ X' → step X (p_cl θ) X'
+  | so: step_op X θ X' → step X (p_op θ) X'
 ;
 
 % Paths
 LF step*: proc → proc → type =
   | id_s*: step* X X
-  | st_s*: step X T Y → step* X Y
+  | st_s*: step X θ Y → step* X Y
   | tr_s*: step* X Y → step* Y Z → step* X Z
 ;
 
@@ -230,8 +230,8 @@ LF reachable: proc → type =
 ;
 
 % Connected transitions
-LF conn_tr: step X T1 X' → step Y T2 Y' → type =
-  | ct: {S1:step X T1 X'}{S2: step Y T2 Y'} step* X Y' → conn_tr S1 S2
+LF conn_tr: step X θ1 X' → step Y θ2 Y' → type =
+  | ct: {S1:step X θ1 X'}{S2: step Y θ2 Y'} step* X Y' → conn_tr S1 S2
 ;
 
 %%% Connectedness, dependence and independence of proof labels %%%
@@ -241,55 +241,55 @@ LF conn_tr: step X T1 X' → step Y T2 Y' → type =
 
 % Connectedness of closed proof labels
 LF conn_cl: pr_lab_cl → pr_lab_cl → type =
-  | c_a1: conn_cl (pr_base A K) T
-  | c_a2: conn_cl T (pr_base A K)
-  | c_c1l: conn_cl T1 T2 → conn_cl (pr_suml T1) (pr_suml T2)
-  | c_c1r: conn_cl T1 T2 → conn_cl (pr_sumr T1) (pr_sumr T2)
-  | c_c2l: conn_cl (pr_suml T1) (pr_sumr T2)
-  | c_c2r: conn_cl (pr_sumr T1) (pr_suml T2)
-  | c_p1l: conn_cl T1 T2 → conn_cl (pr_parl T1) (pr_parl T2)
-  | c_p1r: conn_cl T1 T2 → conn_cl (pr_parr T1) (pr_parr T2)
-  | c_p2l: conn_cl (pr_parl T1) (pr_parr T2)
-  | c_p2r: conn_cl (pr_parr T1) (pr_parl T2)
-  | c_s1l: conn_cl T TL → conn_cl (pr_parl T) (pr_sync TL TR)
-  | c_s1r: conn_cl T TR → conn_cl (pr_parr T) (pr_sync TL TR)
-  | c_s2l: conn_cl TL T → conn_cl (pr_sync TL TR) (pr_parl T)
-  | c_s2r: conn_cl TR T → conn_cl (pr_sync TL TR) (pr_parr T)
-  | c_s3: conn_cl T1 T1' → conn_cl T2 T2' → conn_cl (pr_sync T1 T2) (pr_sync T1' T2');
+  | c_a1: conn_cl (pr_base α K) θ
+  | c_a2: conn_cl θ (pr_base α K)
+  | c_c1l: conn_cl θ1 θ2 → conn_cl (pr_suml θ1) (pr_suml θ2)
+  | c_c1r: conn_cl θ1 θ2 → conn_cl (pr_sumr θ1) (pr_sumr θ2)
+  | c_c2l: conn_cl (pr_suml θ1) (pr_sumr θ2)
+  | c_c2r: conn_cl (pr_sumr θ1) (pr_suml θ2)
+  | c_p1l: conn_cl θ1 θ2 → conn_cl (pr_parl θ1) (pr_parl θ2)
+  | c_p1r: conn_cl θ1 θ2 → conn_cl (pr_parr θ1) (pr_parr θ2)
+  | c_p2l: conn_cl (pr_parl θ1) (pr_parr θ2)
+  | c_p2r: conn_cl (pr_parr θ1) (pr_parl θ2)
+  | c_s1l: conn_cl θ θL → conn_cl (pr_parl θ) (pr_sync θL θR)
+  | c_s1r: conn_cl θ θR → conn_cl (pr_parr θ) (pr_sync θL θR)
+  | c_s2l: conn_cl θL θ → conn_cl (pr_sync θL θR) (pr_parl θ)
+  | c_s2r: conn_cl θR θ → conn_cl (pr_sync θL θR) (pr_parr θ)
+  | c_s3: conn_cl θ1 θ1' → conn_cl θ2 θ2' → conn_cl (pr_sync θ1 θ2) (pr_sync θ1' θ2');
 
 % Dependence of closed proof labels
 LF dep_cl: pr_lab_cl → pr_lab_cl → type =
-  | d_a1: dep_cl (pr_base A K) T
-  | d_a2: dep_cl T (pr_base A K)
-  | d_c1l: dep_cl T1 T2 → dep_cl (pr_suml T1) (pr_suml T2)
-  | d_c1r: dep_cl T1 T2 → dep_cl (pr_sumr T1) (pr_sumr T2)
-  | d_c2l: dep_cl (pr_suml T1) (pr_sumr T2)
-  | d_c2r: dep_cl (pr_sumr T1) (pr_suml T2)
-  | d_p1l: dep_cl T1 T2 → dep_cl (pr_parl T1) (pr_parl T2)
-  | d_p1r: dep_cl T1 T2 → dep_cl (pr_parr T1) (pr_parr T2)
-  | d_p2l: key T1 K → key T2 K → dep_cl (pr_parl T1) (pr_parr T2)
-  | d_p2r: key T1 K → key T2 K → dep_cl (pr_parr T1) (pr_parl T2)
-  | d_s1l: dep_cl T TL → dep_cl (pr_parl T) (pr_sync TL TR)
-  | d_s1r: dep_cl T TR → dep_cl (pr_parr T) (pr_sync TL TR)
-  | d_s2l: dep_cl TL T → dep_cl (pr_sync TL TR) (pr_parl T)
-  | d_s2r: dep_cl TR T → dep_cl (pr_sync TL TR) (pr_parr T)
-  | d_s3l: dep_cl T1 T1' → conn_cl T2 T2' → dep_cl (pr_sync T1 T2) (pr_sync T1' T2')
-  | d_s3r: conn_cl T1 T1' → dep_cl T2 T2' → dep_cl (pr_sync T1 T2) (pr_sync T1' T2')
+  | d_a1: dep_cl (pr_base α K) θ
+  | d_a2: dep_cl θ (pr_base α K)
+  | d_c1l: dep_cl θ1 θ2 → dep_cl (pr_suml θ1) (pr_suml θ2)
+  | d_c1r: dep_cl θ1 θ2 → dep_cl (pr_sumr θ1) (pr_sumr θ2)
+  | d_c2l: dep_cl (pr_suml θ1) (pr_sumr θ2)
+  | d_c2r: dep_cl (pr_sumr θ1) (pr_suml θ2)
+  | d_p1l: dep_cl θ1 θ2 → dep_cl (pr_parl θ1) (pr_parl θ2)
+  | d_p1r: dep_cl θ1 θ2 → dep_cl (pr_parr θ1) (pr_parr θ2)
+  | d_p2l: key θ1 K → key θ2 K → dep_cl (pr_parl θ1) (pr_parr θ2)
+  | d_p2r: key θ1 K → key θ2 K → dep_cl (pr_parr θ1) (pr_parl θ2)
+  | d_s1l: dep_cl θ θL → dep_cl (pr_parl θ) (pr_sync θL θR)
+  | d_s1r: dep_cl θ θR → dep_cl (pr_parr θ) (pr_sync θL θR)
+  | d_s2l: dep_cl θL θ → dep_cl (pr_sync θL θR) (pr_parl θ)
+  | d_s2r: dep_cl θR θ → dep_cl (pr_sync θL θR) (pr_parr θ)
+  | d_s3l: dep_cl θ1 θ1' → conn_cl θ2 θ2' → dep_cl (pr_sync θ1 θ2) (pr_sync θ1' θ2')
+  | d_s3r: conn_cl θ1 θ1' → dep_cl θ2 θ2' → dep_cl (pr_sync θ1 θ2) (pr_sync θ1' θ2')
 ;
 
 % Independence of closed proof labels
 LF indep_cl: pr_lab_cl → pr_lab_cl → type =
-  | i_c1l: indep_cl T1 T2 → indep_cl (pr_suml T1) (pr_suml T2)
-  | i_c1r: indep_cl T1 T2 → indep_cl (pr_sumr T1) (pr_sumr T2)
-  | i_p1l: indep_cl T1 T2 → indep_cl (pr_parl T1) (pr_parl T2)
-  | i_p1r: indep_cl T1 T2 → indep_cl (pr_parr T1) (pr_parr T2)
-  | i_p2l: key T1 K → key T2 M → neq K M → indep_cl (pr_parl T1) (pr_parr T2)
-  | i_p2r: key T1 K → key T2 M → neq K M → indep_cl (pr_parr T1) (pr_parl T2)
-  | i_s1l: indep_cl T TL → indep_cl (pr_parl T) (pr_sync TL TR)
-  | i_s1r: indep_cl T TR → indep_cl (pr_parr T) (pr_sync TL TR)
-  | i_s2l: indep_cl TL T → indep_cl (pr_sync TL TR) (pr_parl T)
-  | i_s2r: indep_cl TR T → indep_cl (pr_sync TL TR) (pr_parr T)
-  | i_s3: indep_cl T1 T1' → indep_cl T2 T2' → indep_cl (pr_sync T1 T2) (pr_sync T1' T2')
+  | i_c1l: indep_cl θ1 θ2 → indep_cl (pr_suml θ1) (pr_suml θ2)
+  | i_c1r: indep_cl θ1 θ2 → indep_cl (pr_sumr θ1) (pr_sumr θ2)
+  | i_p1l: indep_cl θ1 θ2 → indep_cl (pr_parl θ1) (pr_parl θ2)
+  | i_p1r: indep_cl θ1 θ2 → indep_cl (pr_parr θ1) (pr_parr θ2)
+  | i_p2l: key θ1 K → key θ2 M → neq K M → indep_cl (pr_parl θ1) (pr_parr θ2)
+  | i_p2r: key θ1 K → key θ2 M → neq K M → indep_cl (pr_parr θ1) (pr_parl θ2)
+  | i_s1l: indep_cl θ θL → indep_cl (pr_parl θ) (pr_sync θL θR)
+  | i_s1r: indep_cl θ θR → indep_cl (pr_parr θ) (pr_sync θL θR)
+  | i_s2l: indep_cl θL θ → indep_cl (pr_sync θL θR) (pr_parl θ)
+  | i_s2r: indep_cl θR θ → indep_cl (pr_sync θL θR) (pr_parr θ)
+  | i_s3: indep_cl θ1 θ1' → indep_cl θ2 θ2' → indep_cl (pr_sync θ1 θ2) (pr_sync θ1' θ2')
 ;
 
 % We extend the connectedness, dependence and independence relations to open proof labels 
@@ -298,99 +298,99 @@ LF indep_cl: pr_lab_cl → pr_lab_cl → type =
 
 % Connectedness of proof labels
 LF conn: pr_lab → pr_lab → type =
-  | c_cc: conn_cl T1 T2 → conn (p_cl T1) (p_cl T2)
-  | c_oc: ({a:names} conn_cl (T1 a) T2) → conn (p_op (open T1)) (p_cl T2)
-  | c_co: ({a:names} conn_cl T1 (T2 a)) → conn (p_cl T1) (p_op (open T2))
-  | c_oo: ({a:names} conn_cl (T1 a) (T2 a)) → conn (p_op (open T1)) (p_op (open T2))
+  | c_cc: conn_cl θ1 θ2 → conn (p_cl θ1) (p_cl θ2)
+  | c_oc: ({a:names} conn_cl (θ1 a) θ2) → conn (p_op (open θ1)) (p_cl θ2)
+  | c_co: ({a:names} conn_cl θ1 (θ2 a)) → conn (p_cl θ1) (p_op (open θ2))
+  | c_oo: ({a:names} conn_cl (θ1 a) (θ2 a)) → conn (p_op (open θ1)) (p_op (open θ2))
 ;
 
 % Dependence of proof labels
 LF dep: pr_lab → pr_lab → type =
-  | d_cc: dep_cl T1 T2 → dep (p_cl T1) (p_cl T2)
-  | d_oc: ({a:names} dep_cl (T1 a) T2) → dep (p_op (open T1)) (p_cl T2)
-  | d_co: ({a:names} dep_cl T1 (T2 a)) → dep (p_cl T1) (p_op (open T2))
-  | d_oo: ({a:names} dep_cl (T1 a) (T2 a)) → dep (p_op (open T1)) (p_op (open T2))
+  | d_cc: dep_cl θ1 θ2 → dep (p_cl θ1) (p_cl θ2)
+  | d_oc: ({a:names} dep_cl (θ1 a) θ2) → dep (p_op (open θ1)) (p_cl θ2)
+  | d_co: ({a:names} dep_cl θ1 (θ2 a)) → dep (p_cl θ1) (p_op (open θ2))
+  | d_oo: ({a:names} dep_cl (θ1 a) (θ2 a)) → dep (p_op (open θ1)) (p_op (open θ2))
 ;
 
 % Independence of proof labels
 LF indep: pr_lab → pr_lab → type =
-  | i_cc: indep_cl T1 T2 → indep (p_cl T1) (p_cl T2)
-  | i_oc: ({a:names} indep_cl (T1 a) T2) → indep (p_op (open T1)) (p_cl T2)
-  | i_co: ({a:names} indep_cl T1 (T2 a)) → indep (p_cl T1) (p_op (open T2))
-  | i_oo: ({a:names} indep_cl (T1 a) (T2 a)) → indep (p_op (open T1)) (p_op (open T2))
+  | i_cc: indep_cl θ1 θ2 → indep (p_cl θ1) (p_cl θ2)
+  | i_oc: ({a:names} indep_cl (θ1 a) θ2) → indep (p_op (open θ1)) (p_cl θ2)
+  | i_co: ({a:names} indep_cl θ1 (θ2 a)) → indep (p_cl θ1) (p_op (open θ2))
+  | i_oo: ({a:names} indep_cl (θ1 a) (θ2 a)) → indep (p_op (open θ1)) (p_op (open θ2))
 ;
 
 % Independence of transitions
-LF indep_tr: step X T1 X' → step Y T2 Y' → type =
-  | ind_tr: indep T1 T2 → conn_tr (S1:step X T1 X') (S2:step Y T2 Y') → indep_tr S1 S2
+LF indep_tr: step X θ1 X' → step Y θ2 Y' → type =
+  | ind_tr: indep θ1 θ2 → conn_tr (S1:step X θ1 X') (S2:step Y θ2 Y') → indep_tr S1 S2
 ;
 
 % Dependence of transitions
-LF dep_tr: step X T1 X' → step Y T2 Y' → type =
-  | dp_tr: dep T1 T2 → conn_tr (S1:step X T1 X') (S2:step Y T2 Y') → dep_tr S1 S2
+LF dep_tr: step X θ1 X' → step Y θ2 Y' → type =
+  | dp_tr: dep θ1 θ2 → conn_tr (S1:step X θ1 X') (S2:step Y θ2 Y') → dep_tr S1 S2
 ;
 
 
 %%% Type families for equality
 
-% Equality of derivations of lab T A
-LF eqlb: lab T1 A1 → lab T2 A2 → type =
+% Equality of derivations of lab θ α
+LF eqlb: lab θ1 α1 → lab θ2 α2 → type =
   | reflb: eqlb L L
 ;
 
-% Equality of derivations of key T K
-LF eqky: key T1 K1 → key T2 K2 → type =
+% Equality of derivations of key θ K
+LF eqky: key θ1 K1 → key θ2 K2 → type =
   | refky: eqky H H
 ;
 
-% Equality of derivations of occurs A T
-LF eqoc: occurs A1 T1 → occurs A2 T2 → type =
+% Equality of derivations of occurs A θ
+LF eqoc: occurs A1 θ1 → occurs A2 θ2 → type =
   | refoc: eqoc O O
 ;
 
-% Equality of derivations of fstep_cl X T X'
-LF eqfc: fstep_cl X1 T1 X1' → fstep_cl X2 T2 X2' → type =
+% Equality of derivations of fstep_cl X θ X'
+LF eqfc: fstep_cl X1 θ1 X1' → fstep_cl X2 θ2 X2' → type =
   | reffc: eqfc F F
 ;
 
-% Equality of derivations of bstep_cl X' T X
-LF eqbc: bstep_cl X1' T1 X1 → bstep_cl X2' T2 X2 → type =
+% Equality of derivations of bstep_cl X' θ X
+LF eqbc: bstep_cl X1' θ1 X1 → bstep_cl X2' θ2 X2 → type =
   | refbc: eqbc B B
 ;
 
-% Equality of derivations of fstep_op X T X'
-LF eqfo: fstep_op X1 T1 X1' → fstep_op X2 T2 X2' → type =
+% Equality of derivations of fstep_op X θ X'
+LF eqfo: fstep_op X1 θ1 X1' → fstep_op X2 θ2 X2' → type =
   | reffo: eqfo F F
 ;
 
-% Equality of derivations of bstep_op X' T X
-LF eqbo: bstep_op X1' T1 X1 → bstep_op X2' T2 X2 → type =
+% Equality of derivations of bstep_op X' θ X
+LF eqbo: bstep_op X1' θ1 X1 → bstep_op X2' θ2 X2 → type =
   | refbo: eqbo B B
 ;
 
-% Equality of derivations of fstep X T X'
-LF eqf: fstep X1 T1 X1' → fstep X2 T2 X2' → type =
+% Equality of derivations of fstep X θ X'
+LF eqf: fstep X1 θ1 X1' → fstep X2 θ2 X2' → type =
   | reff: eqf F F
 ;
 
-% Equality of derivations of bstep X' T X
-LF eqb: bstep X1' T1 X1 → bstep X2' T2 X2 → type =
+% Equality of derivations of bstep X' θ X
+LF eqb: bstep X1' θ1 X1 → bstep X2' θ2 X2 → type =
   | refb: eqb B B
 ;
 
-% Equality of derivations of step X T X'
-LF eqst: step X1 T1 X1' → step X2 T2 X2' → type =
+% Equality of derivations of step X θ X'
+LF eqst: step X1 θ1 X1' → step X2 θ2 X2' → type =
   | refst: eqst S S
 ;
 
 % Equality of closed proof keyed labels
 LF eqplc: pr_lab_cl → pr_lab_cl → type =
-  | refplc: eqplc T T
+  | refplc: eqplc θ θ
 ;
 
 % Equality of proof labels
 LF eqpl: pr_lab → pr_lab → type =
-  | refpl: eqpl T T
+  | refpl: eqpl θ θ
 ;
 
 end;

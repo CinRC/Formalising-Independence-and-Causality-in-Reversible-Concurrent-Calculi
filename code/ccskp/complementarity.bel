@@ -1,7 +1,7 @@
 %%% Basic properties of dependence, independence and connectedness %%%
 
 % Independence of closed proof labels is irreflexive
-rec irreflexive_indep_cl: (g:ctx) [g ⊢ indep_cl T T] → [g ⊢ false] =
+rec irreflexive_indep_cl: (g:ctx) [g ⊢ indep_cl θ θ] → [g ⊢ false] =
 / total i (irreflexive_indep_cl _ _ i) /
 fn i ⇒ case i of
   | [g ⊢ i_c1l I] ⇒ irreflexive_indep_cl [g ⊢ I]
@@ -12,7 +12,7 @@ fn i ⇒ case i of
 ;
 
 % Independence of proof labels is irreflexive
-rec irreflexive_indep: (g:ctx) [g ⊢ indep T T] → [g ⊢ false] =
+rec irreflexive_indep: (g:ctx) [g ⊢ indep θ θ] → [g ⊢ false] =
 / total (irreflexive_indep) /
 fn i ⇒ case i of
   | [g ⊢ i_cc I] ⇒ impossible irreflexive_indep_cl [g ⊢ I]
@@ -20,7 +20,7 @@ fn i ⇒ case i of
 ;
 
 % Independence of closed proof labels is symmetric
-rec symmetric_indep_cl: (g:ctx) [g ⊢ indep_cl T1 T2] → [g ⊢ indep_cl T2 T1] =
+rec symmetric_indep_cl: (g:ctx) [g ⊢ indep_cl θ1 θ2] → [g ⊢ indep_cl θ2 θ1] =
 / total i (symmetric_indep_cl _ _ _ i) /
 fn i ⇒ case i of
   | [g ⊢ i_c1l I] ⇒ let [g ⊢ I'] = symmetric_indep_cl [g ⊢ I] in [g ⊢ i_c1l I']
@@ -38,7 +38,7 @@ fn i ⇒ case i of
 ;
 
 % Independence of proof labels is symmetric
-rec symmetric_indep: (g:ctx) [g ⊢ indep T1 T2] → [g ⊢ indep T2 T1] =
+rec symmetric_indep: (g:ctx) [g ⊢ indep θ1 θ2] → [g ⊢ indep θ2 θ1] =
 / total i (symmetric_indep _ _ _ i) /
 fn i ⇒ case i of
   | [g ⊢ i_cc I] ⇒ let [g ⊢ I'] = symmetric_indep_cl [g ⊢ I] in [g ⊢ i_cc I']
@@ -48,8 +48,8 @@ fn i ⇒ case i of
 ;
 
 % If two valid closed proof labels are independent, then their keys are different.
-rec indep_cl_impl_diff_keys: (g:ctx) [g ⊢ valid_cl T1] → [g ⊢ valid_cl T2]
-  → [g ⊢ indep_cl T1 T2] → [g ⊢ key T1 K1[]] → [g ⊢ key T2 K2[]] → [g ⊢ neq K1[] K2[]] =
+rec indep_cl_impl_diff_keys: (g:ctx) [g ⊢ valid_cl θ1] → [g ⊢ valid_cl θ2]
+  → [g ⊢ indep_cl θ1 θ2] → [g ⊢ key θ1 K1[]] → [g ⊢ key θ2 K2[]] → [g ⊢ neq K1[] K2[]] =
 / total i (indep_cl_impl_diff_keys _ _ _ _ _ _ _ i _ _) /
 fn v1,v2,i,h1,h2 ⇒ case i of
   | [g ⊢ i_c1l I] ⇒ let [g ⊢ v_suml V1] = v1 in
@@ -120,8 +120,8 @@ fn v1,v2,i,h1,h2 ⇒ case i of
 ;
 
 % If two valid proof labels are independent, then their keys are different.
-rec indep_impl_diff_keys: (g:ctx) [g ⊢ valid T1] → [g ⊢ valid T2]
-  → [g ⊢ indep T1 T2] → [g ⊢ key_pl T1 K1[]] → [g ⊢ key_pl T2 K2[]] → [g ⊢ neq K1[] K2[]] =
+rec indep_impl_diff_keys: (g:ctx) [g ⊢ valid θ1] → [g ⊢ valid θ2]
+  → [g ⊢ indep θ1 θ2] → [g ⊢ key_pl θ1 K1[]] → [g ⊢ key_pl θ2 K2[]] → [g ⊢ neq K1[] K2[]] =
 / total i (indep_impl_diff_keys _ _ _ _ _ _ _ i _ _) /
 fn v1,v2,i,h1,h2 ⇒ case i of
   | [g ⊢ i_cc I] ⇒ let [g ⊢ v_cl V1] = v1 in
@@ -150,28 +150,28 @@ fn v1,v2,i,h1,h2 ⇒ case i of
 ;
 
 % Connectedness of closed proof labels is reflexive
-rec reflexive_conn_cl: (g:ctx) {T:[g ⊢ pr_lab_cl]} [g ⊢ conn_cl T T] =
+rec reflexive_conn_cl: (g:ctx) {θ:[g ⊢ pr_lab_cl]} [g ⊢ conn_cl θ θ] =
 / total t (reflexive_conn_cl _ t) /
-mlam T ⇒ case [_ ⊢ T] of
-  | [g ⊢ pr_base A K[]] ⇒ [g ⊢ c_a1]
-  | [g ⊢ pr_suml T'] ⇒ let [g ⊢ C] = reflexive_conn_cl [g ⊢ T'] in [g ⊢ c_c1l C]
-  | [g ⊢ pr_sumr T'] ⇒ let [g ⊢ C] = reflexive_conn_cl [g ⊢ T'] in [g ⊢ c_c1r C]
-  | [g ⊢ pr_parl T'] ⇒ let [g ⊢ C] = reflexive_conn_cl [g ⊢ T'] in [g ⊢ c_p1l C]
-  | [g ⊢ pr_parr T'] ⇒ let [g ⊢ C] = reflexive_conn_cl [g ⊢ T'] in [g ⊢ c_p1r C]
-  | [g ⊢ pr_sync T1 T2] ⇒ let [g ⊢ C1] = reflexive_conn_cl [g ⊢ T1] in
-    let [g ⊢ C2] = reflexive_conn_cl [g ⊢ T2] in [g ⊢ c_s3 C1 C2]
+mlam θ ⇒ case [_ ⊢ θ] of
+  | [g ⊢ pr_base α K[]] ⇒ [g ⊢ c_a1]
+  | [g ⊢ pr_suml θ'] ⇒ let [g ⊢ C] = reflexive_conn_cl [g ⊢ θ'] in [g ⊢ c_c1l C]
+  | [g ⊢ pr_sumr θ'] ⇒ let [g ⊢ C] = reflexive_conn_cl [g ⊢ θ'] in [g ⊢ c_c1r C]
+  | [g ⊢ pr_parl θ'] ⇒ let [g ⊢ C] = reflexive_conn_cl [g ⊢ θ'] in [g ⊢ c_p1l C]
+  | [g ⊢ pr_parr θ'] ⇒ let [g ⊢ C] = reflexive_conn_cl [g ⊢ θ'] in [g ⊢ c_p1r C]
+  | [g ⊢ pr_sync θ1 θ2] ⇒ let [g ⊢ C1] = reflexive_conn_cl [g ⊢ θ1] in
+    let [g ⊢ C2] = reflexive_conn_cl [g ⊢ θ2] in [g ⊢ c_s3 C1 C2]
 ;
 
 % Connectedness of proof labels is reflexive
-rec reflexive_conn: (g:ctx) {T:[g ⊢ pr_lab]} [g ⊢ conn T T] =
+rec reflexive_conn: (g:ctx) {θ:[g ⊢ pr_lab]} [g ⊢ conn θ θ] =
 / total (reflexive_conn) /
-mlam T ⇒ case [_ ⊢ T] of
-  | [g ⊢ p_cl T'] ⇒ let [g ⊢ C] = reflexive_conn_cl [g ⊢ T'] in [g ⊢ c_cc C]
-  | [g ⊢ p_op (open \a.T')] ⇒ let [g,a:names ⊢ C] = reflexive_conn_cl [_ ⊢ T'] in [g ⊢ c_oo \a.C]
+mlam θ ⇒ case [_ ⊢ θ] of
+  | [g ⊢ p_cl θ'] ⇒ let [g ⊢ C] = reflexive_conn_cl [g ⊢ θ'] in [g ⊢ c_cc C]
+  | [g ⊢ p_op (open \a.θ')] ⇒ let [g,a:names ⊢ C] = reflexive_conn_cl [_ ⊢ θ'] in [g ⊢ c_oo \a.C]
 ;
 
 % Connectedness of closed proof labels is symmetric
-rec symmetric_conn_cl: (g:ctx) [g ⊢ conn_cl T1 T2] → [g ⊢ conn_cl T2 T1] =
+rec symmetric_conn_cl: (g:ctx) [g ⊢ conn_cl θ1 θ2] → [g ⊢ conn_cl θ2 θ1] =
 / total c (symmetric_conn_cl _ _ _ c) /
 fn c ⇒ case c of
   | [g ⊢ c_a1] ⇒ [g ⊢ c_a2]
@@ -193,7 +193,7 @@ fn c ⇒ case c of
 ;
 
 % Connectedness of proof labels is symmetric
-rec symmetric_conn: (g:ctx) [g ⊢ conn T1 T2] → [g ⊢ conn T2 T1] =
+rec symmetric_conn: (g:ctx) [g ⊢ conn θ1 θ2] → [g ⊢ conn θ2 θ1] =
 / total c (symmetric_conn _ _ _ c) /
 fn c ⇒ case c of
   | [g ⊢ c_cc C] ⇒ let [g ⊢ C'] = symmetric_conn_cl [g ⊢ C] in [g ⊢ c_cc C']
@@ -203,28 +203,28 @@ fn c ⇒ case c of
 ;
 
 % Dependence of closed proof labels is reflexive
-rec reflexive_dep_cl: (g:ctx) {T:[g ⊢ pr_lab_cl]} [g ⊢ dep_cl T T] =
+rec reflexive_dep_cl: (g:ctx) {θ:[g ⊢ pr_lab_cl]} [g ⊢ dep_cl θ θ] =
 / total t (reflexive_dep_cl _ t) /
-mlam T ⇒ case [_ ⊢ T] of
-  | [g ⊢ pr_base A K[]] ⇒ [g ⊢ d_a1]
-  | [g ⊢ pr_suml T'] ⇒ let [g ⊢ D] = reflexive_dep_cl [g ⊢ T'] in [g ⊢ d_c1l D]
-  | [g ⊢ pr_sumr T'] ⇒ let [g ⊢ D] = reflexive_dep_cl [g ⊢ T'] in [g ⊢ d_c1r D]
-  | [g ⊢ pr_parl T'] ⇒ let [g ⊢ D] = reflexive_dep_cl [g ⊢ T'] in [g ⊢ d_p1l D]
-  | [g ⊢ pr_parr T'] ⇒ let [g ⊢ D] = reflexive_dep_cl [g ⊢ T'] in [g ⊢ d_p1r D]
-  | [g ⊢ pr_sync T1 T2] ⇒ let [g ⊢ D1] = reflexive_dep_cl [g ⊢ T1] in
-    let [g ⊢ C2] = reflexive_conn_cl [g ⊢ T2] in [g ⊢ d_s3l D1 C2]
+mlam θ ⇒ case [_ ⊢ θ] of
+  | [g ⊢ pr_base α K[]] ⇒ [g ⊢ d_a1]
+  | [g ⊢ pr_suml θ'] ⇒ let [g ⊢ D] = reflexive_dep_cl [g ⊢ θ'] in [g ⊢ d_c1l D]
+  | [g ⊢ pr_sumr θ'] ⇒ let [g ⊢ D] = reflexive_dep_cl [g ⊢ θ'] in [g ⊢ d_c1r D]
+  | [g ⊢ pr_parl θ'] ⇒ let [g ⊢ D] = reflexive_dep_cl [g ⊢ θ'] in [g ⊢ d_p1l D]
+  | [g ⊢ pr_parr θ'] ⇒ let [g ⊢ D] = reflexive_dep_cl [g ⊢ θ'] in [g ⊢ d_p1r D]
+  | [g ⊢ pr_sync θ1 θ2] ⇒ let [g ⊢ D1] = reflexive_dep_cl [g ⊢ θ1] in
+    let [g ⊢ C2] = reflexive_conn_cl [g ⊢ θ2] in [g ⊢ d_s3l D1 C2]
 ;
 
 % Dependence of proof labels is reflexive
-rec reflexive_dep: (g:ctx) {T:[g ⊢ pr_lab]} [g ⊢ dep T T] =
+rec reflexive_dep: (g:ctx) {θ:[g ⊢ pr_lab]} [g ⊢ dep θ θ] =
 / total (reflexive_dep) /
-mlam T ⇒ case [_ ⊢ T] of
-  | [g ⊢ p_cl T'] ⇒ let [g ⊢ D] = reflexive_dep_cl [g ⊢ T'] in [g ⊢ d_cc D]
-  | [g ⊢ p_op (open \a.T')] ⇒ let [g,a:names ⊢ D] = reflexive_dep_cl [_ ⊢ T'] in [g ⊢ d_oo \a.D]
+mlam θ ⇒ case [_ ⊢ θ] of
+  | [g ⊢ p_cl θ'] ⇒ let [g ⊢ D] = reflexive_dep_cl [g ⊢ θ'] in [g ⊢ d_cc D]
+  | [g ⊢ p_op (open \a.θ')] ⇒ let [g,a:names ⊢ D] = reflexive_dep_cl [_ ⊢ θ'] in [g ⊢ d_oo \a.D]
 ;
 
 % Dependence of closed proof labels is symmetric
-rec symmetric_dep_cl: (g:ctx) [g ⊢ dep_cl T1 T2] → [g ⊢ dep_cl T2 T1] =
+rec symmetric_dep_cl: (g:ctx) [g ⊢ dep_cl θ1 θ2] → [g ⊢ dep_cl θ2 θ1] =
 / total d (symmetric_dep_cl _ _ _ d) /
 fn d ⇒ case d of
   | [g ⊢ d_a1] ⇒ [g ⊢ d_a2]
@@ -248,7 +248,7 @@ fn d ⇒ case d of
 ;
 
 % Dependence of proof labels is symmetric
-rec symmetric_dep: (g:ctx) [g ⊢ dep T1 T2] → [g ⊢ dep T2 T1] =
+rec symmetric_dep: (g:ctx) [g ⊢ dep θ1 θ2] → [g ⊢ dep θ2 θ1] =
 / total d (symmetric_dep _ _ _ d) /
 fn d ⇒ case d of
   | [g ⊢ d_cc D] ⇒ let [g ⊢ D'] = symmetric_dep_cl [g ⊢ D] in [g ⊢ d_cc D']
@@ -264,7 +264,7 @@ fn d ⇒ case d of
 
 % Proof of complementarity (first part):
 % Independent proof labels are connected
-rec indep_cl_impl_conn_cl: (g:ctx) [g ⊢ indep_cl T1 T2] → [g ⊢ conn_cl T1 T2] =
+rec indep_cl_impl_conn_cl: (g:ctx) [g ⊢ indep_cl θ1 θ2] → [g ⊢ conn_cl θ1 θ2] =
 / total i (indep_cl_impl_conn_cl _ _ _ i) /
 fn i ⇒ case i of
   | [g ⊢ i_c1l I] ⇒ let [g ⊢ C] = indep_cl_impl_conn_cl [g ⊢ I] in [g ⊢ c_c1l C]
@@ -281,7 +281,7 @@ fn i ⇒ case i of
        let [g ⊢ C2] = indep_cl_impl_conn_cl [g ⊢ I2] in [g ⊢ c_s3 C1 C2]
 ;
 
-rec indep_impl_conn: (g:ctx) [g ⊢ indep T1 T2] → [g ⊢ conn T1 T2] =
+rec indep_impl_conn: (g:ctx) [g ⊢ indep θ1 θ2] → [g ⊢ conn θ1 θ2] =
 / total (indep_impl_conn) /
 fn i ⇒ case i of
   | [g ⊢ i_cc I] ⇒ let [g ⊢ C] = indep_cl_impl_conn_cl [g ⊢ I] in [g ⊢ c_cc C]
@@ -292,7 +292,7 @@ fn i ⇒ case i of
 
 % Proof of complementarity (second part):
 % Dependent proof labels are connected
-rec dep_cl_impl_conn_cl: (g:ctx) [g ⊢ dep_cl T1 T2] → [g ⊢ conn_cl T1 T2] =
+rec dep_cl_impl_conn_cl: (g:ctx) [g ⊢ dep_cl θ1 θ2] → [g ⊢ conn_cl θ1 θ2] =
 / total d (dep_cl_impl_conn_cl _ _ _ d) /
 fn d ⇒ case d of
   | [g ⊢ d_a1] ⇒ [g ⊢ c_a1]
@@ -313,7 +313,7 @@ fn d ⇒ case d of
   | [g ⊢ d_s3r C1 D2] ⇒ let [g ⊢ C2] = dep_cl_impl_conn_cl [g ⊢ D2] in [g ⊢ c_s3 C1 C2]
 ;
 
-rec dep_impl_conn: (g:ctx) [g ⊢ dep T1 T2] → [g ⊢ conn T1 T2] =
+rec dep_impl_conn: (g:ctx) [g ⊢ dep θ1 θ2] → [g ⊢ conn θ1 θ2] =
 / total (dep_impl_conn) /
 fn d ⇒ case d of
   | [g ⊢ d_cc D] ⇒ let [g ⊢ C] = dep_cl_impl_conn_cl [g ⊢ D] in [g ⊢ c_cc C]
@@ -323,20 +323,20 @@ fn d ⇒ case d of
 ;
 
 % Predicate expressing dependence or independence of proof labels:
-% dep_or_indep T1 T2 holds iff T1 and T2 are dependent or independent
+% dep_or_indep θ1 θ2 holds iff θ1 and θ2 are dependent or independent
 LF dep_cl_or_indep_cl: pr_lab_cl → pr_lab_cl → type =
-  | or_dep_cl: dep_cl T1 T2 → dep_cl_or_indep_cl T1 T2
-  | or_ind_cl: indep_cl T1 T2 → dep_cl_or_indep_cl T1 T2
+  | or_dep_cl: dep_cl θ1 θ2 → dep_cl_or_indep_cl θ1 θ2
+  | or_ind_cl: indep_cl θ1 θ2 → dep_cl_or_indep_cl θ1 θ2
 ;
 
 LF dep_or_indep: pr_lab → pr_lab → type =
-  | or_dep: dep T1 T2 → dep_or_indep T1 T2
-  | or_ind: indep T1 T2 → dep_or_indep T1 T2
+  | or_dep: dep θ1 θ2 → dep_or_indep θ1 θ2
+  | or_ind: indep θ1 θ2 → dep_or_indep θ1 θ2
 ;
 
 % Proof of complementarity (third part):
 % Connected proof labels are dependent or independent
-rec conn_cl_impl_dep_cl_or_indep_cl: (g:ctx) [g ⊢ conn_cl T1 T2] → [g ⊢ dep_cl_or_indep_cl T1 T2] =
+rec conn_cl_impl_dep_cl_or_indep_cl: (g:ctx) [g ⊢ conn_cl θ1 θ2] → [g ⊢ dep_cl_or_indep_cl θ1 θ2] =
 / total c (conn_cl_impl_dep_cl_or_indep_cl _ _ _ c) /
 fn c ⇒ case c of
   | [g ⊢ c_a1] ⇒ [g ⊢ or_dep_cl d_a1]
@@ -355,19 +355,19 @@ fn c ⇒ case c of
   | [g ⊢ c_p1r C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
        | [g ⊢ or_dep_cl D] ⇒ [g ⊢ or_dep_cl (d_p1r D)]
        | [g ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind_cl (i_p1r I)])
-  | [g ⊢ c_p2l]:[g ⊢ conn_cl (pr_parl T1) (pr_parr T2)] ⇒
-    let [g ⊢ ex_k H1] = total_key [g ⊢ T1] in
-    let [g ⊢ ex_k H2] = total_key [g ⊢ T2] in
-    let [g ⊢ H1]:[g ⊢ key T1 K[]] = [g ⊢ H1] in
-    let [g ⊢ H2]:[g ⊢ key T2 M[]] = [g ⊢ H2] in
+  | [g ⊢ c_p2l]:[g ⊢ conn_cl (pr_parl θ1) (pr_parr θ2)] ⇒
+    let [g ⊢ ex_k H1] = total_key [g ⊢ θ1] in
+    let [g ⊢ ex_k H2] = total_key [g ⊢ θ2] in
+    let [g ⊢ H1]:[g ⊢ key θ1 K[]] = [g ⊢ H1] in
+    let [g ⊢ H2]:[g ⊢ key θ2 M[]] = [g ⊢ H2] in
     (case dec_eq_keys [g] [⊢ K] [⊢ M] of
        | [g ⊢ c_eq] ⇒ [g ⊢ or_dep_cl (d_p2l H1 H2)]
        | [g ⊢ c_neq D] ⇒ [g ⊢ or_ind_cl (i_p2l H1 H2 D)])
-  | [g ⊢ c_p2r]:[g ⊢ conn_cl (pr_parr T1) (pr_parl T2)] ⇒
-    let [g ⊢ ex_k H1] = total_key [g ⊢ T1] in
-    let [g ⊢ ex_k H2] = total_key [g ⊢ T2] in
-    let [g ⊢ H1]:[g ⊢ key T1 K[]] = [g ⊢ H1] in
-    let [g ⊢ H2]:[g ⊢ key T2 M[]] = [g ⊢ H2] in
+  | [g ⊢ c_p2r]:[g ⊢ conn_cl (pr_parr θ1) (pr_parl θ2)] ⇒
+    let [g ⊢ ex_k H1] = total_key [g ⊢ θ1] in
+    let [g ⊢ ex_k H2] = total_key [g ⊢ θ2] in
+    let [g ⊢ H1]:[g ⊢ key θ1 K[]] = [g ⊢ H1] in
+    let [g ⊢ H2]:[g ⊢ key θ2 M[]] = [g ⊢ H2] in
     (case dec_eq_keys [g] [⊢ K] [⊢ M] of
        | [g ⊢ c_eq] ⇒ [g ⊢ or_dep_cl (d_p2r H1 H2)]
        | [g ⊢ c_neq D] ⇒ [g ⊢ or_ind_cl (i_p2r H1 H2 D)])
@@ -390,7 +390,7 @@ fn c ⇒ case c of
             | [g ⊢ or_ind_cl I2] ⇒ [g ⊢ or_ind_cl (i_s3 I1 I2)]))
 ;
 
-rec conn_impl_dep_or_indep: (g:ctx) [g ⊢ conn T1 T2] → [g ⊢ dep_or_indep T1 T2] =
+rec conn_impl_dep_or_indep: (g:ctx) [g ⊢ conn θ1 θ2] → [g ⊢ dep_or_indep θ1 θ2] =
 / total (conn_impl_dep_or_indep) /
 fn c ⇒ case c of
   | [g ⊢ c_cc C] ⇒ (case conn_cl_impl_dep_cl_or_indep_cl [g ⊢ C] of
@@ -409,7 +409,7 @@ fn c ⇒ case c of
 
 % Proof of complementarity (fourth part):
 % Proof labels cannot be both dependent and independent
-rec impossible_dep_cl_and_indep_cl: (g:ctx) [g ⊢ dep_cl T1 T2] → [g ⊢ indep_cl T1 T2] → [g ⊢ false] =
+rec impossible_dep_cl_and_indep_cl: (g:ctx) [g ⊢ dep_cl θ1 θ2] → [g ⊢ indep_cl θ1 θ2] → [g ⊢ false] =
 / total d (impossible_dep_cl_and_indep_cl _ _ _ d _) /
 fn d,i ⇒ case d of
   | [g ⊢ d_a1] ⇒ impossible i
@@ -434,7 +434,7 @@ fn d,i ⇒ case d of
   | [g ⊢ d_s3r _ D2] ⇒ let [g ⊢ i_s3 _ I2] = i in impossible_dep_cl_and_indep_cl [g ⊢ D2] [g ⊢ I2]
 ;
 
-rec impossible_dep_and_indep: (g:ctx) [g ⊢ dep T1 T2] → [g ⊢ indep T1 T2] → [g ⊢ false] =
+rec impossible_dep_and_indep: (g:ctx) [g ⊢ dep θ1 θ2] → [g ⊢ indep θ1 θ2] → [g ⊢ false] =
 / total (impossible_dep_and_indep) /
 fn d,i ⇒ case d of
   | [g ⊢ d_cc D] ⇒ let [g ⊢ i_cc I] = i in impossible impossible_dep_cl_and_indep_cl [g ⊢ D] [g ⊢ I]
@@ -448,13 +448,13 @@ fn d,i ⇒ case d of
 
 % Predicate expressing dependence or independence of transitions:
 % dep_or_indep S1 S2 holds iff S1 and S2 are dependent or independent
-LF dep_tr_or_indep_tr: step X1 T1 Y1 → step X2 T2 Y2 → type =
+LF dep_tr_or_indep_tr: step X1 θ1 Y1 → step X2 θ2 Y2 → type =
   | or_dep_tr: dep_tr S1 S2 → dep_tr_or_indep_tr S1 S2
   | or_ind_tr: indep_tr S1 S2 → dep_tr_or_indep_tr S1 S2
 ;
 
 % Connected transitions between reachable processes are dependent or independent
-rec conn_tr_impl_dep_tr_or_indep_tr: (g:ctx) (S1:[g ⊢ step X1 T1 Y1]) (S2:[g ⊢ step X2 T2 Y2])
+rec conn_tr_impl_dep_tr_or_indep_tr: (g:ctx) (S1:[g ⊢ step X1 θ1 Y1]) (S2:[g ⊢ step X2 θ2 Y2])
   [g ⊢ reachable X1] → [g ⊢ conn_tr S1 S2] → [g ⊢ dep_tr_or_indep_tr S1 S2] =
 / total (conn_tr_impl_dep_tr_or_indep_tr) /
 fn r,ct ⇒ let [g ⊢ C] = conn_rel_one r ct in
@@ -465,7 +465,7 @@ let [g ⊢ CT] = ct in
 ;
 
 % Transitions cannot be both dependent and independent
-rec impossible_dep_tr_and_indep_tr: (g:ctx) (S1:[g ⊢ step X1 T1 Y1]) (S2:[g ⊢ step X2 T2 Y2])
+rec impossible_dep_tr_and_indep_tr: (g:ctx) (S1:[g ⊢ step X1 θ1 Y1]) (S2:[g ⊢ step X2 θ2 Y2])
   [g ⊢ dep_tr S1 S2] → [g ⊢ indep_tr S1 S2] → [g ⊢ false] =
 / total (impossible_dep_tr_and_indep_tr) /
 fn dt,it ⇒ let [g ⊢ dp_tr D _] = dt in

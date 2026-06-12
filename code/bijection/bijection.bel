@@ -5,8 +5,8 @@
 % Auxiliary theorems, proving the result for closed/open forward/backward transitions
 
 % enrich_fc ∘ forget_fc = id.
-rec inverse_fc_one: (g:ctx) (F1:[g ⊢ ccskp.fstep_cl X T1 X']) (F2:[g ⊢ ccsk.fstep X T2 X'])
-  (F3:[g ⊢ ccskp.fstep_cl X T3 X']) [g ⊢ forget_fc F1 F2] → [g ⊢ enrich_fc F2 F3] → [g ⊢ eqfc F1 F3] =
+rec inverse_fc_one: (g:ctx) (F1:[g ⊢ ccskp.fstep_cl X θ X']) (F2:[g ⊢ ccsk.fstep X KL X'])
+  (F3:[g ⊢ ccskp.fstep_cl X θ' X']) [g ⊢ forget_fc F1 F2] → [g ⊢ enrich_fc F2 F3] → [g ⊢ eqfc F1 F3] =
 / total f1 (inverse_fc_one _ _ _ _ _ _ f1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ fg_fc F1 F2 _ _] = d1 in
 let [g ⊢ en_fc F2 F3 _ _] = d2 in
@@ -14,8 +14,8 @@ unique_fstep_cl [g ⊢ F1] [g ⊢ F3]
 ;
 
 % forget_fc and enrich_fo are not composable.
-rec no_fc_fo_one: (g:ctx) (F1:[g ⊢ ccskp.fstep_cl X T1 X']) (F2:[g ⊢ ccsk.fstep X T2 X'])
-  (F3:[g ⊢ ccskp.fstep_op X T3 X']) [g ⊢ forget_fc F1 F2] → [g ⊢ enrich_fo F2 F3] → [g ⊢ false] =
+rec no_fc_fo_one: (g:ctx) (F1:[g ⊢ ccskp.fstep_cl X θ X']) (F2:[g ⊢ ccsk.fstep X KL X'])
+  (F3:[g ⊢ ccskp.fstep_op X θ' X']) [g ⊢ forget_fc F1 F2] → [g ⊢ enrich_fo F2 F3] → [g ⊢ false] =
 / total f1 (no_fc_fo_one _ _ _ _ _ _ f1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ fg_fc F1 F2 _ _] = d1 in
 let [g ⊢ en_fo F2 F3 \_._] = d2 in
@@ -23,8 +23,8 @@ no_fstep_cl_and_op [g ⊢ F1] [g ⊢ F3]
 ;
 
 % enrich_fo ∘ forget_fo = id.
-rec inverse_fo_one: (g:ctx) (F1:[g ⊢ ccskp.fstep_op X T1 X']) (F2:[g ⊢ ccsk.fstep X T2 X'])
-  (F3:[g ⊢ ccskp.fstep_op X T3 X']) [g ⊢ forget_fo F1 F2] → [g ⊢ enrich_fo F2 F3] → [g ⊢ eqfo F1 F3] =
+rec inverse_fo_one: (g:ctx) (F1:[g ⊢ ccskp.fstep_op X θ X']) (F2:[g ⊢ ccsk.fstep X KL X'])
+  (F3:[g ⊢ ccskp.fstep_op X θ' X']) [g ⊢ forget_fo F1 F2] → [g ⊢ enrich_fo F2 F3] → [g ⊢ eqfo F1 F3] =
 / total f1 (inverse_fo_one _ _ _ _ _ _ f1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ fg_fo F1 F2 \_._] = d1 in
 let [g ⊢ en_fo F2 F3 \_._] = d2 in
@@ -32,8 +32,8 @@ unique_fstep_op [g ⊢ F1] [g ⊢ F3]
 ;
 
 % forget_fo and enrich_fc are not composable.
-rec no_fo_fc_one: (g:ctx) (F1:[g ⊢ ccskp.fstep_op X T1 X']) (F2:[g ⊢ ccsk.fstep X T2 X'])
-  (F3:[g ⊢ ccskp.fstep_cl X T3 X']) [g ⊢ forget_fo F1 F2] → [g ⊢ enrich_fc F2 F3] → [g ⊢ false] =
+rec no_fo_fc_one: (g:ctx) (F1:[g ⊢ ccskp.fstep_op X θ X']) (F2:[g ⊢ ccsk.fstep X KL X'])
+  (F3:[g ⊢ ccskp.fstep_cl X θ' X']) [g ⊢ forget_fo F1 F2] → [g ⊢ enrich_fc F2 F3] → [g ⊢ false] =
 / total f1 (no_fo_fc_one _ _ _ _ _ _ f1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ fg_fo F1 F2 \_._] = d1 in
 let [g ⊢ en_fc F2 F3 _ _] = d2 in
@@ -42,8 +42,8 @@ no_fstep_cl_and_op [g ⊢ F3] [g ⊢ F1]
 
 
 % enrich_bc ∘ forget_bc = id.
-rec inverse_bc_one: (g:ctx) (B1:[g ⊢ ccskp.bstep_cl X T1 X']) (B2:[g ⊢ ccsk.bstep X T2 X'])
-  (B3:[g ⊢ ccskp.bstep_cl X T3 X']) [g ⊢ forget_bc B1 B2] → [g ⊢ enrich_bc B2 B3] → [g ⊢ eqbc B1 B3] =
+rec inverse_bc_one: (g:ctx) (B1:[g ⊢ ccskp.bstep_cl X θ X']) (B2:[g ⊢ ccsk.bstep X KL X'])
+  (B3:[g ⊢ ccskp.bstep_cl X θ' X']) [g ⊢ forget_bc B1 B2] → [g ⊢ enrich_bc B2 B3] → [g ⊢ eqbc B1 B3] =
 / total b1 (inverse_bc_one _ _ _ _ _ _ b1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ fg_bc B1 B2 _ _] = d1 in
 let [g ⊢ en_bc B2 B3 _ _] = d2 in
@@ -51,8 +51,8 @@ unique_bstep_cl [g ⊢ B1] [g ⊢ B3]
 ;
 
 % forget_bc and enrich_bo are not composable.
-rec no_bc_bo_one: (g:ctx) (B1:[g ⊢ ccskp.bstep_cl X T1 X']) (B2:[g ⊢ ccsk.bstep X T2 X'])
-  (B3:[g ⊢ ccskp.bstep_op X T3 X']) [g ⊢ forget_bc B1 B2] → [g ⊢ enrich_bo B2 B3] → [g ⊢ false] =
+rec no_bc_bo_one: (g:ctx) (B1:[g ⊢ ccskp.bstep_cl X θ X']) (B2:[g ⊢ ccsk.bstep X KL X'])
+  (B3:[g ⊢ ccskp.bstep_op X θ' X']) [g ⊢ forget_bc B1 B2] → [g ⊢ enrich_bo B2 B3] → [g ⊢ false] =
 / total b1 (no_bc_bo_one _ _ _ _ _ _ b1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ fg_bc B1 B2 _ _] = d1 in
 let [g ⊢ en_bo B2 B3 \_._] = d2 in
@@ -60,8 +60,8 @@ no_bstep_cl_and_op [g ⊢ B1] [g ⊢ B3]
 ;
 
 % enrich_bo ∘ forget_bo = id.
-rec inverse_bo_one: (g:ctx) (B1:[g ⊢ ccskp.bstep_op X T1 X']) (B2:[g ⊢ ccsk.bstep X T2 X'])
-  (B3:[g ⊢ ccskp.bstep_op X T3 X']) [g ⊢ forget_bo B1 B2] → [g ⊢ enrich_bo B2 B3] → [g ⊢ eqbo B1 B3] =
+rec inverse_bo_one: (g:ctx) (B1:[g ⊢ ccskp.bstep_op X θ X']) (B2:[g ⊢ ccsk.bstep X KL X'])
+  (B3:[g ⊢ ccskp.bstep_op X θ' X']) [g ⊢ forget_bo B1 B2] → [g ⊢ enrich_bo B2 B3] → [g ⊢ eqbo B1 B3] =
 / total b1 (inverse_bo_one _ _ _ _ _ _ b1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ fg_bo B1 B2 \_._] = d1 in
 let [g ⊢ en_bo B2 B3 \_._] = d2 in
@@ -69,8 +69,8 @@ unique_bstep_op [g ⊢ B1] [g ⊢ B3]
 ;
 
 % forget_bo and enrich_bc are not composable.
-rec no_bo_bc_one: (g:ctx) (B1:[g ⊢ ccskp.bstep_op X T1 X']) (B2:[g ⊢ ccsk.bstep X T2 X'])
-  (B3:[g ⊢ ccskp.bstep_cl X T3 X']) [g ⊢ forget_bo B1 B2] → [g ⊢ enrich_bc B2 B3] → [g ⊢ false] =
+rec no_bo_bc_one: (g:ctx) (B1:[g ⊢ ccskp.bstep_op X θ X']) (B2:[g ⊢ ccsk.bstep X KL X'])
+  (B3:[g ⊢ ccskp.bstep_cl X θ' X']) [g ⊢ forget_bo B1 B2] → [g ⊢ enrich_bc B2 B3] → [g ⊢ false] =
 / total b1 (no_bo_bc_one _ _ _ _ _ _ b1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ fg_bo B1 B2 \_._] = d1 in
 let [g ⊢ en_bc B2 B3 _ _] = d2 in
@@ -79,8 +79,8 @@ no_bstep_cl_and_op [g ⊢ B3] [g ⊢ B1]
 
 
 % First implication for combined transitions: enrich ∘ forget = id.
-rec inverse_one: (g:ctx) (S1:[g ⊢ ccskp.step X T1 X']) (S2:[g ⊢ ccsk.step X T2 X'])
-  (S3:[g ⊢ ccskp.step X T3 X']) [g ⊢ forget S1 S2] → [g ⊢ enrich S2 S3] → [g ⊢ eqst S1 S3] =
+rec inverse_one: (g:ctx) (S1:[g ⊢ ccskp.step X θ X']) (S2:[g ⊢ ccsk.step X KL X'])
+  (S3:[g ⊢ ccskp.step X θ' X']) [g ⊢ forget S1 S2] → [g ⊢ enrich S2 S3] → [g ⊢ eqst S1 S3] =
 / total d1 (inverse_one _ _ _ _ _ _ _ _ _ d1 _) /
 fn d1,d2 ⇒ case d1 of
   | [g ⊢ fgfc D1] ⇒ (case d2 of
@@ -104,8 +104,8 @@ fn d1,d2 ⇒ case d1 of
 % Auxiliary theorems, proving the result for closed/open forward/backward transitions
 
 % forget_fc ∘ enrich_fc = id.
-rec inverse_fc_two: (g:ctx) (F1:[g ⊢ ccsk.fstep X T1 X']) (F2:[g ⊢ ccskp.fstep_cl X T2 X'])
-  (F3:[g ⊢ ccsk.fstep X T3 X']) [g ⊢ enrich_fc F1 F2] → [g ⊢ forget_fc F2 F3] → [g ⊢ eqfs F1 F3] =
+rec inverse_fc_two: (g:ctx) (F1:[g ⊢ ccsk.fstep X KL X']) (F2:[g ⊢ ccskp.fstep_cl X θ X'])
+  (F3:[g ⊢ ccsk.fstep X KL' X']) [g ⊢ enrich_fc F1 F2] → [g ⊢ forget_fc F2 F3] → [g ⊢ eqfs F1 F3] =
 / total f1 (inverse_fc_two _ _ _ _ _ _ f1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ en_fc F1 F2 _ _] = d1 in
 let [g ⊢ fg_fc F2 F3 _ _] = d2 in
@@ -113,8 +113,8 @@ ccsk_unique_fstep [g ⊢ F1] [g ⊢ F3]
 ;
 
 % forget_fo ∘ enrich_fo = id.
-rec inverse_fo_two: (g:ctx) (F1:[g ⊢ ccsk.fstep X T1 X']) (F2:[g ⊢ ccskp.fstep_op X T2 X'])
-  (F3:[g ⊢ ccsk.fstep X T3 X']) [g ⊢ enrich_fo F1 F2] → [g ⊢ forget_fo F2 F3] → [g ⊢ eqfs F1 F3] =
+rec inverse_fo_two: (g:ctx) (F1:[g ⊢ ccsk.fstep X KL X']) (F2:[g ⊢ ccskp.fstep_op X θ X'])
+  (F3:[g ⊢ ccsk.fstep X KL' X']) [g ⊢ enrich_fo F1 F2] → [g ⊢ forget_fo F2 F3] → [g ⊢ eqfs F1 F3] =
 / total f1 (inverse_fo_two _ _ _ _ _ _ f1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ en_fo F1 F2 \_._] = d1 in
 let [g ⊢ fg_fo F2 F3 \_._] = d2 in
@@ -122,8 +122,8 @@ ccsk_unique_fstep [g ⊢ F1] [g ⊢ F3]
 ;
 
 % forget_bc ∘ enrich_bc = id.
-rec inverse_bc_two: (g:ctx) (B1:[g ⊢ ccsk.bstep X T1 X']) (B2:[g ⊢ ccskp.bstep_cl X T2 X'])
-  (B3:[g ⊢ ccsk.bstep X T3 X']) [g ⊢ enrich_bc B1 B2] → [g ⊢ forget_bc B2 B3] → [g ⊢ eqbs B1 B3] =
+rec inverse_bc_two: (g:ctx) (B1:[g ⊢ ccsk.bstep X KL X']) (B2:[g ⊢ ccskp.bstep_cl X θ X'])
+  (B3:[g ⊢ ccsk.bstep X KL' X']) [g ⊢ enrich_bc B1 B2] → [g ⊢ forget_bc B2 B3] → [g ⊢ eqbs B1 B3] =
 / total b1 (inverse_bc_two _ _ _ _ _ _ b1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ en_bc B1 B2 _ _] = d1 in
 let [g ⊢ fg_bc B2 B3 _ _] = d2 in
@@ -131,8 +131,8 @@ ccsk_unique_bstep [g ⊢ B1] [g ⊢ B3]
 ;
 
 % forget_bo ∘ enrich_bo = id.
-rec inverse_bo_two: (g:ctx) (B1:[g ⊢ ccsk.bstep X T1 X']) (B2:[g ⊢ ccskp.bstep_op X T2 X'])
-  (B3:[g ⊢ ccsk.bstep X T3 X']) [g ⊢ enrich_bo B1 B2] → [g ⊢ forget_bo B2 B3] → [g ⊢ eqbs B1 B3] =
+rec inverse_bo_two: (g:ctx) (B1:[g ⊢ ccsk.bstep X KL X']) (B2:[g ⊢ ccskp.bstep_op X θ X'])
+  (B3:[g ⊢ ccsk.bstep X KL' X']) [g ⊢ enrich_bo B1 B2] → [g ⊢ forget_bo B2 B3] → [g ⊢ eqbs B1 B3] =
 / total b1 (inverse_bo_two _ _ _ _ _ _ b1 _ _ _ _) /
 fn d1,d2 ⇒ let [g ⊢ en_bo B1 B2 \_._] = d1 in
 let [g ⊢ fg_bo B2 B3 \_._] = d2 in
@@ -141,8 +141,8 @@ ccsk_unique_bstep [g ⊢ B1] [g ⊢ B3]
 
 
 % Second implication for combined transitions: forget ∘ enrich = id.
-rec inverse_two: (g:ctx) (S1:[g ⊢ ccsk.step X T1 X']) (S2:[g ⊢ ccskp.step X T2 X'])
-  (S3:[g ⊢ ccsk.step X T3 X']) [g ⊢ enrich S1 S2] → [g ⊢ forget S2 S3] → [g ⊢ eqs S1 S3] =
+rec inverse_two: (g:ctx) (S1:[g ⊢ ccsk.step X KL X']) (S2:[g ⊢ ccskp.step X θ X'])
+  (S3:[g ⊢ ccsk.step X KL' X']) [g ⊢ enrich S1 S2] → [g ⊢ forget S2 S3] → [g ⊢ eqs S1 S3] =
 / total d1 (inverse_two _ _ _ _ _ _ _ _ _ d1 _) /
 fn d1,d2 ⇒ case d1 of
   | [g ⊢ enfc D1] ⇒ let [g ⊢ fgfc D2] = d2 in  

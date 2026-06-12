@@ -20,8 +20,8 @@ LF labels: type =
 % Processes
 LF proc: type =
   | null: proc                          % 0
-  | pref: labels → proc → proc          % A.X
-  | kpref: labels → keys → proc → proc  % A[k].X
+  | pref: labels → proc → proc          % α.X
+  | kpref: labels → keys → proc → proc  % α[k].X
   | sum: proc → proc → proc             % X+Y
   | par: proc → proc → proc             % X|Y
   | nu: (names → proc) → proc           % X\a
@@ -41,7 +41,7 @@ LF eqk: keys → keys → type =
 
 % Equality of labels
 LF eql: labels → labels → type =
-  | refl: eql A A
+  | refl: eql α α
 ;
 
 % Equality of processes
@@ -64,7 +64,7 @@ LF neq: keys → keys → type =
 % Standard processes
 LF std: proc → type =
   | std_null: std null
-  | std_pref: std X → std (pref A X)
+  | std_pref: std X → std (pref α X)
   | std_sum: std X → std Y → std (sum X Y)
   | std_par: std X → std Y → std (par X Y)
   | std_nu: ({a:names} std (X a)) → std (nu X)
@@ -73,8 +73,8 @@ LF std: proc → type =
 % Non occurrence of keys in processes
 LF notin: keys → proc → type =
   | not_null: notin K null
-  | not_pref: notin K X → notin K (pref A X)
-  | not_kpref: neq K M → notin K X → notin K (kpref A M X)
+  | not_pref: notin K X → notin K (pref α X)
+  | not_kpref: neq K M → notin K X → notin K (kpref α M X)
   | not_sum: notin K X → notin K Y → notin K (sum X Y)
   | not_par: notin K X → notin K Y → notin K (par X Y)
   | not_nu: ({a:names} notin K (X a)) → notin K (nu X)

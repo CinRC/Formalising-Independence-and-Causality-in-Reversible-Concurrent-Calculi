@@ -15,7 +15,7 @@ LF ccsk_equiv_tr: ccsk.step P KL Q → ccsk.step R KL S → type =
 ;
 
 % Equivalent transitions are connected
-rec ccsk_equiv_tr_are_connected: (g:ctx) (T:[g ⊢ ccsk.step P A Q]) (T':[g ⊢ ccsk.step R A S])
+rec ccsk_equiv_tr_are_connected: (g:ctx) (T:[g ⊢ ccsk.step P KL Q]) (T':[g ⊢ ccsk.step R KL S])
   [g ⊢ ccsk_equiv_tr T T'] → [g ⊢ ccsk.conn_tr T T'] =
 / total e (ccsk_equiv_tr_are_connected _ _ _ _ _ _ _ _ e) /
 fn e ⇒ case e of
@@ -34,7 +34,7 @@ fn e ⇒ case e of
 % This result is not needed anymore
 
 % Equivalent transitions have the same direction
-rec ccsk_equiv_tr_have_same_direction: (g:ctx) (T:[g ⊢ ccsk.step P A Q]) (T':[g ⊢ ccsk.step R A S])
+rec ccsk_equiv_tr_have_same_direction: (g:ctx) (T:[g ⊢ ccsk.step P KL Q]) (T':[g ⊢ ccsk.step R KL S])
   [g ⊢ ccsk_equiv_tr T T'] → [g ⊢ ccsk_same_direction T T'] =
 / total e (ccsk_equiv_tr_have_same_direction _ _ _ _ _ _ _ _ e) /
 fn e ⇒ case e of
