@@ -2,17 +2,17 @@
 
 module ccskp = struct
 
-% Recall that, unlike in the paper, restriction of names in processes is considered as
-% a binding operator and processes are identified up to alpha-renaming of bound names.
-% However, the LTS rules for restrictions (res, \bar{res} in Fig.4) are not closed
-% under alpha-equivalence. In fact, the name "a" bound by the restrictions may occur
-% free in the used proof label theta.
-% Our solution consists in considering such occurrence of "a" in theta as bound, and
-% identifying proof labels up to alpha-renaming of bound names.
-% Thus, the encoding distinguishes between proof labels where occurrences of names are
-% free ("closed proof labels") and proof labels where we abstract over the particular
-% choice of a bound name ("open proof labels"). We adopt HOAS to represent the bound
-% name of an open proof label as the argument of a function from names to pr_lab_cl.
+% In this encoding, restriction of names in processes is considered as a binding
+% operation and processes are identified up to α-renaming of bound names. However,
+% the LTS rules for restrictions (res, \underline{res} in Fig.5) are not closed
+% under α-equivalence. In fact, the name "a" bound by the restrictions may occur
+% free in the used proof label θ.
+% In this encoding, we consider such occurrence of "a" in θ as bound and we identify
+% proof labels up to α-renaming of bound names. Thus, we distinguish between proof
+% labels where occurrences of names are free ("closed proof labels") and proof labels
+% where we abstract over the particular choice of a bound name ("open proof labels").
+% Using HOAS (higher-order abstract syntax), we represent the bound name of an open
+% proof label as the argument of a meta-level function from names to pr_lab_cl.
 
 % Closed proof keyed labels 
 LF pr_lab_cl: type =
@@ -74,7 +74,7 @@ LF occurs: names → pr_lab_cl → type =
 
 % The chosen encoding of proof labels is operationally simpler, but pays the price
 % of being over-expressive. To rule out ill-formed proof labels such as
-% ⟨|_L 𝑎[𝑘], |_R 𝑏[𝑘]⟩ and ⟨|_L 𝑎[𝑘], |_R 𝑎[𝑙]⟩, we introduce predicates
+% ⟨|_L a[k], |_R b[k]⟩ and ⟨|_L a[k], |_R a[l]⟩, we introduce predicates
 % expressing the validity of (closed/open) proof labels.
 
 % Valid closed proof labels
@@ -237,7 +237,7 @@ LF conn_tr: step X θ1 X' → step Y θ2 Y' → type =
 %%% Connectedness, dependence and independence of proof labels %%%
 
 % Connectedness, dependence and independence of closed proof labels are defined
-% according to the rules in Fig. 9 and 10.
+% according to the rules in Fig. 10 and 11.
 
 % Connectedness of closed proof labels
 LF conn_cl: pr_lab_cl → pr_lab_cl → type =
@@ -319,6 +319,9 @@ LF indep: pr_lab → pr_lab → type =
   | i_co: ({a:names} indep_cl θ1 (θ2 a)) → indep (p_cl θ1) (p_op (open θ2))
   | i_oo: ({a:names} indep_cl (θ1 a) (θ2 a)) → indep (p_op (open θ1)) (p_op (open θ2))
 ;
+
+% Using the dependence and independence relations on proof labels, we can
+% define dependence and independence for CCSKP transitions.
 
 % Independence of transitions
 LF indep_tr: step X θ1 X' → step Y θ2 Y' → type =

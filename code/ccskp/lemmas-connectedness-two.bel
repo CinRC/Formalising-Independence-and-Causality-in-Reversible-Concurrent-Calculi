@@ -113,7 +113,7 @@ fn s,d ⇒ case s of
     let [g ⊢ S2*'] = step*_parleft_std [g ⊢ S2*] d in [g ⊢ tr_s* S1*' S2*']
 ;
 
-% Given a transition between X and X' and a standard process Y, there is a transition between Y|X and Y|X'
+% Given a path between X and X' and a standard process Y, there is a path between Y|X and Y|X'
 rec step*_parright_std: (g:ctx) [g ⊢ step* X X'] → [g ⊢ std Y] → [g ⊢ step* (par Y X) (par Y X')] =
 / total s (step*_parright_std _ _ _ _ s _) /
 fn s,d ⇒ case s of

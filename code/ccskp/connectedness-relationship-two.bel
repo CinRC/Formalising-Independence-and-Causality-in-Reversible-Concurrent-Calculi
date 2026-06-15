@@ -1,12 +1,17 @@
-%%% Proof of Theorem 2.1(ii)
+%%% Proof of Proposition 5.5 (2)
 
-% In order to prove Theorem 2.1(ii) (given two connected proof keyed labels θ1 and θ2, there exist two
-% connected transitions whose proof keyed labels are θ1 and θ2), we first address the base case where the
-% label of θ1 and θ2 is not tau. In this scenario, we prove that the two searched transitions are actually
+% We prove that, given two connected *closed* proof labels θ1 and θ2, there exist two connected
+% transitions whose proof labels are θ1 and θ2. The proposition is not true if one considers
+% *open* proof labels: one counterexample is given by θ1 = ⟨|_L a[m], |_R +_L \bar{a}[k]⟩ and
+% θ2 = ⟨|_L +_R b[k], |_R \bar{b}[k]⟩.
+
+% To prove Proposition 5.5 (2), we follow the proof strategy in G. Cecilia, "A Formalization of
+% the Reversible Concurrent Calculus CCSK^P in Beluga". We first address the base case where the
+% label of θ1 and θ2 is not τ; in this scenario, we prove that the two searched transitions are actually
 % two forward transitions, in which at least one of the sources is standard, and the path connecting them
 % has at most length one.
 
-% Proof keyed labels whose label is not tau
+% Proof keyed labels whose label is not τ
 LF lab_not_tau: pr_lab_cl → type =
   | nt_inp: lab θ (inp _) → lab_not_tau θ
   | nt_out: lab θ (out _) → lab_not_tau θ
@@ -21,7 +26,7 @@ LF max_one_step: pr_lab_cl → pr_lab_cl → type =
 ;
 
 
-% Proof of the base case of Theorem 2.1(ii)
+% Proof of the base case of Proposition 5.5 (2)
 rec conn_rel_two_base: (g:ctx) [g ⊢ valid_cl θ1] → [g ⊢ valid_cl θ2] → [g ⊢ conn_cl θ1 θ2] →
   [g ⊢ lab_not_tau θ1] → [g ⊢ lab_not_tau θ2] → [g ⊢ max_one_step θ1 θ2] =
 / total c (conn_rel_two_base _ _ _ _ _ c _ _) /
@@ -202,7 +207,7 @@ LF ex_conn_fstep_cl: pr_lab_cl → pr_lab_cl → type =
   | ex_cf: fstep_cl X1 θ1 X1' → fstep_cl X2' θ2 X2 → step* X1 X2' → reachable X1 → ex_conn_fstep_cl θ1 θ2
 ;
 
-% We prove a stronger version of Theorem 2.1(ii):
+% We prove a stronger version of Proposition 5.5 (2):
 % If two valid proof labels are connected, then there are forward transitions
 % indexed by such proof keyed labels and connected by a path; moreover,
 % the processes involved in such transitions are reachable.
@@ -581,14 +586,14 @@ fn v1,v2,c ⇒ case c of
 ;
 
 
-% We finally prove Theorem 2.1(ii) as a corollary of the previous theorem.
+% We finally prove Proposition 5.5 (2) as a corollary of the previous theorem.
 
 % Type family encoding the existence of two connected transitions involving reachable processes
 LF ex_conn_tr: pr_lab_cl → pr_lab_cl → type =
   | ex_c: {S1: step X (p_cl θ1) X'} {S2: step Y (p_cl θ2) Y'} reachable X → conn_tr S1 S2 → ex_conn_tr θ1 θ2
 ;
 
-% Proof of Theorem 2.1(ii):
+% Proof of Proposition 5.5 (2):
 % If two valid closed proof labels are connected, then there are connected transitions with such labels.
 rec conn_rel_two: (g:ctx) [g ⊢ valid_cl θ1] → [g ⊢ valid_cl θ2] → [g ⊢ conn_cl θ1 θ2] → [g ⊢ ex_conn_tr θ1 θ2] =
 / total c (conn_rel_two _ _ _ _ _ c) /
