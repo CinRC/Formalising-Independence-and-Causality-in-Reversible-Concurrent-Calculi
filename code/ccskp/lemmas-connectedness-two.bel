@@ -1,8 +1,7 @@
-%%% Auxiliary lemmas for Theorem 2.1(ii)
+%%% Auxiliary lemmas for Proposition 5.5 (2)
 
-% We define type families encoding realisation of a (closed/open) proof label.
-% With respect to the informal definition of realisation in the paper (Def. 2.4), these type
-% families are slightly stronger, so that a stronger result can be later proved and applied.
+% We define type families encoding realisation of a (closed/open) proof label (Def. 2.4 in
+% G. Cecilia, "A Formalization of the Reversible Concurrent Calculus CCSK^P in Beluga")
 
 % A closed proof label θ is realised if there is a closed forward transition
 % whose source is a standard process and whose proof label is θ.
@@ -20,10 +19,8 @@ LF realised: pr_lab → type =
   | rl: std X → fstep X θ X' → realised θ
 ;
 
-% Lemma 2.5: every valid proof label is realised.
-% The validity hypothesis is necessary in our encoding: a non-valid proof label
-% is an ill-formed term, that does not correspond to any actual proof label in the
-% informal development. It follows that such a term cannot be realised.
+% Every valid proof label is realised (Lemma 2.5 in G. Cecilia,
+% "A Formalization of the Reversible Concurrent Calculus CCSK^P in Beluga")
 
 % Lemma 2.5 for closed proof labels
 rec pr_lab_is_realised_cl: (g:ctx) [g ⊢ valid_cl θ] → [g ⊢ realised_cl θ] =

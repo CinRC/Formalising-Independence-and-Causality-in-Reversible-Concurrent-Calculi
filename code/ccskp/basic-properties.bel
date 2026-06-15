@@ -61,7 +61,7 @@ fn f ⇒ case f of
   | [g ⊢ fo_nu_op \a.F] ⇒ let [g,a:names ⊢ B] = loop_lemma_one_op [g,a:names ⊢ F] in [g ⊢ bo_nu_op \a.B]
 ;
 
-% Loop lemma - first implication
+% Loop lemma (Lemma 4.15) - first implication
 rec loop_lemma_one: (g:ctx) [g ⊢ fstep X θ X'] → [g ⊢ bstep X' θ X] =
 / total f (loop_lemma_one _ _ _ _ f) /
 fn f ⇒ case f of
@@ -100,7 +100,7 @@ fn b ⇒ case b of
   | [g ⊢ bo_nu_op \a.B] ⇒ let [g,a:names ⊢ F] = loop_lemma_two_op [g,a:names ⊢ B] in [g ⊢ fo_nu_op \a.F]
 ;
 
-% Loop lemma - second implication
+% Loop lemma (Lemma 4.15) - second implication
 rec loop_lemma_two: (g:ctx) [g ⊢ bstep X' θ X] → [g ⊢ fstep X θ X'] =
 / total b (loop_lemma_two _ _ _ _ b) /
 fn b ⇒ case b of

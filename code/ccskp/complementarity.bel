@@ -1,4 +1,4 @@
-%%% Basic properties of dependence, independence and connectedness %%%
+%%% Basic properties of dependence, independence and connectedness (Remark 5.3) %%%
 
 % Independence of closed proof labels is irreflexive
 rec irreflexive_indep_cl: (g:ctx) [g ⊢ indep_cl θ θ] → [g ⊢ false] =
@@ -258,12 +258,11 @@ fn d ⇒ case d of
 ;
 
 
-%%% Complementarity of labels %%%
+%%% Complementarity on proof labels (Theorem 5.8) %%%
 
 % Results are proved first for closed proof labels, and then for proof labels.
 
-% Proof of complementarity (first part):
-% Independent proof labels are connected
+% Theorem 5.8 (1): independent proof labels are connected
 rec indep_cl_impl_conn_cl: (g:ctx) [g ⊢ indep_cl θ1 θ2] → [g ⊢ conn_cl θ1 θ2] =
 / total i (indep_cl_impl_conn_cl _ _ _ i) /
 fn i ⇒ case i of
@@ -290,8 +289,7 @@ fn i ⇒ case i of
   | [g ⊢ i_oo \a.I] ⇒ let [g,a:names ⊢ C] = indep_cl_impl_conn_cl [_ ⊢ I] in [g ⊢ c_oo \a.C]
 ;
 
-% Proof of complementarity (second part):
-% Dependent proof labels are connected
+% Theorem 5.8 (2): dependent proof labels are connected
 rec dep_cl_impl_conn_cl: (g:ctx) [g ⊢ dep_cl θ1 θ2] → [g ⊢ conn_cl θ1 θ2] =
 / total d (dep_cl_impl_conn_cl _ _ _ d) /
 fn d ⇒ case d of
@@ -334,8 +332,7 @@ LF dep_or_indep: pr_lab → pr_lab → type =
   | or_ind: indep θ1 θ2 → dep_or_indep θ1 θ2
 ;
 
-% Proof of complementarity (third part):
-% Connected proof labels are dependent or independent
+% Theorem 5.8 (3), first part: connected proof labels are dependent or independent
 rec conn_cl_impl_dep_cl_or_indep_cl: (g:ctx) [g ⊢ conn_cl θ1 θ2] → [g ⊢ dep_cl_or_indep_cl θ1 θ2] =
 / total c (conn_cl_impl_dep_cl_or_indep_cl _ _ _ c) /
 fn c ⇒ case c of
@@ -407,8 +404,7 @@ fn c ⇒ case c of
        | [g,a:names ⊢ or_ind_cl I] ⇒ [g ⊢ or_ind (i_oo \a.I)])
 ;
 
-% Proof of complementarity (fourth part):
-% Proof labels cannot be both dependent and independent
+% Theorem 5.8 (3), second part: proof labels cannot be both dependent and independent
 rec impossible_dep_cl_and_indep_cl: (g:ctx) [g ⊢ dep_cl θ1 θ2] → [g ⊢ indep_cl θ1 θ2] → [g ⊢ false] =
 / total d (impossible_dep_cl_and_indep_cl _ _ _ d _) /
 fn d,i ⇒ case d of
@@ -444,7 +440,7 @@ fn d,i ⇒ case d of
 ;
 
 
-%%% Complementarity of transitions %%%
+%%% Complementarity on transitions for CCSKP (Proposition 5.11) %%%
 
 % Predicate expressing dependence or independence of transitions:
 % dep_or_indep S1 S2 holds iff S1 and S2 are dependent or independent
@@ -453,7 +449,8 @@ LF dep_tr_or_indep_tr: step X1 θ1 Y1 → step X2 θ2 Y2 → type =
   | or_ind_tr: indep_tr S1 S2 → dep_tr_or_indep_tr S1 S2
 ;
 
-% Connected transitions between reachable processes are dependent or independent
+% Proposition 5.11, first part:
+% connected transitions between reachable processes are dependent or independent
 rec conn_tr_impl_dep_tr_or_indep_tr: (g:ctx) (S1:[g ⊢ step X1 θ1 Y1]) (S2:[g ⊢ step X2 θ2 Y2])
   [g ⊢ reachable X1] → [g ⊢ conn_tr S1 S2] → [g ⊢ dep_tr_or_indep_tr S1 S2] =
 / total (conn_tr_impl_dep_tr_or_indep_tr) /
@@ -464,6 +461,7 @@ let [g ⊢ CT] = ct in
   | [g ⊢ or_ind I] ⇒ [g ⊢ or_ind_tr (ind_tr I CT)])
 ;
 
+% Proposition 5.11, second part:
 % Transitions cannot be both dependent and independent
 rec impossible_dep_tr_and_indep_tr: (g:ctx) (S1:[g ⊢ step X1 θ1 Y1]) (S2:[g ⊢ step X2 θ2 Y2])
   [g ⊢ dep_tr S1 S2] → [g ⊢ indep_tr S1 S2] → [g ⊢ false] =

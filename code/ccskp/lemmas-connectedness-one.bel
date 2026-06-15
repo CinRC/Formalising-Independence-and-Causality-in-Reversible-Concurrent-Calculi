@@ -1,4 +1,4 @@
-%%% Auxiliary lemmas for Proposition 4.4 (1) %%%
+%%% Auxiliary lemmas for Proposition 5.5 (1) %%%
 
 % The following lemmas state that, given a path whose source is a
 % known process, we can infer information about the target process.
@@ -319,7 +319,7 @@ fn s ⇒ case s of
 ;
 
 
-% In a subcase of Thm. 2.1(i) there are derivations of connectedness "conn_cl θ1 θ2" in a context
+% In a subcase of Prop. 5.5 (1) there are derivations of connectedness "conn_cl θ1 θ2" in a context
 % context [g,a:names], without θ1 and θ2 depending on a: in such cases we need a technical lemma
 % (strengthening lemma) to get rid of the spurious dependence on the name a.
 rec str_conn: (g:ctx) [g,a:names ⊢ conn_cl θ1[..] θ2[..]] → [g ⊢ conn_cl θ1 θ2] =

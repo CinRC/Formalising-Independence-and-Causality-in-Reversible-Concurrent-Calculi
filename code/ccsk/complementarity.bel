@@ -19,7 +19,7 @@ LF ccsk_dep_tr: ccsk.step X KL1 X' → ccsk.step Y KL2 Y' → type =
 ;
 
 
-%%% Complementarity of transitions %%%
+%%% Complementarity on transitions for CCSK (Proposition 5.11) %%%
 
 % Given a CCSK path between two processes, there exists a CCSKP path between the same processes.
 rec path_ccsk_to_ccskp: (g:ctx) [g ⊢ ccsk.step* X X'] → [g ⊢ ccskp.step* X X'] =
@@ -38,7 +38,8 @@ LF ccsk_dep_tr_or_indep_tr: ccsk.step X1 KL1 Y1 → ccsk.step X2 KL2 Y2 → type
   | ccsk_or_ind_tr: ccsk_indep_tr S1 S2 → ccsk_dep_tr_or_indep_tr S1 S2
 ;
 
-% Connected transitions between reachable processes are dependent or independent
+% Proposition 5.11, first part:
+% connected transitions between reachable processes are dependent or independent
 rec ccsk_conn_tr_impl_dep_tr_or_indep_tr: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2])
   [g ⊢ reachable X1] → [g ⊢ ccsk.conn_tr S1 S2] → [g ⊢ ccsk_dep_tr_or_indep_tr S1 S2] =
 / total (ccsk_conn_tr_impl_dep_tr_or_indep_tr) /
@@ -52,7 +53,8 @@ let [g ⊢ C] = conn_rel_one r [g ⊢ ct S1+ S2+ S*+] in
   | [g ⊢ or_ind I] ⇒ [g ⊢ ccsk_or_ind_tr (ccsk_ind_tr EN1 EN2 I (ctr S1 S2 S*))])
 ;
 
-% Transitions cannot be both dependent and independent
+% Proposition 5.11, second part:
+% transitions cannot be both dependent and independent
 rec ccsk_impossible_dep_tr_and_indep_tr: (g:ctx) (S1:[g ⊢ ccsk.step X1 KL1 Y1]) (S2:[g ⊢ ccsk.step X2 KL2 Y2])
   [g ⊢ ccsk_dep_tr S1 S2] → [g ⊢ ccsk_indep_tr S1 S2] → [g ⊢ false] =
 / total (ccsk_impossible_dep_tr_and_indep_tr) /

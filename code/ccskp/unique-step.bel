@@ -1,4 +1,4 @@
-%%% Uniqueness of the derivation of CCSKP transitions %%%
+%%% Uniqueness of the derivation of CCSKP transitions (Lemma 4.17) %%%
 
 %%% Auxiliary lemmas %%%
 
@@ -559,7 +559,9 @@ fn f,b ⇒ case f of
        | [g ⊢ bo_nu_op \a.B] ⇒ impossible no_fstep_op_and_bstep_op [_ ⊢ F] [_ ⊢ B])
 ;
 
-% Uniqueness of the derivation of step X θ X'
+% Uniqueness of the derivation of step X θ X' (Lemma 4.17)
+% We actually prove a stronger result: given two processes X and X', if there is one transition
+% between them, the transition and its derivation tree are unique
 rec unique_step: (g:ctx) {S1:[g ⊢ step X θ1 X']} {S2:[g ⊢ step X θ2 X']} [g ⊢ eqst S1 S2] =
 / total s1 (unique_step _ _ _ _ _ s1 _) /
 mlam S1 S2 ⇒ case [_ ⊢ S1] of

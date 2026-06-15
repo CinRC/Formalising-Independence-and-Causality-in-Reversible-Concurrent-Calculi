@@ -63,7 +63,7 @@ let [g ⊢ refst] = unique_step [g ⊢ RT+] [g ⊢ RT'+] in [g ⊢ it T+ RT+]
 ;
 
 
-%%% Proposition 6.13:
+%%% Proposition 6.7:
 %%% i) If two CCSK transitions t and t' are equivalent, then enrich(t) and enrich(t') are equivalent.
 %%% ii) If two CCSKP transitions t and t' are equivalent, then forget(t) and forget(t') are equivalent.
 
@@ -74,7 +74,7 @@ let [g ⊢ refst] = unique_step [g ⊢ RT+] [g ⊢ RT'+] in [g ⊢ it T+ RT+]
 % t+ and t'+ may in general use different proof labels.
 
 
-% Part ii)
+% Proposition 6.7, part ii)
 
 % If t and t' have the same proof label, then their corresponding
 % CCSK transitions forget(t) and forget(t') have the same keyed label.
@@ -136,7 +136,7 @@ mlam T,T' ⇒ fn e,fgt,fgt' ⇒ case e of
 ;
 
 
-% Part i)
+% Proposition 6.7, part i)
 
 LF ccskp_tr_are_equiv: ccskp.step X θ Y → ccskp.step Z θ' W → type =
   | ct_eq: equiv_tr (T+:ccskp.step X θ Y) (T'+:ccskp.step Z θ W) → ccskp_tr_are_equiv T+ T'+
