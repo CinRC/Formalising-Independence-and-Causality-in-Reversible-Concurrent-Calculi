@@ -3,13 +3,13 @@
 % Independence of diamonds (ID):
 % Given t:step X KL1 Y, u:step X KL2 Z, u':step Y KL2 W and t':step Z KL1 W,
 % where (t,t') and (u,u') have same direction, with
-% - Y != Z if (t,u) have the same direction,
-% - X != W if (t,u) have opposite directions,
+%    - Y != Z if (t,u) have the same direction,
+%    - X != W if (t,u) have opposite directions,
 % then t and u are independent.
 
 % First, we define an additional predicate to encode the disjunction of the following:
-% - Y != Z if (t,u) have the same direction,
-% - X != W if (t,u) have opposite directions.
+%    - Y != Z if (t,u) have the same direction,
+%    - X != W if (t,u) have opposite directions.
 LF ccsk_non_deg_diamonds: ccsk.step X KL1 Y → ccsk.step X KL2 Z → ccsk.step Y KL2 W → ccsk.step Z KL1 W → type =
   | ccsk_sd_diam: ccsk_same_direction (T:ccsk.step X KL1 Y) (U:ccsk.step X KL2 Z) → (eqp Y Z → false)
                   → ccsk_non_deg_diamonds T U (U':ccsk.step Y KL2 W) (T':ccsk.step Z KL1 W)
@@ -17,7 +17,7 @@ LF ccsk_non_deg_diamonds: ccsk.step X KL1 Y → ccsk.step X KL2 Z → ccsk.step 
                   → ccsk_non_deg_diamonds T U (U':ccsk.step Y KL2 W) (T':ccsk.step Z KL1 W)
 ;
 
-% Independence of diamonds
+% Independence of diamonds (ID):
 rec ccsk_id: (g:ctx) (T:[g ⊢ ccsk.step X KL1 Y]) (U:[g ⊢ ccsk.step X KL2 Z]) (U':[g ⊢ ccsk.step Y KL2 W])
   (T':[g ⊢ ccsk.step Z KL1 W]) [g ⊢ ccsk_same_direction T T'] → [g ⊢ ccsk_same_direction U U'] →
   [g ⊢ ccsk_non_deg_diamonds T U U' T'] → [g ⊢ ccsk_indep_tr T U] =

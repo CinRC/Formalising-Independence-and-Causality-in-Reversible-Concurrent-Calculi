@@ -102,7 +102,7 @@ fn fg1,fg2 ⇒ case fg1 of
 ;
 
 % To state the result in full generality, t◦ and t'◦ must initially be allowed to use
-% different proof labels. However, the conclusion ccsk_equiv_tr t◦ t'◦ would not type-check,
+% different keyed labels. However, the conclusion ccsk_equiv_tr t◦ t'◦ would not type-check,
 % since ccsk_equiv_tr requires its arguments to share the same keyed label. For this reason,
 % we introduce the auxiliary type ccsk_tr_are_equiv, which wraps ccsk_equiv_tr while
 % allowing the keyed labels of t◦ and t'◦ to differ initially.
@@ -114,6 +114,7 @@ LF ccsk_tr_are_equiv: ccsk.step X KL Y → ccsk.step Z KL' W → type =
 rec forget_preserves_equiv_tr: (g:ctx) {T:[g ⊢ ccskp.step X θ1 Y]} {T':[g ⊢ ccskp.step Z θ1 W]}
   (T◦:[g ⊢ ccsk.step X KL1 Y]) (T'◦:[g ⊢ ccsk.step Z KL2 W]) [g ⊢ equiv_tr T T']
   → [g ⊢ forget T T◦] → [g ⊢ forget T' T'◦] → [g ⊢ ccsk_tr_are_equiv T◦ T'◦] =
+/ total e (forget_preserves_equiv_tr _ _ _ _ _ _ _ _ _ _ _ _ e _ _) /
 mlam T,T' ⇒ fn e,fgt,fgt' ⇒ case e of
   | [g ⊢ et_base (etb SDT SDU (ind_tr I _))] ⇒
     let [g ⊢ SDT◦]:[g ⊢ ccsk_same_direction T◦ T'◦] = forget_preserves_same_direction [g ⊢ SDT] fgt fgt' in
@@ -143,7 +144,7 @@ LF ccskp_tr_are_equiv: ccskp.step X θ Y → ccskp.step Z θ' W → type =
 ;
 
 % If two CCSK transitions t and t' are equivalent, then enrich(t) and enrich(t') are equivalent.
-% This proposition makes use of the auxiliary lemma unique_diamonds in ccsk/defs-and-properties.bel.
+% This proposition makes use of the auxiliary lemma "unique_diamonds" in "ccsk/defs-and-properties.bel".
 rec enrich_preserves_equiv_tr: (g:ctx) {T:[g ⊢ ccsk.step X KL Y]} {T':[g ⊢ ccsk.step Z KL W]}
   (T+:[g ⊢ ccskp.step X θ1 Y]) (T'+:[g ⊢ ccskp.step Z θ2 W]) [g ⊢ ccsk_equiv_tr T T']
   → [g ⊢ enrich T T+] → [g ⊢ enrich T' T'+] → [g ⊢ ccskp_tr_are_equiv T+ T'+] =

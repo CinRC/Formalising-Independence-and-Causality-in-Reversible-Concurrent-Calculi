@@ -18,6 +18,6 @@ conn_cl (pr_sync (pr_base (inp b) m) (pr_base (out b) m)) (pr_parl (pr_parr (pr_
 
 % +_L a[k] and |_L b[m] are not connected.
 rec not_conn: [a:names,b:names,k:keys,m:keys ⊢ conn_cl (pr_suml (pr_base (inp a) k)) (pr_parl (pr_base (inp b) m))] → [⊢ false] =
-/ total 1 /
+/ total (not_conn) /
 fn c ⇒ impossible c
 ;

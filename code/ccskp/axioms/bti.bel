@@ -11,7 +11,6 @@
 % general result by combining these four cases.
 
 
-
 % Given two backward closed transitions B1 and B2, id_or_ind_cc B1 B2 holds iff
 % either B1=B2, or their proof labels are independent. 
 LF id_or_ind_cc: bstep_cl X θ1 X1 → bstep_cl X θ2 X2 → type =
@@ -19,7 +18,7 @@ LF id_or_ind_cc: bstep_cl X θ1 X1 → bstep_cl X θ2 X2 → type =
   | bt_ind_cc: indep_cl θ1 θ2 → id_or_ind_cc (B1:bstep_cl X θ1 X1) (B2:bstep_cl X θ2 X2)
 ;
 
-% BTI, closed-closed case:
+% Equivalent formulation of BTI, closed-closed case:
 % Given two backward closed transitions sharing the same source process,
 % they are either identical or their proof labels are independent.
 rec bti_cc: (g:ctx) {B1:[g ⊢ bstep_cl X θ1 X1]} {B2:[g ⊢ bstep_cl X θ2 X2]}
@@ -152,8 +151,7 @@ mlam B1,B2 ⇒ case [_ ⊢ B1] of
 ;
 
 
-
-% BTI, closed-open case:
+% Equivalent formulation of BTI, closed-open case:
 % Given a closed and an open backward transition sharing the same source process,
 % their proof labels are independent.
 % Observe that, unlike the closed-closed case, the two transitions cannot be identical:
@@ -201,8 +199,7 @@ mlam B1,B2 ⇒ case [_ ⊢ B2] of
 ;
 
 
-
-% BTI, open-closed case:
+% Equivalent formulation of BTI, open-closed case:
 % Given an open and a closed backward transition sharing the same source process,
 % their proof labels are independent.
 rec bti_oc: (g:ctx) {B1:[g ⊢ bstep_op X θ1 X1]} {B2:[g ⊢ bstep_cl X θ2 X2]}
@@ -248,7 +245,6 @@ mlam B1,B2 ⇒ case [_ ⊢ B1] of
 ;
 
 
-
 % Given two backward open transitions B1 and B2, id_or_ind_oo B1 B2 holds iff
 % either B1=B2, or their proof labels are independent. 
 LF id_or_ind_oo: bstep_op X θ1 X1 → bstep_op X θ2 X2 → type =
@@ -256,7 +252,7 @@ LF id_or_ind_oo: bstep_op X θ1 X1 → bstep_op X θ2 X2 → type =
   | bt_ind_oo: indep (p_op θ1) (p_op θ2) → id_or_ind_oo (B1:bstep_op X θ1 X1) (B2:bstep_op X θ2 X2)
 ;
 
-% BTI, open-open case:
+% Equivalent formulation of BTI, open-open case:
 % Given two backward open transitions sharing the same source process,
 % they are either identical or their proof labels are independent.
 rec bti_oo: (g:ctx) {B1:[g ⊢ bstep_op X θ1 X1]} {B2:[g ⊢ bstep_op X θ2 X2]}
@@ -334,6 +330,7 @@ case [g ⊢ B1] of
             | [g ⊢ bt_id_oo refbo] ⇒ [g ⊢ bt_id refb]
             | [g ⊢ bt_ind_oo I] ⇒ [g ⊢ bt_ind C1 C2 (ind_tr I (ct _ _ (st_s* (so (bwo B2')))))]))
 ;
+
 
 % Independence for backward transitions: two backward transitions are independent if
 % they are independent as combined transitions.

@@ -4,13 +4,13 @@
 
 % a\a does not make any forward closed transition.
 rec stuck_p1_closed: (g:ctx) [g ⊢ fstep_cl (nu \a.(pref (inp a) null)) θ X'] → [⊢ false] =
-/ total 1 /
+/ total (stuck_p1_closed) /
 fn f ⇒ let [g ⊢ fc_nu \a.F] = f in impossible [g,a:names ⊢ F]
 ;
 
 % a\a does not make any forward open transition.
 rec stuck_p1_open: (g:ctx) [g ⊢ fstep_op (nu \a.(pref (inp a) null)) θ X'] → [⊢ false] =
-/ total 1 /
+/ total (stuck_p1_open) /
 fn f ⇒ case f of
   | [g ⊢ fo_nu_cl (\a.O) (\a.L) (\a.F)] ⇒ let [g,a:names ⊢ fc_pref D] = [g,a:names ⊢ F] in impossible [g,a:names ⊢ L]
   | [g ⊢ fo_nu_op \a.F] ⇒ impossible [g,a:names ⊢ F]
@@ -19,13 +19,13 @@ fn f ⇒ case f of
 
 % 'a\a does not make any forward closed transition.
 rec stuck_p2_closed: (g:ctx) [g ⊢ fstep_cl (nu \a.(pref (out a) null)) θ X'] → [⊢ false] =
-/ total 1 /
+/ total (stuck_p2_closed) /
 fn f ⇒ let [g ⊢ fc_nu \a.F] = f in impossible [g,a:names ⊢ F]
 ;
 
 % 'a\a does not make any forward open transition.
 rec stuck_p2_open: (g:ctx) [g ⊢ fstep_op (nu \a.(pref (out a) null)) θ X'] → [⊢ false] =
-/ total 1 /
+/ total (stuck_p2_open) /
 fn f ⇒ case f of
   | [g ⊢ fo_nu_cl (\a.O) (\a.L) (\a.F)] ⇒ let [g,a:names ⊢ fc_pref D] = [g,a:names ⊢ F] in impossible [g,a:names ⊢ L]
   | [g ⊢ fo_nu_op \a.F] ⇒ impossible [g,a:names ⊢ F]
@@ -34,7 +34,7 @@ fn f ⇒ case f of
 
 % ((a.b | 'b.'a)\a)\b does not make any forward closed transition.
 rec stuck_p3_closed: (g:ctx) [g ⊢ fstep_cl (nu \b.(nu \a.(par (pref (inp a) (pref (inp b) null)))(pref (out b) (pref (out a) null)))) θ X'] → [⊢ false] =
-/ total 1 /
+/ total (stuck_p3_closed) /
 fn f ⇒ let [g ⊢ fc_nu \b.F] = f in
 let [g,b:names ⊢ fc_nu \a.F1] = [g,b:names ⊢ F] in
 case [g,b:names,a:names ⊢ F1] of
@@ -44,7 +44,7 @@ case [g,b:names,a:names ⊢ F1] of
 
 % ((a.b | 'b.'a)\a)\b does not make any forward open transition.
 rec stuck_p3_open: (g:ctx) [g ⊢ fstep_op (nu \b.(nu \a.(par (pref (inp a) (pref (inp b) null)))(pref (out b) (pref (out a) null)))) θ X'] → [⊢ false] =
-/ total 1 /
+/ total (stuck_p3_open) /
 fn f ⇒ case f of
   | [g ⊢ fo_nu_cl (\b.O) (\b.L) (\b.F)] ⇒ 
     let [g,b:names ⊢ fc_nu \a.F1] = [g,b:names ⊢ F] in

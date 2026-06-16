@@ -156,7 +156,7 @@ mlam F1 F2 ⇒ case [_ ⊢ F1] of
        | [g ⊢ fo_nu_op \a.F2'] ⇒ let [g,a:names ⊢ reffo] = fld_fo [g,a:names ⊢ F1'] [g,a:names ⊢ F2'] in [g ⊢ reffo])
 ;
 
-% Forward label determinism:
+% Forward label determinism (FLD):
 % Two coinitial forward transitions with the same proof label are equal.
 rec fld: (g:ctx) {F1:[g ⊢ fstep X θ Y1]} {F2:[g ⊢ fstep X θ Y2]} [g ⊢ eqf F1 F2] =
 / total f1 (fld _ _ _ _ _ f1 _) /

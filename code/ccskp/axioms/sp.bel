@@ -1,6 +1,5 @@
 %%% SP: square property
 
-
 % Existence of transitions closing a square diagram for the 
 % forward-forward, closed-closed case
 LF square_ffcc: fstep_cl X θ1 X1 → fstep_cl X1 θ2 Y → type =
@@ -336,7 +335,6 @@ case [g ⊢ F1] of
          let [g,a:names ⊢ s_ffoo F2'' F1''] = sp_ffoo [_ ⊢ F1'] [_ ⊢ F2'] [_ ⊢ i_oo \a.I[..]] in
          [g ⊢ s_ffoo (fo_nu_op \a.F2'') (fo_nu_op \a.F1'')])
 ;
-
 
 
 

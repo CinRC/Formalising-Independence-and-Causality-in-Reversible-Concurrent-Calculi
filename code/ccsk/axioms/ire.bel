@@ -1,3 +1,5 @@
+%%% IRE: independence respects events
+
 % Independence respects events (IRE):
 % Given three transitions t,t' and u, if t~t' (t and t' are equivalent) and t' and u are independent,
 % then also t and u are independent.

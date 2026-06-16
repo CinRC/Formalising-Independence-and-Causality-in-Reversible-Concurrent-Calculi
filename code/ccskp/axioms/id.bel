@@ -3,13 +3,13 @@
 % Independence of diamonds (ID):
 % Given t:step X θ1 Y, u:step X θ2 Z, u':step Y θ2 W and t':step Z θ1 W,
 % where (t,t') and (u,u') have same direction, with
-% - Y != Z if (t,u) have the same direction,
-% - X != W if (t,u) have opposite directions,
+%    - Y != Z if (t,u) have the same direction,
+%    - X != W if (t,u) have opposite directions,
 % then t and u are independent.
 
 % First, we define an additional predicate to encode the disjunction of the following:
-% - Y != Z if (t,u) have the same direction,
-% - X != W if (t,u) have opposite directions.
+%    - Y != Z if (t,u) have the same direction,
+%    - X != W if (t,u) have opposite directions.
 LF non_deg_diamonds: step X θ1 Y → step X θ2 Z → step Y θ2 W → step Z θ1 W → type =
   | sd_diam: same_direction (T:step X θ1 Y) (U:step X θ2 Z) → (eqp Y Z → false)
              → non_deg_diamonds T U (U':step Y θ2 W) (T':step Z θ1 W)
@@ -17,7 +17,7 @@ LF non_deg_diamonds: step X θ1 Y → step X θ2 Z → step Y θ2 W → step Z �
              → non_deg_diamonds T U (U':step Y θ2 W) (T':step Z θ1 W)
 ;
 
-% Independence of diamonds
+% Independence of diamonds (ID):
 rec id: (g:ctx) (T:[g ⊢ step X θ1 Y]) (U:[g ⊢ step X θ2 Z]) (U':[g ⊢ step Y θ2 W])
   (T':[g ⊢ step Z θ1 W]) [g ⊢ same_direction T T'] → [g ⊢ same_direction U U'] →
   [g ⊢ non_deg_diamonds T U U' T'] → [g ⊢ indep_tr T U] =

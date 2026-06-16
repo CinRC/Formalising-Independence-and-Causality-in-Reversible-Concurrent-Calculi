@@ -1,3 +1,5 @@
+%%% PCI: propagation of coinitial independence
+
 % Propagation of coinitial independence (PCI):
 % Given t:step X KL1 Y, u:step X KL2 Z, u':step Y KL2 W and t':step Z KL1 W,
 % where (t,t') and (u,u') have same direction,

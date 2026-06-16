@@ -20,6 +20,6 @@ indep_cl (pr_sync (pr_parr (pr_base (inp b) m)) (pr_base (out b) m)) (pr_parl (p
 
 % a[k] and +_L a[k] are not independent.
 rec not_indep: [a:names,k:keys ⊢ indep_cl (pr_base (inp a) k) (pr_suml (pr_base (inp a) k))] → [⊢ false] =
-/ total 1 /
+/ total (not_indep) /
 fn i ⇒ impossible i
 ;

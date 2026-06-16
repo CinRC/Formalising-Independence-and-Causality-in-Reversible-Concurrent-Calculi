@@ -1,8 +1,11 @@
+%%% SP: square property
+
 % Existence of combined transitions closing a square diagram in CCSK
 LF ccsk_square: ccsk.step X KL1 X1 → ccsk.step X KL2 X2 → type =
   | ccsk_sq: {S2':ccsk.step X1 KL2 Y} {S1':ccsk.step X2 KL1 Y} ccsk_same_direction (S1:ccsk.step X KL1 X1) S1' → 
     ccsk_same_direction (S2:ccsk.step X KL2 X2) S2' → ccsk_square (S1:ccsk.step X KL1 X1) (S2:ccsk.step X KL2 X2)
 ;
+
 % Square property (SP):
 % Given two independent coinitial combined transitions,
 % there exist two cofinal combined transition closing the square diagram.

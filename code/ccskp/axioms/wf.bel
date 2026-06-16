@@ -5,14 +5,14 @@
 % An element x of X is accessible if every element x' < x is accessible.
 % In other words, if x is accessible, then each descending chain ending with x_0 is finite.
 % Well-foundedness of < is shown by proving that every element in X is accessible.
-% (Cf. e.g. the definitions of well-foundedness in Rocq and Agda, or “POPLMark reloaded: Mechanizing proofs by logical relations”
+% (See, e.g., the definitions of well-foundedness in Rocq and Agda, or “POPLMark reloaded: Mechanizing proofs by logical relations”
 % by A. Abel et al., doi:10.1017/S0956796819000170)
 
 % In our setting, X is the set of all processes and < is defined by:
-% P < Q iff there exists a forward transition t: P --[α]--> Q.
+% P < Q iff there exists a forward transition t: P --[θ]--> Q.
 % To prove well-foundedness, we show that each process is accessible.
 
-% Type family encoding accessibility of CCSKP processes
+% Type family encoding accessibility of processes in CCSKP
 inductive acc: (g:ctx) [g ⊢ proc] → ctype =
   | acc_intro: {g:ctx} {X':[g ⊢ proc]}
     ({X:[g ⊢ proc]} {θ:[g ⊢ pr_lab]} [g ⊢ fstep X θ X'] → acc [g ⊢ X]) → acc [g ⊢ X']

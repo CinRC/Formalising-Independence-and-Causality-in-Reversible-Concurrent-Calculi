@@ -1,10 +1,12 @@
-% Type family encoding accessibility of CCSK processes
+%%% WF: well-foundedness
+
+% Type family encoding accessibility of processes in CCSK
 inductive ccsk_acc: (g:ctx) [g ⊢ proc] → ctype =
   | ccsk_acc_intro: {g:ctx} {X':[g ⊢ proc]}
     ({X:[g ⊢ proc]} {KL:[g ⊢ key_lab]} [g ⊢ ccsk.fstep X KL X'] → ccsk_acc [g ⊢ X]) → ccsk_acc [g ⊢ X']
 ;
 
-% If a process X is accessible w.r.t. the LTS of CCSKP, then it is accessible w.r.t. the LTS of CCSK. 
+% If a process X is accessible in CCSKP, then it is accessible in CCSK. 
 rec acc_ccskp_to_ccsk: (g:ctx) acc [g ⊢ X] → ccsk_acc [g ⊢ X] =
 / total a (acc_ccskp_to_ccsk _ _ a) /
 fn a ⇒ let acc_intro [g] [g ⊢ X] h = a in

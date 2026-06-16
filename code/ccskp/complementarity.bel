@@ -249,7 +249,7 @@ fn d ⇒ case d of
 
 % Dependence of proof labels is symmetric
 rec symmetric_dep: (g:ctx) [g ⊢ dep θ1 θ2] → [g ⊢ dep θ2 θ1] =
-/ total d (symmetric_dep _ _ _ d) /
+/ total (symmetric_dep) /
 fn d ⇒ case d of
   | [g ⊢ d_cc D] ⇒ let [g ⊢ D'] = symmetric_dep_cl [g ⊢ D] in [g ⊢ d_cc D']
   | [g ⊢ d_co \a.D] ⇒ let [g,a:names ⊢ D'] = symmetric_dep_cl [_ ⊢ D] in [g ⊢ d_oc \a.D']

@@ -1,6 +1,7 @@
 %%% ED: event determinism
 
-% ED: if T and U are forward coinitial transitions and T ~ U, then T and U are cofinal.
+% Event determinism (ED):
+% If T and U are forward coinitial transitions and T ~ U, then T and U are cofinal.
 rec ed: (g:ctx) {FT:[g ⊢ fstep X θ Y1]} {FU:[g ⊢ fstep X θ Y2]} (T:[g ⊢ step X θ Y1])
   (U:[g ⊢ step X θ Y2]) [g ⊢ forw_to_comb FT T] → [g ⊢ forw_to_comb FU U] → [g ⊢ equiv_tr T U] → [g ⊢ eqp Y1 Y2] =
 / total e (ed _ _ _ _ _ _ _ e) /

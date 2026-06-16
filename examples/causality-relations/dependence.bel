@@ -18,6 +18,6 @@ dep_cl (pr_sync (pr_base (inp b) m) (pr_base (out b) m)) (pr_parl (pr_parr (pr_b
 
 % +_L a[k] and |_L b[m] are not dependent.
 rec not_dep: [a:names,b:names,k:keys,m:keys ⊢ dep_cl (pr_suml (pr_base (inp a) k)) (pr_parl (pr_base (inp b) m))] → [⊢ false] =
-/ total 1 /
+/ total (not_dep) /
 fn d ⇒ impossible d
 ;

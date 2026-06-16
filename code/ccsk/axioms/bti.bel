@@ -1,3 +1,5 @@
+%%% BTI: backward transitions are independent
+
 % Backward transitions are independent (BTI):
 % Given two backward transitions sharing the same source process,
 % if they are not equal, they are independent.
