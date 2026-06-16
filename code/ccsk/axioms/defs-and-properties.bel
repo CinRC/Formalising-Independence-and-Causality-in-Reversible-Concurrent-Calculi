@@ -1,4 +1,5 @@
-% Definitions and properties needed to state and prove the axioms from "An Axiomatic Approach to Reversible Computation" for CCSK
+%%% Definitions needed to state the axioms (lines 4-117);               %%%
+%%% Properties of the LTS of CCSKP to prove the axioms (lines 120-1990) %%%
 
 %%% Inverse of a transition
 
@@ -1987,39 +1988,3 @@ mlam T1,T2,U1,U2 ⇒ fn sdt,sdu,i ⇒ case sdt of
          let [g ⊢ FU2] = ccsk_loop_lemma_two [g ⊢ BU2] in
          unique_diamonds_bb [g ⊢ FT1] [g ⊢ FT2] [g ⊢ FU1] [g ⊢ FU2] i)
 ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,6 +1,6 @@
 %%% Equivalence of transitions ~: two transitions are equivalent if they correspond to the same event
 
-% Base case of the definition of equivalence of transitions:
+% Base case of the definition of equivalence of transitions
 % Since CCSKP is pre-reversible, we can use the simplified definition of events (Definition 6.2):
 % Two combined transitions with the same direction t: P --[α]--> Q and t': R --[α]--> S
 % are equivalent if there exist two combined transitions with the same direction
@@ -21,9 +21,9 @@ LF equiv_tr: step P θ Q → step R θ S → type =
 ;
 
 
-% We can show that this definition is equivalent to Def. 2.5 in the paper. In particular
+% We can show that this definition is equivalent to Def. 2.4 in the paper. In particular
 % we have to prove that, given equiv_tr_base t t' as above:
-% 1) The pairs of transitions (inv(u), t'), (inv(t'),inv(u')) and (u', inv(t)) are independent
+% 1) The pairs of transitions (inv(u), t'), (inv(t'), inv(u')) and (u', inv(t)) are independent
 % 2) The diamond is not degenerate: Q != R if t and u are both forward or backward, P !=S otherwise.
 
 % Given t,u,u',t' as in the definition of equiv_tr_base t t', then inv(u) and t' are independent

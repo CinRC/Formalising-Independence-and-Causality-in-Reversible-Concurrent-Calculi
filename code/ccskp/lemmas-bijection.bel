@@ -25,7 +25,7 @@ mlam L ⇒ case [_,a:names ⊢ L] of
 
 
 % Given a derivation of lab θ α in a context [g,a:names],
-% with 'a' not occurring in α, then we can obtain a derivation
+% with 'a' not occurring in both θ and α, then we can obtain a derivation
 % of lab θ α in the stronger context [g].
 rec str_labr: (g:ctx) [g,a:names ⊢ lab θ[..] α[..]] → [g ⊢ lab θ α] =
 / total l (str_labr _ _ _ l) /
@@ -177,7 +177,7 @@ fn s ⇒ case s of
   | [g ⊢ so (bwo B)] ⇒ let [g ⊢ V] = valid_in_bstep_op [g ⊢ B] in [g ⊢ v_op V]
 ;
 
-% If "a" occurs in θ, but not in the label of θ, then such label is tau
+% If "a" occurs in θ, but not in the label of θ, then such label is τ
 rec occurs_impl_tau: (g:ctx) [g,a:names ⊢ occurs a θ] → [g,a:names ⊢ lab θ α[..]] → [g,a:names ⊢ lab θ tau] =
 / total o (occurs_impl_tau _ _ _ o _) /
 fn o,l ⇒ case o of
@@ -194,7 +194,7 @@ fn o,l ⇒ case o of
   | [g,a:names ⊢ occ_sync O] ⇒ [g,a:names ⊢ lab_sync]
 ;
 
-% Given an open forward transition labelled by θ, the label of θ is tau
+% Given an open forward transition labelled by θ, the label of θ is τ
 rec fstep_op_impl_tau: (g:ctx) {F:[g ⊢ fstep_op X (open \a.θ) X']} [g,a:names ⊢ lab θ[..,a] tau] =
 / total f (fstep_op_impl_tau _ _ _ _ f) /
 mlam F ⇒ case [_ ⊢ F] of
@@ -207,7 +207,7 @@ mlam F ⇒ case [_ ⊢ F] of
   | [g ⊢ fo_nu_op \a.F'] ⇒ let [g,a:names,b:names ⊢ L] = fstep_op_impl_tau [g,a:names ⊢ F'] in [g,a:names ⊢ L[..,a]]
 ;
 
-% Given an open backward transition labelled by θ, the label of θ is tau
+% Given an open backward transition labelled by θ, the label of θ is τ
 rec bstep_op_impl_tau: (g:ctx) {B:[g ⊢ bstep_op X' (open \a.θ) X]} [g,a:names ⊢ lab θ[..,a] tau] =
 / total b (bstep_op_impl_tau _ _ _ _ b) /
 mlam B ⇒ case [_ ⊢ B] of
@@ -331,7 +331,7 @@ fn v ⇒ case v of
               let [g,a:names ⊢ refplc] = [g,a:names ⊢ E2] in noc [g,a:names ⊢ _] [g,a:names ⊢ refplc]))
 ;
 
-% If the label of a proof label θ is "inp a", then any b!=a does not occur in θ.
+% If the label of a proof label θ is "inp a", then any b != a does not occur in θ.
 % More precisely: given a derivation of "lab θ (inp a)" in a context [g,b:names,a:names],
 % then we can obtain such a derivation in the stronger context [g,a:names].
 inductive ex_str_lab_inp: (g:ctx) [g,b:names,a:names ⊢ lab θ (inp a)] → ctype =
@@ -361,7 +361,7 @@ mlam L ⇒ case [_ ⊢ L] of
 	  ex_sli [_ ⊢ _] [_ ⊢ lab_parr L1'] [_ ⊢ refplc]
 ;
 
-% If the label of a proof label θ is "out a", then any b!=a does not occur in θ.
+% If the label of a proof label θ is "out a", then any b != a does not occur in θ.
 % More precisely: given a derivation of "lab θ (out a)" in a context [g,b:names,a:names],
 % then we can obtain such a derivation in the stronger context [g,a:names].
 inductive ex_str_lab_out: (g:ctx) [g,b:names,a:names ⊢ lab θ (out a)] → ctype =

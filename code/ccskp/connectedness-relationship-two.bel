@@ -1,9 +1,17 @@
 %%% Proof of Proposition 5.5 (2)
 
 % We prove that, given two connected *closed* proof labels θ1 and θ2, there exist two connected
-% transitions whose proof labels are θ1 and θ2. The proposition is not true if one considers
-% *open* proof labels: one counterexample is given by θ1 = ⟨|_L a[m], |_R +_L \bar{a}[k]⟩ and
-% θ2 = ⟨|_L +_R b[k], |_R \bar{b}[k]⟩.
+% transitions whose proof labels are θ1 and θ2.
+
+% The proposition is not true if one considers *open* proof labels: one counterexample is given by
+% θ1 = ⟨|_L a[m], |_R +_L \bar{a}[k]⟩ and θ2 = ⟨|_L +_R b[k], |_R \bar{b}[k]⟩, with θ2 considered
+% up to α-renaming of b, i.e., where we require b to be restricted.
+% In fact, to realise θ1 and θ2, we need an origin process whose underlying structure is
+% (a.(_ + b) | \bar{b}.(\bar{a} + _) )\b, with eventually more irrelevant prefixes and restrictions.
+% Since b is restricted, each transition labelled by b or \bar{b} performed by one thread 
+% must be paired to a complementary transition performed by the other thread with matching keys.
+% Therefore, the realisation of θ2 separates the execution of a[m] and \bar{a}[k] in the two
+% threads and excludes the realisation of θ1.
 
 % To prove Proposition 5.5 (2), we follow the proof strategy in G. Cecilia, "A Formalization of
 % the Reversible Concurrent Calculus CCSK^P in Beluga". We first address the base case where the

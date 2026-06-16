@@ -1,8 +1,8 @@
 %%% forget and enrich are mutual inverses (Lemma 4.23) %%%
 
-% First implication: enrich ∘ forget = id for CCSKP transitions
+% First implication: enrich ∘ forget = id on CCSKP transitions
 
-% Auxiliary theorems, proving the result for closed/open forward/backward transitions
+% Auxiliary lemmas, proving the result for closed/open forward/backward transitions
 
 % enrich_fc ∘ forget_fc = id.
 rec inverse_fc_one: (g:ctx) (F1:[g ⊢ ccskp.fstep_cl X θ X']) (F2:[g ⊢ ccsk.fstep X KL X'])
@@ -99,9 +99,9 @@ fn d1,d2 ⇒ case d1 of
 
 
 
-% Second implication: forget ∘ enrich = id for CCSK transitions
+% Second implication: forget ∘ enrich = id on CCSK transitions
 
-% Auxiliary theorems, proving the result for closed/open forward/backward transitions
+% Auxiliary lemmas, proving the result for closed/open forward/backward transitions
 
 % forget_fc ∘ enrich_fc = id.
 rec inverse_fc_two: (g:ctx) (F1:[g ⊢ ccsk.fstep X KL X']) (F2:[g ⊢ ccskp.fstep_cl X θ X'])

@@ -1,4 +1,5 @@
---open ccskp.
+%%% Definitions needed to state the axioms (lines 4-264);              %%%
+%%% Properties of the LTS of CCSKP to prove the axioms (lines 267-866) %%%
 
 %%% Coercions from forward and backward transitions to combined transitions
 
@@ -112,7 +113,7 @@ LF inv_tr: step X θ1 X' → step Y θ2 Y' → type =
 ;
 
 % We show that, thanks to the loop lemma, inv_tr is a function and, in particular, an involution (inv_tr ∘ inv_tr = id).
-% Additionally, we show that t and inv_tr(t) have opposite directions.
+% Additionally, we define directions and show that t and inv_tr(t) have opposite directions.
 
 % Existential type denoting existence of an inverse transition
 LF ex_inv: step X θ X' → type =
@@ -461,9 +462,9 @@ fn f,h,n,i ⇒ case f of
     let [g,a:names ⊢ N'] = notin_propagates_to_target_fo [_ ⊢ F] [_ ⊢ H[..]] [_ ⊢ N] [_ ⊢ I[..]] in [g ⊢ not_nu \a.N']
 ;
 
-% If a process X' makes a closed backward transition B into the process X,
-% and a key K does not occur in X (i.e., notin K X holds), then
-% then any key different than K does not occur in X' (notin K X').
+% If a process X' makes a closed backward transition B via the proof label θ
+% into the process X, a key K does not occur in X (i.e., notin K X holds),
+% and key(θ) is different from K, then K does not occur in X' (notin K X').
 rec notin_propagates_to_source_bc: (g:ctx) [g ⊢ bstep_cl X' θ X] →
   [g ⊢ key θ M[]] → [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
 / total b (notin_propagates_to_source_bc _ _ _ _ _ _ b _ _ _) /
@@ -471,9 +472,9 @@ fn b,h,n,i ⇒ let [g ⊢ F] = loop_lemma_two_cl b in
 notin_propagates_to_target_fc [g ⊢ F] h n i
 ;
 
-% If a process X' makes an open backward transition B into the process X,
-% and a key K does not occur in X (i.e., notin K X holds), then
-% then any key different than K does not occur in X' (notin K X').
+% If a process X' makes an open backward transition B via the proof label θ
+% into the process X, a key K does not occur in X (i.e., notin K X holds),
+% and key(θ) is different from K, then K does not occur in X' (notin K X').
 rec notin_propagates_to_source_bo: (g:ctx) [g ⊢ bstep_op X' (open \a.θ) X] →
   [g,a:names ⊢ key θ M[]] → [g ⊢ notin K[] X] → [g ⊢ neq M[] K[]] → [g ⊢ notin K[] X'] =
 / total b (notin_propagates_to_source_bo _ _ _ _ _ _ b _ _ _) /
