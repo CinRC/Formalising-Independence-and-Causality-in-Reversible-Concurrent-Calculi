@@ -32,29 +32,51 @@ acc_intro [g] [g ⊢ kpref α K[] X] (mlam Y,θ ⇒ fn f ⇒ (case f of
 ;
 
 % If X1 and X2 are accessible, then X1+X2 is accessible
-rec acc_sum: (g:ctx) acc [g ⊢ X1] → acc [g ⊢ X2] → acc [g ⊢ sum X1 X2] =
-/ total {a1 a2} (acc_sum _ _ _ a1 a2) /
+rec acc_suml: (g:ctx) acc [g ⊢ X1] → acc [g ⊢ X2] → acc [g ⊢ sum X1 X2] =
+/ total a1 (acc_suml _ _ _ a1 _) /
 fn a1,a2 ⇒ let acc_intro [g] [g ⊢ X1] h1 = a1 in
 let acc_intro [g] [g ⊢ X2] h2 = a2 in
 acc_intro [g] [g ⊢ sum X1 X2] (mlam _,_ ⇒ fn f ⇒ (case f of
-       | [g ⊢ fc (fc_suml F _)] ⇒ acc_sum (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F]) a2
-       | [g ⊢ fc (fc_sumr F _)] ⇒ acc_sum a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F])
-       | [g ⊢ fo (fo_suml F _)] ⇒ acc_sum (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F]) a2
-       | [g ⊢ fo (fo_sumr F _)] ⇒ acc_sum a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F])))
+       | [g ⊢ fc (fc_suml F _)] ⇒ acc_suml (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F]) a2
+       | [g ⊢ fc (fc_sumr F _)] ⇒ acc_sumr a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F])
+       | [g ⊢ fo (fo_suml F _)] ⇒ acc_suml (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F]) a2
+       | [g ⊢ fo (fo_sumr F _)] ⇒ acc_sumr a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F])))
+
+and rec acc_sumr: (g:ctx) acc [g ⊢ X1] → acc [g ⊢ X2] → acc [g ⊢ sum X1 X2] =
+/ total a2 (acc_sumr _ _ _ _ a2) /
+fn a1,a2 ⇒ let acc_intro [g] [g ⊢ X1] h1 = a1 in
+let acc_intro [g] [g ⊢ X2] h2 = a2 in
+acc_intro [g] [g ⊢ sum X1 X2] (mlam _,_ ⇒ fn f ⇒ (case f of
+       | [g ⊢ fc (fc_suml F _)] ⇒ acc_suml (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F]) a2
+       | [g ⊢ fc (fc_sumr F _)] ⇒ acc_sumr a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F])
+       | [g ⊢ fo (fo_suml F _)] ⇒ acc_suml (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F]) a2
+       | [g ⊢ fo (fo_sumr F _)] ⇒ acc_sumr a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F])))
 ;
 
 % If X1 and X2 are accessible, then X1|X2 is accessible
-rec acc_par: (g:ctx) acc [g ⊢ X1] → acc [g ⊢ X2] → acc [g ⊢ par X1 X2] =
-/ total {a1 a2} (acc_par _ _ _ a1 a2) /
+rec acc_parl: (g:ctx) acc [g ⊢ X1] → acc [g ⊢ X2] → acc [g ⊢ par X1 X2] =
+/ total a1 (acc_parl _ _ _ a1 _) /
 fn a1,a2 ⇒ let acc_intro [g] [g ⊢ X1] h1 = a1 in
 let acc_intro [g] [g ⊢ X2] h2 = a2 in
 acc_intro [g] [g ⊢ par X1 X2] (mlam _,_ ⇒ fn f ⇒ (case f of
-       | [g ⊢ fc (fc_parl F _ _)] ⇒ acc_par (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F]) a2
-       | [g ⊢ fc (fc_parr F _ _)] ⇒ acc_par a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F])
-       | [g ⊢ fc (fc_synl F1 _ _ F2 _ _)] ⇒ acc_par (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F1]) (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F2])
-       | [g ⊢ fc (fc_synr F1 _ _ F2 _ _)] ⇒ acc_par (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F1]) (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F2])
-       | [g ⊢ fo (fo_parl F (\_._) _)] ⇒ acc_par (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F]) a2
-       | [g ⊢ fo (fo_parr F (\_._) _)] ⇒ acc_par a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F])))
+       | [g ⊢ fc (fc_parl F _ _)] ⇒ acc_parl (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F]) a2
+       | [g ⊢ fc (fc_parr F _ _)] ⇒ acc_parr a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F])
+       | [g ⊢ fc (fc_synl F1 _ _ F2 _ _)] ⇒ acc_parl (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F1]) (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F2])
+       | [g ⊢ fc (fc_synr F1 _ _ F2 _ _)] ⇒ acc_parl (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F1]) (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F2])
+       | [g ⊢ fo (fo_parl F (\_._) _)] ⇒ acc_parl (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F]) a2
+       | [g ⊢ fo (fo_parr F (\_._) _)] ⇒ acc_parr a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F])))
+
+and rec acc_parr: (g:ctx) acc [g ⊢ X1] → acc [g ⊢ X2] → acc [g ⊢ par X1 X2] =
+/ total a2 (acc_parr _ _ _ _ a2) /
+fn a1,a2 ⇒ let acc_intro [g] [g ⊢ X1] h1 = a1 in
+let acc_intro [g] [g ⊢ X2] h2 = a2 in
+acc_intro [g] [g ⊢ par X1 X2] (mlam _,_ ⇒ fn f ⇒ (case f of
+       | [g ⊢ fc (fc_parl F _ _)] ⇒ acc_parl (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F]) a2
+       | [g ⊢ fc (fc_parr F _ _)] ⇒ acc_parr a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F])
+       | [g ⊢ fc (fc_synl F1 _ _ F2 _ _)] ⇒ acc_parr (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F1]) (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F2])
+       | [g ⊢ fc (fc_synr F1 _ _ F2 _ _)] ⇒ acc_parr (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F1]) (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fc F2])
+       | [g ⊢ fo (fo_parl F (\_._) _)] ⇒ acc_parl (h1 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F]) a2
+       | [g ⊢ fo (fo_parr F (\_._) _)] ⇒ acc_parr a1 (h2 [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F])))
 ;
 
 % If (X a) is accessible for all a, then nu (\a.X) is accessible
@@ -78,7 +100,7 @@ mlam X ⇒ case [_ ⊢ X] of
        | [g ⊢ fc F] ⇒ impossible [g ⊢ F]
        | [g ⊢ fo F] ⇒ impossible [g ⊢ F]))
   | [g ⊢ kpref α K[] X1] ⇒ acc_kpref [_ ⊢ _] [_ ⊢ _] (wf [g ⊢ X1])
-  | [g ⊢ sum X1 X2] ⇒ acc_sum (wf [g ⊢ X1]) (wf [g ⊢ X2])
-  | [g ⊢ par X1 X2] ⇒ acc_par (wf [g ⊢ X1]) (wf [g ⊢ X2])
+  | [g ⊢ sum X1 X2] ⇒ acc_suml (wf [g ⊢ X1]) (wf [g ⊢ X2])
+  | [g ⊢ par X1 X2] ⇒ acc_parl (wf [g ⊢ X1]) (wf [g ⊢ X2])
   | [g ⊢ nu \a.X1] ⇒ acc_nu (wf [_ ⊢ X1])
 ;
