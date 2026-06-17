@@ -4,7 +4,7 @@
 
 This repository contains a formalisation of reversible concurrent calculi in [Beluga](https://complogic.cs.mcgill.ca/beluga/index.html).
 
-It extends and refines the [formalisation of CCSKP in Beluga](https://github.com/CinRC/A-Beluga-Formalization-of-CCSKP) presented in [*A Formalization of the Reversible Concurrent Calculus CCSKP in Beluga*](https://cgi.cse.unsw.edu.au/~eptcs/paper.cgi?ICE2025.5) with additional results from [*Independence and Causality in the Reversible Concurrent Setting*](https://doi.org/10.1007/978-3-031-97063-4_2).
+It extends and refines the [formalisation of CCSK<sup>P</sup>](https://github.com/CinRC/A-Beluga-Formalization-of-CCSKP) presented in [*A Formalization of the Reversible Concurrent Calculus CCSK<sup>P</sup> in Beluga*](https://doi.org/10.4204/EPTCS.425.5) with additional results from [*Independence and Causality in the Reversible Concurrent Setting*](https://doi.org/10.1007/978-3-031-97063-4_2).
 
 [![Code Type Reconstruction](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml/badge.svg)](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml)
 [![Example Tests](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml/badge.svg)](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml)
@@ -17,7 +17,10 @@ Once Beluga is installed (cf. [the installation instructions](#installation-inst
 beluga run/code.cfg 
 ```
 
-to perform the type reconstruction of the formalisation. Expected result, after ±15 seconds, is
+to type-check and verify the formalisation. The expected output, after ±15 seconds, is the following:
+
+<details>
+<summary>View expected output</summary>
 
 ```console
 ## Type Reconstruction begin: run/../code/shared/definitions.bel ##
@@ -112,13 +115,18 @@ to perform the type reconstruction of the formalisation. Expected result, after 
 ## Type Reconstruction done:  run/../code/ccsk/axioms/ed.bel ##
 ```
 
-Tests can be run using e.g.
+</details>
+
+Tests can be run using, e.g.,
 
 ```console
 beluga run/ex-processes.cfg 
 ```
 
-For this particular set of examples, expected result is, after ±1 second,
+For this particular set of examples, the expected result is, after ±1 second,
+
+<details>
+<summary>View expected output</summary>
 
 ```console
 ## Type Reconstruction begin: run/../code/shared/definitions.bel ##
@@ -133,6 +141,8 @@ For this particular set of examples, expected result is, after ±1 second,
 ## Type Reconstruction done:  run/../examples/processes/stuck-keyed.bel ##
 ```
 
+</details>
+
 If Makefile is installed, then the previous commands can be replaced by
 
 ```console
@@ -145,7 +155,9 @@ and
 make test
 ```
 
-will perform the type reconstruction of all the tests, and is expected to take ±8 seconds.
+The latter will perform the type reconstruction of all the tests, and is expected to take ±8 seconds.
+
+The totality declarations following each recursive function declaration ensure that all functions are total and that every recursive call is made on a decreasing argument, guaranteeing the correctness of the proofs. The optional `--coverage` pragma can be added to the .bel files to check these conditions.
 
 ## Installation instructions
 
@@ -155,10 +167,8 @@ To install Beluga or compile it from source, please refer to [their documentatio
 In short, once [opam](https://opam.ocaml.org/doc/Install.html) version 2.1.4 and above is installed, simply execute
 
 ```shell
-opam install beluga
+opam install beluga.1.1.1
 ```
-
-Optionally, for improved beli mode, [rlwrap](https://github.com/hanslub42/rlwrap) can also be installed.
 
 ## Repository structure
 
@@ -267,43 +277,59 @@ can be used to count the lines of code (comments excluded):
 <!--
 Add the --md flag to the commands above to obtain a markdown-formatted table.
 -->
-[TO UPDATE]
+
+<details>
+<summary>View line count</summary>
 
 File|blank|comment|code
 :-------|-------:|-------:|-------:
-code/ccsk/axioms/defs-and-properties.bel|86|126|2283
-code/ccskp/axioms/sp.bel|44|73|977
-code/ccskp/axioms/defs-and-properties.bel|60|85|793
-code/ccskp/connectedness-relationship-one.bel|3|5|688
-code/ccskp/connectedness-relationship-two.bel|12|20|567
-code/ccskp/unique-step.bel|31|27|528
+code/ccsk/axioms/defs-and-properties.bel|34|48|1908
+code/ccskp/axioms/sp.bel|42|73|977
+code/ccskp/axioms/defs-and-properties.bel|61|86|719
+code/ccskp/connectedness-relationship-one.bel|3|6|689
+code/ccskp/connectedness-relationship-two.bel|14|31|567
+code/ccskp/unique-step.bel|31|29|528
 code/ccskp/lemmas-bijection.bel|33|44|417
-code/ccskp/complementarity.bel|30|30|311
+code/ccskp/complementarity.bel|32|30|409
 code/bijection/totality.bel|21|26|298
-code/ccskp/axioms/bti.bel|19|38|296
+code/ccskp/axioms/bti.bel|18|36|296
 code/ccskp/lemmas-connectedness-one.bel|24|27|293
-code/ccskp/definitions.bel|52|68|270
-code/ccsk/unique-step.bel|14|11|203
-code/ccskp/axioms/fld.bel|7|17|159
-code/ccskp/lemmas-connectedness-two.bel|12|24|141
+code/ccskp/definitions.bel|54|71|274
+code/ccsk/unique-step.bel|10|12|195
+code/bijection/lemmas-lifting.bel|16|46|155
+code/ccskp/axioms/fld.bel|6|15|147
+code/ccskp/lemmas-connectedness-two.bel|12|21|141
 code/bijection/bijection.bel|23|19|114
 code/ccskp/basic-properties.bel|15|16|112
-code/ccskp/axioms/ire.bel|15|25|110
 code/bijection/functionality.bel|16|27|100
+code/ccskp/axioms/events.bel|16|32|93
 code/ccskp/unique.bel|10|15|92
+code/ccskp/axioms/wf.bel|10|17|79
 code/shared/unique.bel|9|10|69
-code/ccskp/axioms/wf.bel|8|17|59
-code/ccsk/definitions.bel|11|9|58
+code/ccsk/definitions.bel|14|12|67
+code/ccsk/axioms/bti.bel|5|10|58
 code/ccskp/axioms/id.bel|3|11|54
 code/shared/definitions.bel|13|14|54
+code/ccsk/axioms/id.bel|3|11|53
+code/ccsk/basic-properties.bel|5|5|45
 code/bijection/definitions.bel|11|12|44
 code/shared/basic-properties.bel|7|10|44
-code/ccskp/axioms/ed.bel|1|2|10
+code/ccsk/complementarity.bel|8|15|43
+code/ccsk/axioms/events.bel|4|18|25
+code/ccsk/axioms/sp.bel|2|5|23
+code/ccsk/axioms/pci.bel|1|14|19
+code/ccsk/axioms/ed.bel|1|3|17
+code/ccsk/axioms/wf.bel|3|4|17
+code/ccsk/axioms/cire.bel|1|4|11
+code/ccsk/axioms/ire.bel|1|4|9
+code/ccsk/axioms/rpi.bel|1|3|9
 code/ccskp/axioms/pci.bel|1|5|8
+code/ccskp/axioms/ire.bel|1|4|7
 code/ccskp/axioms/cire.bel|1|4|6
 code/ccskp/axioms/rpi.bel|1|3|6
+code/ccskp/axioms/ed.bel|1|3|5
 --------|--------|--------|--------
-SUM:|593|820|9164
+SUM:|598|911|9296
 
 File|blank|comment|code
 :-------|-------:|-------:|-------:
@@ -327,3 +353,5 @@ examples/processes/stuck-keyed.bel|5|6|6
 examples/processes/stuck-std.bel|3|4|3
 --------|--------|--------|--------
 SUM:|156|153|474
+
+</details>
