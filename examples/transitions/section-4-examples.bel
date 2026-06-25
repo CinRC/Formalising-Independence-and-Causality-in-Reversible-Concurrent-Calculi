@@ -19,15 +19,6 @@ let f_4_11:[k:keys ⊢ fstep_op (nu \a.(par (pref (inp a) null) (pref (out a) nu
 
 % In the following, we assume given names a,b and keys k,m,n, with m != k and n != k
 
-% Two examples of processes reachable from a[k] | ('a + b)
-
-% a[k] | ('a + b[m]) is reachable from a[k] | ('a + b): there is a path between the two processes
-let p_4_16a:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
-             step* (par (kpref (inp a) k null) (sum (pref (out a) null) (pref (inp b) null)))
-                   (par (kpref (inp a) k null) (sum (pref (out a) null) (kpref (inp b) m null)))] =
-            [a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
-             st_s* (sc (fwc (fc_parr (fc_sumr (fc_pref std_null) (std_pref std_null)) (key_sumr key_base) (not_kpref I1 not_null))))];
-
 % Transitions in Fig.6:
 
 % a | ('a + b)  -[ <|_L a[m],|_R +_L 'a[m]> ]->  a[m] | ('a[m] + b)
@@ -86,3 +77,50 @@ let b_4_16g:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢
           = [a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢
              bc_parl (bc_pref std_null) key_base (not_sum (not_kpref I1 not_null) (not_pref not_null))];
 
+% We show that two of the processes in Fig. 6 are reachable from a[k] | ('a + b):
+% there is a path from a[k] | ('a + b) to the two processes
+
+% a[k] | ('a + b[m]) is reachable from a[k] | ('a + b)
+let p_4_16a:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
+             step* (par (kpref (inp a) k null) (sum (pref (out a) null) (pref (inp b) null)))
+                   (par (kpref (inp a) k null) (sum (pref (out a) null) (kpref (inp b) m null)))] =
+            [a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
+             st_s* (sc (fwc (fc_parr (fc_sumr (fc_pref std_null) (std_pref std_null)) (key_sumr key_base) (not_kpref I1 not_null))))];
+
+% a[m] | ('a[m] + b) is reachable from a[k] | ('a + b)
+let p_4_16b:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
+             step* (par (kpref (inp a) k null) (sum (pref (out a) null) (pref (inp b) null)))
+                   (par (kpref (inp a) m null) (sum (kpref (out a) m null) (pref (inp b) null)))] =
+            [a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
+             tr_s* (st_s* (sc (bwc (bc_parl (bc_pref std_null) key_base (not_sum (not_pref not_null) (not_pref not_null))))))
+                   (st_s* (sc (fwc (fc_synl (fc_pref std_null) lab_base key_base (fc_suml (fc_pref std_null) (std_pref std_null)) (lab_suml lab_base) (key_suml key_base)))))];
+
+% We show one example of transition that can be reversed: reversing the forward transition
+% a[k] | ('a + b) -[ |_R +_L 'a[m] ]-> a[k] | ('a[m] + b), we obtain the backward transition
+% a[k] | ('a[m] + b) ~[ |_R +_L 'a[m] ]~> a[k] | ('a + b)
+% a[k] | ('a + b) -[ |_R +_R b[m] ]-> a[k] | ('a + b[m])
+let b_4_16e:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
+             bstep_cl (par (kpref (inp a) k null) (sum (pref (out a) null) (kpref (inp b) m null)))
+                      (pr_parr (pr_sumr (pr_base (inp b) m)))
+                      (par (kpref (inp a) k null) (sum (pref (out a) null) (pref (inp b) null)))]
+          = [a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
+             bc_parr (bc_sumr (bc_pref std_null) (std_pref std_null)) (key_sumr key_base) (not_kpref I1 not_null)];
+
+% We show that a | ('a + b) is the origin process for, e.g., a[k] | ('a[m] + b):
+% a[k] | ('a[m] + b) is reachable, and there exists a rooted path from a | ('a + b) to a[k] | ('a[m] + b)
+let r_4_16:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
+            reachable (par (kpref (inp a) k null) (sum (kpref (out a) m null) (pref (inp b) null)))] =
+           [a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
+            rch (std_par (std_pref std_null) (std_sum (std_pref std_null) (std_pref std_null))) (tr_s*
+            (st_s* (sc (fwc (fc_parl (fc_pref std_null) key_base (not_sum (not_pref not_null) (not_pref not_null))))))
+            (st_s* (sc (fwc (fc_parr (fc_suml (fc_pref std_null) (std_pref std_null)) (key_suml key_base) (not_kpref I1 not_null))))))];
+
+% We show one example of connected transitions: a | ('a + b)  -[ <|_L a[m],|_R +_L 'a[m]> ]->  a[m] | ('a[m] + b)
+% and a[k] | ('a + b) ~[ |L a[k] ]~> a | ('a[m] + b) are connected
+let c_4_16:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢
+            conn_tr (sc (fwc (fc_synl (fc_pref std_null) lab_base key_base (fc_suml (fc_pref std_null) (std_pref std_null)) (lab_suml lab_base) (key_suml key_base))))
+                    (sc (bwc (bc_parl (bc_pref std_null) key_base (not_sum (not_kpref I1 not_null) (not_pref not_null)))))] =
+           [a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢ 
+            ct (sc (fwc (fc_synl (fc_pref std_null) lab_base key_base (fc_suml (fc_pref std_null) (std_pref std_null)) (lab_suml lab_base) (key_suml key_base))))
+               (sc (bwc (bc_parl (bc_pref std_null) key_base (not_sum (not_kpref I1 not_null) (not_pref not_null)))))
+               ?];%(st_s* (sc (fwc (fc_parr (fc_suml (fc_pref std_null) (std_pref std_null)) (key_suml key_base) (not_pref not_null)))))];
