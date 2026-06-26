@@ -130,3 +130,57 @@ rec c_4_16: {S1:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢
             [a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢ conn_tr S1 S2] =
 / total (c_4_16) /
 mlam S1,S2 => [_ ⊢ ct S1 S2 (st_s* (sc (fwc (fc_parr (fc_suml (fc_pref std_null) (std_pref std_null)) (key_suml key_base) (not_pref not_null)))))];
+
+
+%%% Example 4.22
+
+% Recall that forget is encoded as a type family relating a CCSKP transition and its corresponding CCSK transition.
+% We show that forget relates the two transitions in Figure 9.
+% We assume given names a,b,c,d and keys k,k', with k != k'
+
+% We first show the existence of the two transitions.
+let t_4_22a:[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢
+             step (par (kpref (inp b) k' (sum (pref (inp a) (pref (inp b) null)) (pref (inp c) null))) (pref (out a) (pref (inp d) null)))
+                  (p_cl (pr_sync (pr_suml (pr_base (inp a) k)) (pr_base (out a) k)))
+                  (par (kpref (inp b) k' (sum (kpref (inp a) k (pref (inp b) null)) (pref (inp c) null))) (kpref (out a) k (pref (inp d) null)))]
+          = [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢
+             sc (fwc (fc_synl (fc_kpref (fc_suml (fc_pref (std_pref std_null)) (std_pref std_null)) (key_suml key_base) I) (lab_suml lab_base) (key_suml key_base) (fc_pref (std_pref std_null)) lab_base key_base))];
+
+let t_4_22b:[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢
+             ccsk.step (par (kpref (inp b) k' (sum (pref (inp a) (pref (inp b) null)) (pref (inp c) null))) (pref (out a) (pref (inp d) null)))
+                       (kl_base tau k)
+                       (par (kpref (inp b) k' (sum (kpref (inp a) k (pref (inp b) null)) (pref (inp c) null))) (kpref (out a) k (pref (inp d) null)))]
+           = [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢
+              fw (fs_synl (fs_kpref (fs_suml (fs_pref (std_pref std_null)) (std_pref std_null)) I) (fs_pref (std_pref std_null)))];
+
+% We show that forget relates the two transitions
+rec fg_4_22a:{T:[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢
+              step (par (kpref (inp b) k' (sum (pref (inp a) (pref (inp b) null)) (pref (inp c) null))) (pref (out a) (pref (inp d) null)))
+                   (p_cl (pr_sync (pr_suml (pr_base (inp a) k)) (pr_base (out a) k)))
+                   (par (kpref (inp b) k' (sum (kpref (inp a) k (pref (inp b) null)) (pref (inp c) null))) (kpref (out a) k (pref (inp d) null)))]}
+             {T◦:[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢    
+              ccsk.step (par (kpref (inp b) k' (sum (pref (inp a) (pref (inp b) null)) (pref (inp c) null))) (pref (out a) (pref (inp d) null)))
+                        (kl_base tau k)
+                        (par (kpref (inp b) k' (sum (kpref (inp a) k (pref (inp b) null)) (pref (inp c) null))) (kpref (out a) k (pref (inp d) null)))]}
+             [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ forget T T◦] =
+/ total (fg_4_22a) /
+mlam T,T◦ => let [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ sc (fwc FT)] = [_ ⊢ T] in
+let [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fw FT◦] = [_ ⊢ T◦] in
+[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fgfc (fg_fc FT FT◦ lab_sync (key_sync (key_suml key_base)))];
+
+% We show that forget relates also the two subtransitions
+% a.b + c  -[ +_L a[k] ]->  a[k].b + c in CCSKP and
+% a.b + c  -[   a[k]   ]->  a[k].b + c in CCSK
+rec fg_4_22b:{T:[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢
+              step (sum (pref (inp a) (pref (inp b) null)) (pref (inp c) null))
+                   (p_cl (pr_suml (pr_base (inp a) k)))
+                   (sum (kpref (inp a) k (pref (inp b) null)) (pref (inp c) null))]}
+             {T◦:[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢    
+              ccsk.step (sum (pref (inp a) (pref (inp b) null)) (pref (inp c) null))
+                        (kl_base (inp a) k)
+                        (sum (kpref (inp a) k (pref (inp b) null)) (pref (inp c) null))]}
+             [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ forget T T◦] =
+/ total (fg_4_22b) /
+mlam T,T◦ => let [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ sc (fwc FT)] = [_ ⊢ T] in
+let [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fw FT◦] = [_ ⊢ T◦] in
+[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fgfc (fg_fc FT FT◦ (lab_suml (lab_base)) (key_suml key_base))];
