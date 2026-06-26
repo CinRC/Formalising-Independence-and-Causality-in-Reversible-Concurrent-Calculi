@@ -1,4 +1,4 @@
-%%% forget and enrich are mutual inverses (Lemma 4.23) %%%
+%%% forget and enrich are mutual inverses (Lemma 4.24) %%%
 
 % First implication: enrich ∘ forget = id on CCSKP transitions
 
@@ -78,7 +78,7 @@ no_bstep_cl_and_op [g ⊢ B3] [g ⊢ B1]
 ;
 
 
-% Lemma 4.23, first implication for combined transitions: enrich ∘ forget = id.
+% Lemma 4.24, first implication for combined transitions: enrich ∘ forget = id.
 rec inverse_one: (g:ctx) (S1:[g ⊢ ccskp.step X θ X']) (S2:[g ⊢ ccsk.step X KL X'])
   (S3:[g ⊢ ccskp.step X θ' X']) [g ⊢ forget S1 S2] → [g ⊢ enrich S2 S3] → [g ⊢ eqst S1 S3] =
 / total d1 (inverse_one _ _ _ _ _ _ _ _ _ d1 _) /
@@ -140,7 +140,7 @@ ccsk_unique_bstep [g ⊢ B1] [g ⊢ B3]
 ;
 
 
-% Lemma 4.23, second implication for combined transitions: forget ∘ enrich = id.
+% Lemma 4.24, second implication for combined transitions: forget ∘ enrich = id.
 rec inverse_two: (g:ctx) (S1:[g ⊢ ccsk.step X KL X']) (S2:[g ⊢ ccskp.step X θ X'])
   (S3:[g ⊢ ccsk.step X KL' X']) [g ⊢ enrich S1 S2] → [g ⊢ forget S2 S3] → [g ⊢ eqs S1 S3] =
 / total d1 (inverse_two _ _ _ _ _ _ _ _ _ d1 _) /
