@@ -117,10 +117,16 @@ let r_4_16:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k, I2:neq n k ⊢
 
 % We show one example of connected transitions: a | ('a + b)  -[ <|_L a[m],|_R +_L 'a[m]> ]->  a[m] | ('a[m] + b)
 % and a[k] | ('a + b) ~[ |L a[k] ]~> a | ('a[m] + b) are connected
-let c_4_16:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢
-            conn_tr (sc (fwc (fc_synl (fc_pref std_null) lab_base key_base (fc_suml (fc_pref std_null) (std_pref std_null)) (lab_suml lab_base) (key_suml key_base))))
-                    (sc (bwc (bc_parl (bc_pref std_null) key_base (not_sum (not_kpref I1 not_null) (not_pref not_null)))))] =
-           [a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢ 
-            ct (sc (fwc (fc_synl (fc_pref std_null) lab_base key_base (fc_suml (fc_pref std_null) (std_pref std_null)) (lab_suml lab_base) (key_suml key_base))))
-               (sc (bwc (bc_parl (bc_pref std_null) key_base (not_sum (not_kpref I1 not_null) (not_pref not_null)))))
-               ?];%(st_s* (sc (fwc (fc_parr (fc_suml (fc_pref std_null) (std_pref std_null)) (key_suml key_base) (not_pref not_null)))))];
+% We use a recursive function, rather than a let, since the former allows explicit type declarations;
+% without those, Beluga cannot reconstruct some of the metavariables. 
+rec c_4_16: {S1:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢ 
+                 step (par (pref (inp a) null) (sum (pref (out a) null) (pref (inp b) null)))
+                      (p_cl (pr_sync (pr_base (inp a) m) (pr_suml (pr_base (out a) m))))
+                      (par (kpref (inp a) m null) (sum (kpref (out a) m null) (pref (inp b) null)))]}
+            {S2:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢ 
+                 step (par (kpref (inp a) k null) (sum (kpref (out a) m null) (pref (inp b) null)))
+                      (p_cl (pr_parl (pr_base (inp a) k)))
+                      (par (pref (inp a) null) (sum (kpref (out a) m null) (pref (inp b) null)))]}
+            [a:names,b:names,k:keys,m:keys,n:keys,I1:neq k m, I2:neq n k ⊢ conn_tr S1 S2] =
+/ total (c_4_16) /
+mlam S1,S2 => [_ ⊢ ct S1 S2 (st_s* (sc (fwc (fc_parr (fc_suml (fc_pref std_null) (std_pref std_null)) (key_suml key_base) (not_pref not_null)))))];
