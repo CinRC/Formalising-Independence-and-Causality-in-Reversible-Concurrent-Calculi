@@ -5,15 +5,15 @@ name: Example Tests
 
 # "Every time a push is made on the main branch, that changes either
 # - one of the file in the code/ folder,
-# - one of the run/ex-*.cfg file,
-# - one of the file in one of the subfolder in the examples/ folder.
+# - one of the run/examples/ex-*.cfg file,
+# - one of the file in one of the subfolders in the examples/ folder.
 
 on:
   push:
     branches: [ main ]
     paths:
       - 'code/**'
-      - 'run/ex-*.cfg'
+      - 'run/examples/ex-*.cfg'
       - 'examples/**'
   workflow_dispatch:
 

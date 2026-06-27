@@ -11,10 +11,10 @@
 all: code test
 
 # The source of the test are the .cfg 
-# files in run/ that begins with ex-
+# files in run/examples/ that begins with ex-
 # The targets are obtained by replacing
 # .cfg by .success.
-TEST-SOURCES := $(wildcard run/ex-*.cfg)
+TEST-SOURCES := $(wildcard run/examples/ex-*.cfg)
 TEST-TARGETS := $(patsubst %.cfg,%.success,$(TEST-SOURCES))
 
 code: run/code.success
@@ -29,7 +29,7 @@ run/code.cfg: code/*/*.bel
 # require the .bel files in the examples/%/ and code/ folders.
 # The % is pattern-matched on both sides, while the * is just a wildcard.
 
-run/ex-%.cfg: examples/%/*.bel  code/*.bel
+run/examples/ex-%.cfg: examples/%/*.bel  code/*.bel
 	@touch $@
 
 run/%.success: run/%.cfg
