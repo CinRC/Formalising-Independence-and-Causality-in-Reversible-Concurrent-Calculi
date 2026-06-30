@@ -37,7 +37,7 @@ run/%.success: run/%.cfg
 	@echo "Last successful compilation of $<:" $$(date) > $@
 
 clean:
-	rm run/*.success
+	rm -f run/*.success run/examples/*.success
 count:
 	cloc --read-lang-def=beluga_cloc_config.txt --by-file code/ && \
 	cloc --read-lang-def=beluga_cloc_config.txt --by-file examples/
