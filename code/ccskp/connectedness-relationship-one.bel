@@ -1,4 +1,4 @@
-%%% Proof of Proposition 5.5 (1) %%%
+%%% Proof of Proposition 5.6 (1) %%%
 
 % If two combined (closed/open) transitions between reachable processes are connected,
 % then their two (closed/open) proof labels are connected.

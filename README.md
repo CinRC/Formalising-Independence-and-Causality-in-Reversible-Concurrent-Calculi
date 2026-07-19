@@ -193,7 +193,7 @@ opam install beluga.1.1.1
       - `events.bel`: … definition and properties of equivalent transitions
       - `bti.bel`: … BTI (backward transitions are independent)
       - `sp.bel`: … SP (square property)
-      - `wf.bel`: … WF (well-foundedness)
+      - `wf.bel`: … WF (well-founded)
       - `pci.bel`: … PCI (propagation of coinitial independence)
       - `id.bel`: … ID (independence of diamonds)
       - `ire.bel`: … IRE (independence respects events)
@@ -204,10 +204,10 @@ opam install beluga.1.1.1
     * `definitions.bel`: … definitions
     * `unique.bel`: … uniqueness of the derivation of predicates
     * `basic-properties.bel`: … basic properties (e.g. loop lemma, symmetry of transitions and paths)
-    * `lemmas-connectedness-one.bel`: … auxiliary lemmas for Proposition 4.4 (1)
-    * `connectedness-relationship-one.bel`: … Proposition 4.4 (1)
-    * `lemmas-connectedness-two.bel`: … auxiliary lemmas for Proposition 4.4 (2)
-    * `connectedness-relationship-two.bel`: … Proposition 4.4 (2)
+    * `lemmas-connectedness-one.bel`: … auxiliary lemmas for Proposition 5.6 (1)
+    * `connectedness-relationship-one.bel`: … Proposition 5.6 (1)
+    * `lemmas-connectedness-two.bel`: … auxiliary lemmas for Proposition 5.6 (2)
+    * `connectedness-relationship-two.bel`: … Proposition 5.6 (2)
     * `complementarity.bel`: … complementarity of dependence and independence
     * `unique-step.bel`: … uniqueness of the derivation of transitions
     * `lemmas-bijection.bel`: … auxiliary lemmas for the CCSK-CCSKP bijection
@@ -216,7 +216,7 @@ opam install beluga.1.1.1
       - `events.bel`: … definition and properties of equivalent transitions
       - `bti.bel`: … BTI (backward transitions are independent)
       - `sp.bel`: … SP (square property)
-      - `wf.bel`: … WF (well-foundedness)
+      - `wf.bel`: … WF (well-founded)
       - `pci.bel`: … PCI (propagation of coinitial independence)
       - `id.bel`: … ID (independence of diamonds)
       - `fld.bel`: … FLD (forward label determinism)

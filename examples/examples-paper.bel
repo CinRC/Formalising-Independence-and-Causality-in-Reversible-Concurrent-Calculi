@@ -191,28 +191,28 @@ let [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fw FT◦] = [
 
 %%% Formalisation of the examples from Section 5 of the paper %%%
 
-%%% Example 5.4
+%%% Example 5.5
 
 % |_R +_L 'a[m] and <|_L a[m],|_R +_L 'a[m]> are connected.
-let c_5_4:[a:names,m:keys ⊢ conn_cl (pr_parr (pr_suml (pr_base (out a) m)))
+let c_5_5:[a:names,m:keys ⊢ conn_cl (pr_parr (pr_suml (pr_base (out a) m)))
                                     (pr_sync (pr_base (inp a) m) (pr_suml (pr_base (out a) m)))] 
         = [a:names,k:keys ⊢ c_s1r (c_c1l c_a1)];
 
 % |_R +_L 'a[m] and |_R +_R b[n] are dependent.
-let d_5_4:[a:names,b:names,m:keys,n:keys ⊢ dep_cl (pr_parr (pr_suml (pr_base (out a) m)))
+let d_5_5:[a:names,b:names,m:keys,n:keys ⊢ dep_cl (pr_parr (pr_suml (pr_base (out a) m)))
                                                   (pr_parr (pr_sumr (pr_base (inp b) n)))]
         = [a:names,b:names,m:keys,n:keys ⊢ d_p1r d_c2l];
 
 % |_L a[k] and |_R +_R b[n] are independent.
-let i_5_4:[a:names,b:names,k:keys,n:keys,I:neq k n ⊢ indep_cl (pr_parl (pr_base (inp a) k))
+let i_5_5:[a:names,b:names,k:keys,n:keys,I:neq k n ⊢ indep_cl (pr_parl (pr_base (inp a) k))
                                                               (pr_parr (pr_sumr (pr_base (inp b) n)))]
         = [a:names,b:names,k:keys,n:keys,I:neq k n ⊢ i_p2l key_base (key_sumr key_base) I];
 
 
-%%% Remark 5.6
+%%% Remark 5.8
 
 % a[k] and |_R b[m] are connected.
-let c_5_6:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢ conn_cl (pr_base (inp a) k) (pr_parr (pr_base (inp b) m))] 
+let c_5_8:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢ conn_cl (pr_base (inp a) k) (pr_parr (pr_base (inp b) m))] 
         = [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ c_a1];
 
 % a -[ a[k] ]-> a[k] and 0 | b -[ |_R b[m] ]-> 0 | b[m] are not connected
@@ -224,9 +224,9 @@ LF prf_or_kprf: names → proc → type =
 ;
 
 % If a makes a transition, the target is either a or a[m] for some m
-rec aux_5_7a: {S*:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢
+rec aux_5_8a: {S*:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢
                step* (pref (inp a) null) X]} [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ prf_or_kprf a X] =
-/ total s* (aux_5_7a _ s*) /
+/ total s* (aux_5_8a _ s*) /
 mlam S* ⇒ case [_ ⊢ S*] of
   | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ id_s*] ⇒ [_ ⊢ prf]
   | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ st_s* S] ⇒ 
@@ -234,13 +234,13 @@ mlam S* ⇒ case [_ ⊢ S*] of
        | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ sc (fwc (fc_pref _))] ⇒ [_ ⊢ kprf]
        | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ so (fwo F)] ⇒ impossible [_ ⊢ F])
   | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ tr_s* S1* S2*] ⇒
-    (case aux_5_7a [_ ⊢ S1*] of
-       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ prf] ⇒ aux_5_7a [_ ⊢ S2*]
-       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ kprf] ⇒ aux_5_7b [_ ⊢ S2*])
+    (case aux_5_8a [_ ⊢ S1*] of
+       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ prf] ⇒ aux_5_8a [_ ⊢ S2*]
+       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ kprf] ⇒ aux_5_8b [_ ⊢ S2*])
 % If a[k] makes a transition, the target is either a or a[m] for some m
-and rec aux_5_7b: {S*:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢ 
+and rec aux_5_8b: {S*:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢ 
                   step* (kpref (inp a) K[k,m] null) X]} [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ prf_or_kprf a X] =
-/ total s* (aux_5_7b _ _ s*) /
+/ total s* (aux_5_8b _ _ s*) /
 mlam S* ⇒ case [_ ⊢ S*] of
   | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ id_s*] ⇒ [_ ⊢ kprf]
   | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ st_s* S] ⇒ 
@@ -250,17 +250,17 @@ mlam S* ⇒ case [_ ⊢ S*] of
        | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ sc (bwc (bc_pref _))] ⇒ [_ ⊢ prf]
        | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ so (bwo (bo_kpref B (\_._) _))] ⇒ impossible [_ ⊢ B])
   | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ tr_s* S1* S2*] ⇒
-    (case aux_5_7b [_ ⊢ S1*] of
-       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ prf] ⇒ aux_5_7a [_ ⊢ S2*]
-       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ kprf] ⇒ aux_5_7b [_ ⊢ S2*])
+    (case aux_5_8b [_ ⊢ S1*] of
+       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ prf] ⇒ aux_5_8a [_ ⊢ S2*]
+       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ kprf] ⇒ aux_5_8b [_ ⊢ S2*])
 ;
 
 % There is no path between a and 0 | b[m]
-rec ns_5_7a: {S:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢ 
+rec ns_5_8a: {S:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢ 
               step* (pref (inp a) null)
                     (par null (kpref (inp b) K[k,m] null))]}
              [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ false] =
-/ total s (ns_5_7a _ s) /
+/ total s (ns_5_8a _ s) /
 mlam S* ⇒ case [_ ⊢ S*] of
   | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ st_s* S] ⇒
     (case [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ S] of
@@ -268,16 +268,16 @@ mlam S* ⇒ case [_ ⊢ S*] of
        | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ so (fwo F)] ⇒ impossible [_ ⊢ F]
     )
   | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ tr_s* S1* S2*] ⇒ 
-    (case aux_5_7a [_ ⊢ S1*] of
-       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ prf] ⇒ impossible ns_5_7a [_ ⊢ S2*]
-       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ kprf] ⇒ impossible ns_5_7b [_ ⊢ S2*]
+    (case aux_5_8a [_ ⊢ S1*] of
+       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ prf] ⇒ impossible ns_5_8a [_ ⊢ S2*]
+       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ kprf] ⇒ impossible ns_5_8b [_ ⊢ S2*]
     )
 % There is no path between a[k] and 0 | b[m]
-and rec ns_5_7b: {S:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢ 
+and rec ns_5_8b: {S:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢ 
                   step* (kpref (inp a) K1[k,m] null)
                         (par null (kpref (inp b) K2[k,m] null))]}
                  [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ false] =
-/ total s (ns_5_7b _ _ s) /
+/ total s (ns_5_8b _ _ s) /
 mlam S* ⇒ case [_ ⊢ S*] of
   | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ st_s* S] ⇒
     (case [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ S] of
@@ -287,14 +287,14 @@ mlam S* ⇒ case [_ ⊢ S*] of
        | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ so (bwo B)] ⇒ impossible [_ ⊢ B]
     )
   | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ tr_s* S1* S2*] ⇒ 
-    (case aux_5_7b [_ ⊢ S1*] of
-       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ prf] ⇒ impossible ns_5_7a [_ ⊢ S2*]
-       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ kprf] ⇒ impossible ns_5_7b [_ ⊢ S2*]
+    (case aux_5_8b [_ ⊢ S1*] of
+       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ prf] ⇒ impossible ns_5_8a [_ ⊢ S2*]
+       | [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ kprf] ⇒ impossible ns_5_8b [_ ⊢ S2*]
     )
 ;
 
 % a -[ a[k] ]-> a[k] and 0 | b -[ |_R b[m] ]-> 0 | b[m] are not connected
-rec nc_5_7a: {S1:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢ 
+rec nc_5_8a: {S1:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢ 
               step (pref (inp a) null)
                    (p_cl (pr_base (inp a) k))
                    (kpref (inp a) k null)]}
@@ -305,32 +305,32 @@ rec nc_5_7a: {S1:[a:names,b:names,k:keys,m:keys,I:neq m k ⊢
              [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ conn_tr S1 S2]
            → [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ false] =
 mlam S1,S2 ⇒ fn c ⇒ let [a:names,b:names,k:keys,m:keys,I:neq m k ⊢ ct _ _ S*] = c in
-impossible ns_5_7a [_ ⊢ S*]
+impossible ns_5_8a [_ ⊢ S*]
 ;
 
 
 % a.(0 | b) -[ a[k] ]-> a[k].(0 | b) and a[k].(0 | b) -[ |_R b[m] ]-> a[k].(0 | b[m]) are connected
-rec c_5_6: {S1:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢ 
-                step (pref (inp a) (par null (pref (inp b) null)))
-                     (p_cl (pr_base (inp a) k))
-                     (kpref (inp a) k (par null (pref (inp b) null)))]}
-           {S2:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢ 
-                step (kpref (inp a) k (par null (pref (inp b) null)))
-                     (p_cl (pr_parr (pr_base (inp b) m)))
-                     (kpref (inp a) k (par null (kpref (inp b) m null)))]}
-           [a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢ conn_tr S1 S2] =
-/ total (c_5_6) /
+rec ct_5_8: {S1:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢ 
+                 step (pref (inp a) (par null (pref (inp b) null)))
+                      (p_cl (pr_base (inp a) k))
+                      (kpref (inp a) k (par null (pref (inp b) null)))]}
+            {S2:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢ 
+                 step (kpref (inp a) k (par null (pref (inp b) null)))
+                      (p_cl (pr_parr (pr_base (inp b) m)))
+                      (kpref (inp a) k (par null (kpref (inp b) m null)))]}
+            [a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢ conn_tr S1 S2] =
+/ total (ct_5_8) /
 mlam S1,S2 ⇒ [a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢ ct S1 S2 (tr_s* (st_s* S1) (st_s* S2))];
 
 
-%%% Example 5.7
+%%% Example 5.9
 
 % The two desired transitions have been formalised above:
 % At line 27, a | ('a + b)  -[ <|_L a[m],|_R +_L 'a[m]> ]->  a[m] | ('a[m] + b), named f_4_16a
 % At line 67, a[k] | ('a + b) -[ |_R +_L 'a[m] ]-> a[k] | ('a[m] + b), named f_4_16f
 
 % We prove that the two transitions are connected via the desired path.
-rec c_5_7: {S1:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢ 
+rec c_5_9: {S1:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢ 
                 step (par (pref (inp a) null) (sum (pref (out a) null) (pref (inp b) null)))
                      (p_cl (pr_sync (pr_base (inp a) m) (pr_suml (pr_base (out a) m))))
                      (par (kpref (inp a) m null) (sum (kpref (out a) m null) (pref (inp b) null)))]}
@@ -339,7 +339,7 @@ rec c_5_7: {S1:[a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢
                      (p_cl (pr_parr (pr_suml (pr_base (out a) m))))
                      (par (kpref (inp a) k null) (sum (kpref (out a) m null) (pref (inp b) null)))]}
            [a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢ conn_tr S1 S2] =
-/ total (c_5_7) /
+/ total (c_5_9) /
 mlam S1,S2 ⇒ [a:names,b:names,k:keys,m:keys,n:keys,I1:neq m k,I2:neq n k ⊢
                ct S1 S2 (tr_s* (st_s* (sc (fwc (fc_parl (fc_pref std_null) key_base (not_sum (not_pref not_null) (not_pref not_null))))))
                                (st_s* (sc (fwc (fc_parr (fc_suml (fc_pref std_null) (std_pref std_null)) (key_suml key_base) (not_kpref I1 not_null))))))];

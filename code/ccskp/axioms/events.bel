@@ -21,7 +21,7 @@ LF equiv_tr: step P θ Q → step R θ S → type =
 ;
 
 
-% We can show that this definition is equivalent to Def. 2.4 in the paper. In particular
+% We can show that this definition is equivalent to Def. 2.3 in the paper. In particular
 % we have to prove that, given equiv_tr_base t t' as above:
 % 1) The pairs of transitions (inv(u), t'), (inv(t'), inv(u')) and (u', inv(t)) are independent
 % 2) The diamond is not degenerate: Q != R if t and u are both forward or backward, P !=S otherwise.

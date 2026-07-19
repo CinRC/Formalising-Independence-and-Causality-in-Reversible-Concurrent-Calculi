@@ -70,7 +70,7 @@ LF std: proc → type =
   | std_nu: ({a:names} std (X a)) → std (nu X)
 ;
 
-% Non occurrence of keys in processes
+% Non-occurrence of keys in processes
 LF notin: keys → proc → type =
   | not_null: notin K null
   | not_pref: notin K X → notin K (pref α X)

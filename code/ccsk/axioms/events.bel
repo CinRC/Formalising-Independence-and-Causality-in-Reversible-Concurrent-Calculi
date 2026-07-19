@@ -1,3 +1,5 @@
+%%% Equivalence of CCSK transitions ~: two transitions are equivalent if they correspond to the same event
+
 % Base case of the definition of equivalence of CCSK transitions
 LF ccsk_equiv_tr_base: ccsk.step P KL Q → ccsk.step R KL S → type =
   | ccsk_etb: ccsk_same_direction (T:ccsk.step P KL1 Q) (T':ccsk.step R KL1 S) 

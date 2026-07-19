@@ -1,4 +1,4 @@
-%%% WF: well-foundedness
+%%% WF: well-founded
 
 % A binary relation < on a set X is well-founded if it contains no infinite descending chains  ... x_{n+1} < x_n < ... < x_1 < x_0.
 % Constructively, well-foundedness is typically defined via the inductive predicate of accessibility:
@@ -89,7 +89,7 @@ acc_intro [g] [g ⊢ nu \a.X] (mlam _,_ ⇒ fn f ⇒ (case f of
        | [g ⊢ fo (fo_nu_op \a.F)] ⇒ acc_nu (h [_ ⊢ _] [_ ⊢ _] [_ ⊢ fo F])))
 ;
 
-% Well-foundedness (WF): all processes are accessible
+% Well-founded (WF): all processes are accessible
 rec wf: (g:ctx) {X:[g ⊢ proc]} acc [g ⊢ X] =
 / total x (wf _ x) /
 mlam X ⇒ case [_ ⊢ X] of

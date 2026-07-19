@@ -1,4 +1,4 @@
-%%% WF: well-foundedness
+%%% WF: well-founded
 
 % Type family encoding accessibility of processes in CCSK
 inductive ccsk_acc: (g:ctx) [g ⊢ proc] → ctype =
@@ -17,7 +17,7 @@ ccsk_acc_intro [g] [g ⊢ X] (mlam _,_ ⇒ fn f ⇒
      | {EN:[g ⊢ enrich_fo _ F+]}[g ⊢ ex_enfo EN] ⇒ acc_ccskp_to_ccsk (h _ _ [g ⊢ fo F+])))
 ;
 
-% Well-foundedness (WF): all processes are accessible
+% Well-founded (WF): all processes are accessible
 rec ccsk_wf: (g:ctx) {X:[g ⊢ proc]} ccsk_acc [g ⊢ X] =
 / total x (ccsk_wf _ x) /
 mlam X ⇒ acc_ccskp_to_ccsk (wf [_ ⊢ X])
