@@ -14,6 +14,7 @@ examples from the paper and links them to their counterparts in the formalisatio
 
 
 ------------------------------------------------------------------------
+
 ## Description of the Encoding
 
 We proceed section by section.
@@ -21,6 +22,7 @@ We proceed section by section.
 ### 4: CCSK<sup>P</sup> and CCSK
 
 ------------------------------------------------------------------------
+
 #### 4.1: Definition of CCSK<sup>P</sup>
 
 Definition 4.1: (Co)-names, labels and keys
@@ -71,9 +73,10 @@ The [`basic-properties.bel`](https://github.com/CinRC/Formalising-Independence-a
 
 Lemma 4.17: [Unique derivation trees of CCSK<sup>P</sup> transitions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/unique-step.bel#L562-L588)
 
-We actually prove a slightly stronger result than in the paper: given two processes, if there is one transition between them, the transition and its derivation tree are unique. The proof addresses closed and open transitions, as well as forward and backward transitions, separately, and proceeds by induction on the length of the derivation tree of the given transition. This lemma and most of the auxiliary results required to prove it are in the `ccskp/unique-step.bel` file; for instance, the file includes an [auxiliary lemma](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/unique-step.bel#L276-L336) showing that, for any given source and target processes, there cannot simultaneously exist both a closed and an open transition between them. The proof relies also on the uniqueness of the derivation trees of the predicates used in the LTS rules ([`neq`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/unique.bel#L31-L41), [`std`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/unique.bel#L48-L63), [`notin`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/unique.bel#L70-L88), [`lab`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/unique.bel#L68-L82), [`key`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/unique.bel#L84-L99), [`occurs`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/unique.bel#L101-L117)).
+We actually prove a slightly stronger result than in the paper: given two processes, if there is one transition between them, the transition and its derivation tree are unique. The proof addresses closed and open transitions, as well as forward and backward transitions, separately, and proceeds by induction on the length of the derivation tree of the given transition. This lemma and most of the auxiliary results required to prove it are in the `ccskp/unique-step.bel` file; for instance, the file includes an [auxiliary lemma](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/unique-step.bel#L276-L336) showing that, for any given source and target processes, there cannot simultaneously exist both a closed and an open transition between them. The proof relies also on the uniqueness of the derivation trees of the predicates used in the LTS rules ([`neq`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/unique.bel#L31-L41), [`std`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/unique.bel#L48-L63), [`notin`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/unique.bel#L70-L88), [`lab`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/unique.bel#L68-L82), [`key`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/unique.bel#L84-L99) and [`occurs`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/unique.bel#L101-L117)).
 
 ------------------------------------------------------------------------
+
 #### 4.2: Bijection between CCSK<sup>P</sup> and CCSK
 
 *Remark:* the encoding makes use of two modules, namely [`ccskp`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/definitions.bel#L3-L3) and [`ccsk`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/definitions.bel#L3-L3), that enclose the basic definitions for the respective calculi; this allows the same name to be reused for corresponding types (e.g., `fstep`, `bstep` or `step`). Outside of the modules, one can write `ccskp.step` and `ccsk.step` to refer to the type `step` in the `ccskp` and `ccsk` module respectively.  
@@ -82,7 +85,7 @@ Some definitions and lemmas regarding CCSK<sup>P</sup> and CCSK could not be enc
 
 Definition 4.19: LTS for CCSK
 
-As in CCSK<sup>P</sup>, we use the types `std` and `notin` instead of *keys(X)*. Unlike CCSK<sup>P</sup>, no transition needs to use α-equivalence classes of keyed labels (all the problematic cases in CCSK<sup>P</sup>, involving a synchronisation within a restriction, now simply use the keyed label *τ[k]*, that is invariant under α-renaming of the processes involved), and thus no distinction between closed and open rules is needed. [Forward](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/definitions.bel#L10-L29), [backward](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/definitions.bel#L31-L50) and [combined](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/definitions.bel#L214-L218) LTS rules are encoded as expected.  
+As in CCSK<sup>P</sup>, we use the types `std` and `notin` instead of *keys(X)*. Unlike CCSK<sup>P</sup>, no transition needs to use α-equivalence classes of keyed labels (all the problematic cases in CCSK<sup>P</sup>, involving a synchronisation within a restriction, now simply use the keyed label *τ[k]*, that is invariant under α-renaming of the processes involved), and thus no distinction between closed and open rules is needed. [Forward](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/definitions.bel#L10-L29), [backward](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/definitions.bel#L31-L50) and [combined](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/definitions.bel#L214-L218) LTS rules are encoded as expected.
 
 Additionally, we define [paths](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/definitions.bel#L58-L63) and [connected transitions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/definitions.bel#L65-L68) for CCSK; similarly, we prove the [loop lemma](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/basic-properties.bel#L5-L37) for CCSK.
 
@@ -98,9 +101,9 @@ One then needs to show that these relations are actually functions, i.e., that t
 Lemma 4.24: [Bijection between CCSK and CCSK<sup>P</sup>](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/bijection/bijection.bel)
 
 The proof, again split between the closed/open and forward/backward combinations, follows immediately from the application of the stronger versions of Lemmas 4.17 and 4.20 (uniqueness of the derivations of CCSK<sup>P</sup> and CCSK transitions) and their auxiliary lemmas.
- 
 
 ------------------------------------------------------------------------
+
 ### 5: Complementarity of Independence and Dependence for CCSK<sup>P</sup> and CCSK
 
 Definition 5.1: Relations on proof labels
@@ -116,8 +119,7 @@ Proposition 5.6: Correspondence between connectedness of transitions and connect
 The two implications of this proposition are proved separately. Both implications make use of a number of auxiliary lemmas, that can be found in the [`ccskp/lemmas-connectedness-one.bel`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/lemmas-connectedness-one.bel) and [`ccskp/lemmas-connectedness-two.bel`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/lemmas-connectedness-two.bel) files respectively. These include: lemmas to infer the structure of the target process of a path, known its source; lemmas that, given a path between two processes, allow us to build a path between their subprocesses; lemmas showing that each valid proof label *θ* is realised (i.e., there exists a transition using *θ* as proof label and whose source is standard process); lemmas that, given a path, use it to build new paths.  
 The proof of [Proposition 5.6 (first implication)](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/connectedness-relationship-one.bel) is long and tedious, but mostly follows the original informal argument in [*"Dependence and Independence for Reversible Process Calculi"*](https://doi.org/10.48550/ARXIV.2410.14699). It can be proved for both closed and open transitions/proof labels.  
 The proof of [Proposition 5.6 (second implication)](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/connectedness-relationship-two.bel) diverges significantly from the original informal argument, that leveraged a short proposition incorrectly; moreover, it can only be proved for closed transitions/proof labels, being false for open transitions/proof labels (see Beluga's Corner 5.7 or the comments in the `ccskp/connectedness-relationship-two.bel` file for more details). In short, we first prove a base case of the proposition, where additional information can be inferred; thanks to this additional information, we can then prove a stronger version of the proposition, from which the original statement immediately follows.  
-The proof is adapted from the one in the original formalisation ([Zenodo](https://doi.org/10.5281/zenodo.16179366)) and the formalisation strategy is described in detail in the corresponding paper [*"A Formalization of the Reversible Concurrent
-Calculus CCSK<sup>P</sup> in Beluga"*](https://doi.org/10.4204/EPTCS.425.5). 
+The proof is adapted from the one in the original formalisation ([Zenodo](https://doi.org/10.5281/zenodo.16179366)) and the formalisation strategy is described in detail in the corresponding paper [*"A Formalization of the Reversible Concurrent Calculus CCSK<sup>P</sup> in Beluga"*](https://doi.org/10.4204/EPTCS.425.5). 
 
 Theorem 5.10: Complementarity on proof labels
 
@@ -125,46 +127,52 @@ We separately prove its [first item](https://github.com/CinRC/Formalising-Indepe
 
 Definition 5.11: Relations on CCSK<sup>P</sup> transitions
 
-The [relations on CCSK<sup>P</sup> transitions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/definitions.bel#L326-L334) are encoded accordingly to their informal definition.
+The [relations on CCSK<sup>P</sup> transitions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/definitions.bel#L326-L334) are encoded according to their informal definition.
 
 Definition 5.12: Relations on CCSK transitions
 
-The [relations on CCSK transitions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/complementarity.bel#L3-L19) are encoded accordingly to their informal definition.
+The [relations on CCSK transitions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/complementarity.bel#L3-L19) are encoded according to their informal definition.
 
 Proposition 5.13: Complementarity on transitions
 
-The proof of [complementarity on CCSK<sup>P</sup> transitions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/complementarity.bel#L452-L471)
-makes use of Proposition 5.6(1) and Theorem 5.10(3). The proof of [complementarity on CCSK transitions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/complementarity.bel#L41-L66) leverages the bijection with CCSK<sup>P</sup> to conclude in the same manner.
+The proof of [complementarity on CCSK<sup>P</sup> transitions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/complementarity.bel#L452-L471) makes use of Proposition 5.6(1) and Theorem 5.10(3). The proof of [complementarity on CCSK transitions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/complementarity.bel#L41-L66) leverages the bijection with CCSK<sup>P</sup> to conclude in the same manner.
 
 ------------------------------------------------------------------------
+
 ### 6: Applying the Axiomatic Approach to CCSK<sup>P</sup> and CCSK
 
 The structure of both the [`ccskp/axioms/`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms) and [`ccsk/axioms/`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/axioms) folders is the following:
 
-- `defs-and-properties.bel` contains definitions required to state the basic axioms, properties of these new definitions, and additional properties of the LTS useful to prove the axioms and properties of the Axiomatic Approach.
+- `defs-and-properties.bel` contains definitions required to state the basic axioms, properties of these new definitions, and additional properties of the LTS useful to prove the axioms and properties of the axiomatic approach.
 - `events.bel` contains the definition of events and some related properties.
-- For each axiom/property, there is a corresponding file proving it (e.g., `sp.bel` for SP - Square Property).
+- For each axiom/property, there is a corresponding file proving it (e.g., `sp.bel` for SP, the Square Property).
 
-Moreover, the [`bijection/lemmas-lifting.bel`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/bijection/lemmas-lifting.bel) file contains proofs of properties that can be transferred from one LTS to another; these will be useful to prove that the Axiomatic Theory holds for CCSK.  
+Moreover, the [`bijection/lemmas-lifting.bel`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/bijection/lemmas-lifting.bel) file contains proofs of properties that can be transferred from one LTS to another; these will be useful to prove that the axiomatic theory holds for CCSK.
 
 More details are given below.
 
 ------------------------------------------------------------------------
+
 #### 6.1: Mechanised Proofs of Axioms for CCSK<sup>P</sup>
 
 Proposition 6.1: The LTS of CCSK<sup>P</sup> is pre-reversible
 
-The additional definitions include coercions from forward and backward transitions to combined transitions ([`forw_to_comb`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L6-L10) and [`back_to_comb`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L35-L39)), the inverse of a combined transition ([`inv_tr`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L110-L113)), and same and opposite direction of transitions ([`same_direction`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L154-L158) and [`opp_direction`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L160-L164)). The auxiliary properties proved include, e.g., the proof that [backward transitions cannot use keys not present in their source](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L269-L292).  
+The additional definitions include coercions from forward and backward transitions to combined transitions ([`forw_to_comb`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L6-L10) and [`back_to_comb`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L35-L39)), the inverse of a combined transition ([`inv_tr`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L110-L113)), and same and opposite direction of transitions ([`same_direction`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L154-L158) and [`opp_direction`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L160-L164)). The auxiliary properties proved include, e.g., the proof that [backward transitions cannot use keys not present in their source](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/defs-and-properties.bel#L269-L292).
+
 The proof of [SP](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/sp.bel#L1030-L1092) follows the original argument in [*"The Correctness of Concurrencies in (Reversible) Concurrent Calculi"*](https://doi.org/10.1016/J.JLAMP.2023.100924) and uses three auxiliary lemmas proved by induction on the structure of the given transitions. Each lemma, that has two transitions in the hypotheses, is split into four lemmas, according to the closed/open combinations of the two transitions. For this reason the proof is long and tedious, but rather straightforward.  
-Note that the encoding explicitly requires the pairs of transitions at opposite sides of the square to have the same direction: this may look redundant w.r.t. the informal statement of SP, but it is not. SP is usually stated in the axiomatic setting, where a forward transition and its inverse use syntactically different labels; thus, equality of labels implicitly implies same direction. In CCSK<sup>P</sup> and CCSK, instead, a forward transition and its inverse use the same label; thus, the pen-and-paper statement of SP for such calculi needs to explicit require equality of directions, in addition to labels.     
-For [BTI](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/bti.bel#L341-L350), we first prove that [two backward transitions are either equal or independent](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/bti.bel#L314-L332), from which the statement of BTI follows. Similarly to SP, the first result is split between the various closed/open combinations.  
-For [WF](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/wf.bel#L92-L106): recall that a binary relation < on a set *X* is well-founded if it contains no infinite descending chains  *"... < x_{n+1} < x_n < ... < x_1 < x_0"*. Constructively, well-foundedness is typically defined via the inductive predicate of accessibility: an element *x* of *X* is accessible if every element *x' < x* is accessible. In other words, if *x* is accessible, then each descending chain ending with *x_0* is finite. Well-foundedness of < is shown by proving that every element in *X* is accessible (for some examples, see the definitions of well-foundedness in Rocq and Agda, or [*"POPLMark Reloaded: Mechanizing Proofs by Logical Relations"*](https://doi.org/10.1017/S0956796819000170)). In our setting, we take *X* as the set of all processes and < is defined by: *P < Q* iff there exists a forward transition *t: P --[θ]--> Q*. To prove WF, we show that each process is accessible.  
-The proof of [PCI](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/pci.bel#L3-L14) is immediate, given the symmetry of independence.  
+Note that the encoding explicitly requires the pairs of transitions at opposite sides of the square to have the same direction: this may look redundant w.r.t. the informal statement of SP, but it is not. SP is usually stated in the axiomatic setting, where a forward transition and its inverse use syntactically different labels; thus, equality of labels implicitly implies same direction. In CCSK<sup>P</sup> and CCSK, instead, a forward transition and its inverse use the same label; thus, the pen-and-paper statement of SP for such calculi needs to explicit require equality of directions, in addition to labels.
+
+For [BTI](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/bti.bel#L341-L350), we first prove that [two backward transitions are either equal or independent](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/bti.bel#L314-L332), from which the statement of BTI follows. Similarly to SP, the first result is split between the various closed/open combinations.
+
+For [WF](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/wf.bel#L92-L106): recall that a binary relation *<* on a set *X* is well-founded if it contains no infinite descending chains  *... < x_{n+1} < x_n < ... < x_1 < x_0*. Constructively, well-foundedness is typically defined via the inductive predicate of accessibility: an element *x* of *X* is accessible if every element *x' < x* is accessible. In other words, if *x* is accessible, then each descending chain ending with *x_0* is finite. Well-foundedness of *<* is shown by proving that every element in *X* is accessible (for some examples, see the definitions of well-foundedness in Rocq and Agda, or [*"POPLMark Reloaded: Mechanizing Proofs by Logical Relations"*](https://doi.org/10.1017/S0956796819000170)). In our setting, we take *X* as the set of all processes and *<* is defined by: *P < Q* iff there exists a forward transition *t: P --[θ]--> Q*. To prove WF, we show that each process is accessible.
+
+The proof of [PCI](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/pci.bel#L3-L14) is immediate, given the symmetry of independence.
+
 We additionally provide a proof of [ID](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/id.bel#L20-L68), following the argument sketched in [*"An Axiomatic Theory for Reversible Computation"*](https://doi.org/10.1145/3648474).
 
 Definition 6.2: Event
 
-We encode the "simplified" definition of [event](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/events.bel#L3-L21)  as in Definition 6.2. We then prove that it is [equivalent](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/events.bel#L24-L108) to the "general" definition of event in Definition 2.3: given transitions *t*, *u*, *u'* and *t'* as in Definition 6.2, we show that the independence of *t* and *u* propagates to all pairs of adjacent transitions, and that the given commuting square is non-degenerate.
+We encode the "simplified" definition of [event](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/events.bel#L3-L21) as in Definition 6.2. We then prove that it is [equivalent](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/events.bel#L24-L108) to the "general" definition of event in Definition 2.3: given transitions *t*, *u*, *u'* and *t'* as in Definition 6.2, we show that the independence of *t* and *u* propagates to all pairs of adjacent transitions, and that the given commuting square is non-degenerate.
 
 Proposition 6.3: Other properties of the LTSI of CCSK<sup>P</sup>
 
@@ -179,6 +187,7 @@ Proposition 6.6: [FLD holds for the LTSI of CCSK<sup>P</sup>](https://github.com
 The proof is split between closed and open transitions, is carried out by induction on the structure of the given transition, and requires a couple of [technical lemmas about restrictions](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/fld.bel#L50-L123).
 
 ------------------------------------------------------------------------
+
 #### 6.2: Mechanised Proofs of Axioms for CCSK
 
 The [`defs-and-properties.bel`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/axioms/defs-and-properties.bel) file contains additional definitions and properties needed to state and prove the axioms, and the [`events.bel`](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccskp/axioms/events.bel) file contains the simplified definition of events.  
@@ -197,6 +206,7 @@ The proofs of [SP](https://github.com/CinRC/Formalising-Independence-and-Causali
 
 
 ------------------------------------------------------------------------
+
 ## Paper-to-Artifact Table
 
 The following table pairs up definitions, proofs and examples from the paper with those from the Beluga code.
