@@ -1,16 +1,3 @@
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
 %%% Semantics of CCSKP %%%
 
 module ccskp = struct

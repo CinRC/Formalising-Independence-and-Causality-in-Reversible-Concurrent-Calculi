@@ -1,16 +1,3 @@
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
 %%% Equivalence of transitions ~: two transitions are equivalent if they correspond to the same event
 
 % Base case of the definition of equivalence of transitions

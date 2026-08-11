@@ -1,16 +1,3 @@
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
 %%% This file contains properties that can be lifted from CCSK to CCSKP and viceversa, %%%
 %%% by leveraging the bijection between the two labelled transition systems.           %%%
 
