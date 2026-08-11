@@ -1,3 +1,16 @@
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
 %%% Semantics of CCSK %%%
 
 module ccsk = struct

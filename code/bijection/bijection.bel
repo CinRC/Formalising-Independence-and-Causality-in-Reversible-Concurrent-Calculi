@@ -1,3 +1,16 @@
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
 %%% forget and enrich are mutual inverses (Lemma 4.24) %%%
 
 % First implication: enrich ∘ forget = id on CCSKP transitions

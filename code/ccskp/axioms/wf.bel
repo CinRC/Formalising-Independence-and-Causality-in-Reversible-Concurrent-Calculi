@@ -1,3 +1,16 @@
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
 %%% WF: well-founded
 
 % A binary relation < on a set X is well-founded if it contains no infinite descending chains  ... x_{n+1} < x_n < ... < x_1 < x_0.

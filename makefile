@@ -41,4 +41,17 @@ clean:
 count:
 	cloc --read-lang-def=beluga_cloc_config.txt --by-file code/ && \
 	cloc --read-lang-def=beluga_cloc_config.txt --by-file examples/
-	
+
+# The following phony rule
+# 1. copy the run/ and code/ folders into a coverage/ folder
+# 2. appends to every .bel file the "--coverage" pragram.
+# 3. initiate a coverage check on all the programs listed in run/code.cfg
+
+.PHONY: coverage
+coverage:
+	$(info Creating and compiling beluga files using --coverage pragma.)
+	@mkdir -p coverage
+	@rsync -rupE run code coverage 
+	@find . -name "*.bel" -exec sed -i '1s/^/--coverage\n/' {} + 
+	beluga coverage/run/code.cfg && echo "Compilation of code using --coverage pragma succesful."
+	@rm -rf coverage

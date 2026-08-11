@@ -1,3 +1,16 @@
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
+--coverage
 %%% Definitions of the functions forget and enrich between CCSK and CCSKP transitions %%%
 % They are defined as relations, and proved to be functions in the files `functionality.bel` and `totality.bel`.
 
