@@ -164,7 +164,7 @@ The latter will perform the type reconstruction of all the tests, and is expecte
 
 ### Checking Coverage
 
-The totality declarations following each recursive function declaration ensure that all functions are total and that every recursive call is made on a decreasing argument, guaranteeing the correctness of the proofs^[More details can be found in Section 6 of the [Beluga Reference Guide](https://www.cs.mcgill.ca/~complogic/beluga/userguide2/userguide.pdf).].
+The totality declarations following each recursive function declaration ensure that all functions are total and that every recursive call is made on a decreasing argument, guaranteeing the correctness of the proofs[^1].
 The 
 
 ```console
@@ -172,6 +172,8 @@ make coverage
 ```
 
 command insert the optional `--coverage` pragma at the beginning of all the `.bel` files under `code/` and then check these conditions.
+
+[^1]:More details can be found in Section 6 of the [Beluga Reference Guide](https://www.cs.mcgill.ca/~complogic/beluga/userguide2/userguide.pdf).
 
 ## Installation instructions
 
