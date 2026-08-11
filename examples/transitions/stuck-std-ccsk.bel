@@ -1,16 +1,3 @@
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
 %%% Proof that stuck standard processes do not make any forward transition %%%
 
 --open ccsk.

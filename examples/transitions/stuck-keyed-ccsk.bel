@@ -1,16 +1,3 @@
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
 %%% Proof that stuck processes containing keys do not make any transition %%%
 
 --open ccsk.

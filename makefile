@@ -52,6 +52,6 @@ coverage:
 	$(info Creating and compiling beluga files using --coverage pragma.)
 	@mkdir -p coverage
 	@rsync -rupE run code coverage 
-	@find . -name "*.bel" -exec sed -i '1s/^/--coverage\n/' {} + 
+	@find coverage/ -name "*.bel" -exec sed -i '1s/^/--coverage\n/' {} + 
 	beluga coverage/run/code.cfg && echo "Compilation of code using --coverage pragma succesful."
 	@rm -rf coverage

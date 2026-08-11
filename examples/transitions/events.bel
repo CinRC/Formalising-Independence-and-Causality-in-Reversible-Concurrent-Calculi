@@ -1,16 +1,3 @@
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
---coverage
 % Example of equivalence of transitions:
 % P = a | b,  Q = a[k1] | b,  R = a | b[k0],  S = a[k1] | b[k0],
 % with transitions executing a and b in either order.
