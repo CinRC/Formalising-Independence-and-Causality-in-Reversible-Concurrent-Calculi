@@ -7,15 +7,16 @@ upon the artifact for the paper [*"A Formalization of the Reversible Concurrent
 Calculus CCSK<sup>P</sup> in Beluga"*](https://doi.org/10.4204/EPTCS.425.5)
 ([Zenodo](https://doi.org/10.5281/zenodo.16179366)),
 refining the existing development and substantially extending it with new results.  
-The **Description of the Encoding** section discusses the main formalisation
+The [**Description of the Encoding**](#description-of-the-encoding) section discusses the main formalisation
 choices in detail and highlights the differences between the paper and the code.
-The **Paper-to-Artifact Table** then concisely lists the definitions, proofs and
+The [**Paper-to-Artifact Table**](#paper-to-artifact-table) then concisely lists the definitions, proofs and
 examples from the paper and links them to their counterparts in the formalisation.
 
 
 ------------------------------------------------------------------------
 ## Description of the Encoding
 
+We proceed section by section.
 
 ### 4: CCSK<sup>P</sup> and CCSK
 
@@ -27,7 +28,7 @@ Definition 4.1: (Co)-names, labels and keys
 [Names](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/definitions.bel#L3-L5) are encoded as a type without constructors; this type is dynamically inhabited through the use of [contexts](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/definitions.bel#L30-L31) and contextual variables. This is standard for Beluga formalisations of concurrent calculi where restriction is treated as a binding operator (see, e.g., [*"Mechanizing Session-Types using a Structural View: Enforcing Linearity without Linearity"*](https://doi.org/10.1145/3622810) or [*"A Beluga Formalization of the Harmony Lemma in the π-Calculus"*](https://doi.org/10.4204/EPTCS.404.1)).  
 Conversely, [keys](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/definitions.bel#L7-L11) are encoded by an explicit type isomorphic to the natural numbers, equipped with a decidable [inequality](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/definitions.bel#L58-L62) predicate (`neq`) at the LF level. This choice simplifies the encodings of keyed labels, proof labels and keyed prefixes by avoiding meta-level functions indexed by keys, while preserving infinite branching over keys in forward transition rules.  
 The encodings of [labels](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/definitions.bel#L13-L18) and [keyed labels](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/ccsk/definitions.bel#L5-L8) are as expected.  
-Observe also that, in the lack of polymorphism, equalities for different types need to be defined via a separate predicate for each type (e.g., [equality of keys](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/definitions.bel#L37-L40)).
+Observe also that, since we lack polymorphism, equalities for different types need to be defined via a separate predicate for each type (e.g., [equality of keys](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/blob/cf48a53/code/shared/definitions.bel#L37-L40)).
 
 Definition 4.3: Processes
 
