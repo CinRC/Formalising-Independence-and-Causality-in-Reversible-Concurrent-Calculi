@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checking out files 📁
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
     - name: Install Opam 🐫
       uses: ocaml/setup-ocaml@v3
       with:
