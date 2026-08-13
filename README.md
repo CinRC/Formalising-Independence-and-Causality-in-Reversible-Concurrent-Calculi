@@ -4,13 +4,13 @@
 
 This repository contains a formalisation of reversible concurrent calculi in [Beluga](https://complogic.cs.mcgill.ca/beluga/index.html) accompanying the paper *"Concurrency, Causality and Conflict via Independence in Reversible Calculi"* by C. Aubert, G. Cecilia, I. Phillips and I. Ulidowski.
 
-It extends and refines the [formalisation of CCSK<sup>P</sup>](https://github.com/CinRC/A-Beluga-Formalization-of-CCSKP) presented in [*"A Formalization of the Reversible Concurrent Calculus CCSK<sup>P</sup> in Beluga"*](https://doi.org/10.4204/EPTCS.425.5) with additional results from [*"Independence and Causality in the Reversible Concurrent Setting"*](https://doi.org/10.1007/978-3-031-97063-4_2).
+It extends and refines the [formalisation of CCSK<sup>P</sup>](https://doi.org/10.5281/zenodo.16179366) presented in [*"A Formalization of the Reversible Concurrent Calculus CCSK<sup>P</sup> in Beluga"*](https://doi.org/10.4204/EPTCS.425.5) with additional results from [*"Independence and Causality in the Reversible Concurrent Setting"*](https://doi.org/10.1007/978-3-031-97063-4_2).
 
 > [!NOTE]
 > Refer to the [`overview.md`](overview.md) file for a detailed description of the main formalisation choices and differences between the paper and the code, as well as a paper-to-artifact table.
 
-[![Code Type Reconstruction](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml/badge.svg)](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml)
-[![Example Tests](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml/badge.svg)](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml)
+[![Code Type Reconstruction](https://github.com/CinRC/Formalising-Concurrency-Causality-and-Conflict-via-Independence-in-Reversible-Calculi/actions/workflows/main.yml/badge.svg)](https://github.com/CinRC/Formalising-Concurrency-Causality-and-Conflict-via-Independence-in-Reversible-Calculi/actions/workflows/main.yml)
+[![Example Tests](https://github.com/CinRC/Formalising-Concurrency-Causality-and-Conflict-via-Independence-in-Reversible-Calculi/actions/workflows/test.yml/badge.svg)](https://github.com/CinRC/Formalising-Concurrency-Causality-and-Conflict-via-Independence-in-Reversible-Calculi/actions/workflows/test.yml)
 
 ## Usage instructions
 
@@ -414,7 +414,7 @@ make test
 
 respectively. The latter will perform the type reconstruction of all the tests, and is expected to take ±8 seconds.
 
-### Checking Coverage
+### Checking coverage
 
 The totality declarations following each recursive function declaration ensure that all functions are total and that every recursive call is made on a decreasing argument, guaranteeing the correctness of the proofs[^1].
 The 
@@ -440,7 +440,7 @@ opam install beluga.1.1.1
 
 ## Repository structure
 
-- `run\`: Contains the `.cfg` files requires to compile …
+- `run\`: Contains the `.cfg` files required to compile …
   + `code.cfg`: … the actual formalisation (in the `code/` folder)
   + `examples\`: … test examples …
     * `ex-processes.cfg`: … of processes (in the `examples/` folder)
