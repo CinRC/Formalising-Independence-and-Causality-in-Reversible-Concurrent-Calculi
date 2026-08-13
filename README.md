@@ -348,7 +348,7 @@ code/ccskp/axioms/ed.bel|1|3|5
 
 File|blank|comment|code
 :-------|-------:|-------:|-------:
-examples/examples-paper.bel|47|60|238
+examples/examples-paper.bel|47|60|248
 examples/transitions/stuck-keyed-ccskp.bel|18|13|85
 examples/transitions/stuck-keyed-ccsk.bel|14|8|56
 examples/transitions/forward-transitions-ccskp.bel|16|18|48
@@ -367,5 +367,5 @@ examples/proof-labels/valid.bel|13|12|12
 examples/processes/keyed.bel|6|7|6
 examples/processes/stuck-keyed.bel|5|6|6
 examples/processes/stuck-std.bel|3|4|3
-**SUM** |**203**|**213**|**712**
+SUM:|203|213|722
 </details>

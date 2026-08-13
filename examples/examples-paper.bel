@@ -167,9 +167,16 @@ rec fg_4_22a:{T:[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢
                         (par (kpref (inp b) k' (sum (kpref (inp a) k (pref (inp b) null)) (pref (inp c) null))) (kpref (out a) k (pref (inp d) null)))]}
              [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ forget T T◦] =
 / total (fg_4_22a) /
-mlam T,T◦ ⇒ let [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ sc (fwc FT)] = [_ ⊢ T] in
-let [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fw FT◦] = [_ ⊢ T◦] in
-[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fgfc (fg_fc FT FT◦ lab_sync (key_sync (key_suml key_base)))];
+mlam T,T◦ ⇒ case [_ ⊢ T] of
+  | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ sc (fwc FT)] ⇒ (case [_ ⊢ T◦] of
+       | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fw FT◦] ⇒
+         [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fgfc (fg_fc FT FT◦ lab_sync (key_sync (key_suml key_base)))]
+       | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ bw BT◦] ⇒ (case [_ ⊢ BT◦] of
+            | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ bs_synl _ BT◦'] ⇒ impossible [_ ⊢ BT◦']
+            | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ bs_synr _ BT◦'] ⇒ impossible [_ ⊢ BT◦']))
+  | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ sc (bwc BT)] ⇒ (case [_ ⊢ BT] of
+       | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ bc_synl _ _ _ BT' _ _] ⇒ impossible [_ ⊢ BT']
+       | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ bc_synr _ _ _ BT' _ _] ⇒ impossible [_ ⊢ BT']);
 
 % We show that forget relates also the two subtransitions
 % a.b + c  -[ +_L a[k] ]->  a[k].b + c in CCSKP and
@@ -184,9 +191,12 @@ rec fg_4_22b:{T:[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢
                         (sum (kpref (inp a) k (pref (inp b) null)) (pref (inp c) null))]}
              [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ forget T T◦] =
 / total (fg_4_22b) /
-mlam T,T◦ ⇒ let [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ sc (fwc FT)] = [_ ⊢ T] in
-let [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fw FT◦] = [_ ⊢ T◦] in
-[a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fgfc (fg_fc FT FT◦ (lab_suml (lab_base)) (key_suml key_base))];
+mlam T,T◦ ⇒ case [_ ⊢ T] of
+  | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ sc (fwc FT)] ⇒ (case [_ ⊢ T◦] of
+       | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fw FT◦] ⇒
+         [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ fgfc (fg_fc FT FT◦ (lab_suml (lab_base)) (key_suml key_base))]
+       | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ bw (bs_suml BT◦ _)] ⇒ impossible [_ ⊢ BT◦])
+  | [a:names,b:names,c:names,d:names,k:keys,k':keys,I:neq k' k ⊢ sc (bwc (bc_suml BT _))] ⇒ impossible [_ ⊢ BT];
 
 
 %%% Formalisation of the examples from Section 5 of the paper %%%
