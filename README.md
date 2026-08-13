@@ -17,10 +17,258 @@ It extends and refines the [formalisation of CCSK<sup>P</sup>](https://github.co
 Once Beluga is installed (cf. [the installation instructions](#installation-instructions)), it suffices to run
 
 ```console
+beluga run_all.cfg 
+```
+to type-check the whole development, which contains the formalisation of the theoretical results and a collection of examples. The expected output, after ±20 seconds, is the following:
+
+<details>
+<summary>View expected output</summary>
+
+```console
+## Type Reconstruction begin: ./run/../code/shared/definitions.bel ##
+## Type Reconstruction done:  ./run/../code/shared/definitions.bel ##
+## Type Reconstruction begin: ./run/../code/shared/unique.bel ##
+## Type Reconstruction done:  ./run/../code/shared/unique.bel ##
+## Type Reconstruction begin: ./run/../code/shared/basic-properties.bel ##
+## Type Reconstruction done:  ./run/../code/shared/basic-properties.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/definitions.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/definitions.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/basic-properties.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/basic-properties.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/unique-step.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/unique-step.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/definitions.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/definitions.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/unique.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/unique.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/basic-properties.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/basic-properties.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/lemmas-connectedness-one.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/lemmas-connectedness-one.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/connectedness-relationship-one.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/connectedness-relationship-one.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/lemmas-connectedness-two.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/lemmas-connectedness-two.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/connectedness-relationship-two.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/connectedness-relationship-two.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/complementarity.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/complementarity.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/unique-step.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/unique-step.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/lemmas-bijection.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/lemmas-bijection.bel ##
+## Type Reconstruction begin: ./run/../code/bijection/definitions.bel ##
+## Type Reconstruction done:  ./run/../code/bijection/definitions.bel ##
+## Type Reconstruction begin: ./run/../code/bijection/functionality.bel ##
+## Type Reconstruction done:  ./run/../code/bijection/functionality.bel ##
+## Type Reconstruction begin: ./run/../code/bijection/totality.bel ##
+## Type Reconstruction done:  ./run/../code/bijection/totality.bel ##
+## Type Reconstruction begin: ./run/../code/bijection/bijection.bel ##
+## Type Reconstruction done:  ./run/../code/bijection/bijection.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/defs-and-properties.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/defs-and-properties.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/events.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/events.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/bti.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/bti.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/sp.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/sp.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/wf.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/wf.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/pci.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/pci.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/id.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/id.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/fld.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/fld.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/ire.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/ire.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/cire.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/cire.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/rpi.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/rpi.bel ##
+## Type Reconstruction begin: ./run/../code/ccskp/axioms/ed.bel ##
+## Type Reconstruction done:  ./run/../code/ccskp/axioms/ed.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/complementarity.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/complementarity.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/defs-and-properties.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/defs-and-properties.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/events.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/events.bel ##
+## Type Reconstruction begin: ./run/../code/bijection/lemmas-lifting.bel ##
+## Type Reconstruction done:  ./run/../code/bijection/lemmas-lifting.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/bti.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/bti.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/sp.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/sp.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/wf.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/wf.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/pci.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/pci.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/id.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/id.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/ire.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/ire.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/cire.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/cire.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/rpi.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/rpi.bel ##
+## Type Reconstruction begin: ./run/../code/ccsk/axioms/ed.bel ##
+## Type Reconstruction done:  ./run/../code/ccsk/axioms/ed.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/processes/standard.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/processes/standard.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/processes/stuck-std.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/processes/stuck-std.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/processes/keyed.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/processes/keyed.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/processes/stuck-keyed.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/processes/stuck-keyed.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/proof-labels/valid.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/proof-labels/valid.bel ##
+--query 1 1 (a : names) (k : keys) valid_cl (pr_base (inp a) k)..
+
+---------- Solution 1 ----------
+[]
+k = ?X14_1140652;
+a = ?Z10_1140639;.
+v1 = v_base ;.
+
+Done.
+--query 1 1 (a : names) (k : keys) valid_cl (pr_suml (pr_base (inp a) k))..
+
+---------- Solution 1 ----------
+[]
+k = ?Y16_1140657;
+a = ?X11_1140643;.
+v2 = v_suml (v_base );.
+
+Done.
+--query 1 1 (b : names)
+                   (m : keys) valid_cl (pr_parr (pr_parl (pr_base (out b) m)))..
+
+---------- Solution 1 ----------
+[]
+m = ?X20_1140670;
+b = ?Y12_1140645;.
+v3 = v_parr (v_parl (v_base ));.
+
+Done.
+--query 1 1 (b : names)
+                   (m : keys)
+                    valid_cl (pr_sync (pr_base (inp b) m) (pr_base (out b) m))..
+
+---------- Solution 1 ----------
+[]
+m = ?X28_1140694;
+b = ?Y27_1140690;.
+v4 = v_synl (v_base )
+(v_base ) (lab_base ) (key_base ) (lab_base ) (key_base );.
+
+Done.
+--query 1 1 (a : names)
+                   (k : keys)
+                    valid_cl
+                      (pr_sync (pr_suml (pr_base (out a) k))
+                      (pr_parl (pr_parr (pr_base (inp a) k))))..
+
+---------- Solution 1 ----------
+[]
+k = ?Y82_1140855;
+a = ?Y76_1140837;.
+v5 = v_synr (v_suml (v_base ))
+(v_parl (v_parr (v_base )))
+(lab_suml (lab_base ))
+(key_suml (key_base ))
+(lab_parl (lab_parr (lab_base ))) (key_parl (key_parr (key_base )));.
+
+Done.
+## Type Reconstruction begin: ./run/examples/../../examples/proof-labels/not-valid.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/proof-labels/not-valid.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccsk/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccsk/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/transitions/forward-transitions-ccsk.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/transitions/forward-transitions-ccsk.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/transitions/backward-transitions-ccsk.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/transitions/backward-transitions-ccsk.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/transitions/stuck-std-ccsk.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/transitions/stuck-std-ccsk.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/transitions/stuck-keyed-ccsk.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/transitions/stuck-keyed-ccsk.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/transitions/forward-transitions-ccskp.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/transitions/forward-transitions-ccskp.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/transitions/backward-transitions-ccskp.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/transitions/backward-transitions-ccskp.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/transitions/stuck-std-ccskp.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/transitions/stuck-std-ccskp.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/transitions/stuck-keyed-ccskp.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/transitions/stuck-keyed-ccskp.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/bijection/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/bijection/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/shared/unique.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/shared/unique.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/shared/basic-properties.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/shared/basic-properties.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/unique.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/unique.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/basic-properties.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/basic-properties.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/lemmas-connectedness-one.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/lemmas-connectedness-one.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/connectedness-relationship-one.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/connectedness-relationship-one.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/complementarity.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/complementarity.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/unique-step.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/unique-step.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/lemmas-bijection.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/lemmas-bijection.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/axioms/defs-and-properties.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/axioms/defs-and-properties.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/axioms/events.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/axioms/events.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/transitions/events.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/transitions/events.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/causality-relations/connectedness.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/causality-relations/connectedness.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/causality-relations/dependence.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/causality-relations/dependence.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/causality-relations/independence.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/causality-relations/independence.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccsk/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccsk/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/ccskp/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/ccskp/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../code/bijection/definitions.bel ##
+## Type Reconstruction done:  ./run/examples/../../code/bijection/definitions.bel ##
+## Type Reconstruction begin: ./run/examples/../../examples/examples-paper.bel ##
+## Type Reconstruction done:  ./run/examples/../../examples/examples-paper.bel ##
+```
+
+</details>
+
+Alternatively, one can type-check only the formalisation of the theoretical results by running the following command:
+
+```console
 beluga run/code.cfg 
 ```
 
-to type-check and verify the formalisation. The expected output, after ±15 seconds, is the following:
+The expected output, after ±15 seconds, is the following:
 
 <details>
 <summary>View expected output</summary>
@@ -123,7 +371,7 @@ to type-check and verify the formalisation. The expected output, after ±15 seco
 Tests can be run using, e.g.,
 
 ```console
-beluga run/ex-processes.cfg 
+beluga run/examples/ex-processes.cfg 
 ```
 
 For this particular set of examples, the expected result is, after ±1 second,
@@ -132,16 +380,16 @@ For this particular set of examples, the expected result is, after ±1 second,
 <summary>View expected output</summary>
 
 ```console
-## Type Reconstruction begin: run/../code/shared/definitions.bel ##
-## Type Reconstruction done:  run/../code/shared/definitions.bel ##
-## Type Reconstruction begin: run/../examples/processes/standard.bel ##
-## Type Reconstruction done:  run/../examples/processes/standard.bel ##
-## Type Reconstruction begin: run/../examples/processes/stuck-std.bel ##
-## Type Reconstruction done:  run/../examples/processes/stuck-std.bel ##
-## Type Reconstruction begin: run/../examples/processes/keyed.bel ##
-## Type Reconstruction done:  run/../examples/processes/keyed.bel ##
-## Type Reconstruction begin: run/../examples/processes/stuck-keyed.bel ##
-## Type Reconstruction done:  run/../examples/processes/stuck-keyed.bel ##
+## Type Reconstruction begin: run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction done:  run/examples/../../code/shared/definitions.bel ##
+## Type Reconstruction begin: run/examples/../../examples/processes/standard.bel ##
+## Type Reconstruction done:  run/examples/../../examples/processes/standard.bel ##
+## Type Reconstruction begin: run/examples/../../examples/processes/stuck-std.bel ##
+## Type Reconstruction done:  run/examples/../../examples/processes/stuck-std.bel ##
+## Type Reconstruction begin: run/examples/../../examples/processes/keyed.bel ##
+## Type Reconstruction done:  run/examples/../../examples/processes/keyed.bel ##
+## Type Reconstruction begin: run/examples/../../examples/processes/stuck-keyed.bel ##
+## Type Reconstruction done:  run/examples/../../examples/processes/stuck-keyed.bel ##
 ```
 
 </details>
@@ -149,6 +397,10 @@ For this particular set of examples, the expected result is, after ±1 second,
 ### Using Makefile
 
 If Makefile is installed, then the previous commands can be replaced by
+
+```console
+make all
+```
 
 ```console
 make code
@@ -160,7 +412,7 @@ and
 make test
 ```
 
-The latter will perform the type reconstruction of all the tests, and is expected to take ±8 seconds.
+respectively. The latter will perform the type reconstruction of all the tests, and is expected to take ±8 seconds.
 
 ### Checking Coverage
 
@@ -189,11 +441,13 @@ opam install beluga.1.1.1
 ## Repository structure
 
 - `run\`: Contains the `.cfg` files requires to compile …
-  + `code.cfg`: … the actual formalisation (in `code/` folder)
-  + `ex-processes.cfg`: … test examples on processes (in `examples/` folder)
-  + `ex-proof-labels.cfg`: … test examples on proof labels (in `examples/` folder)
-  + `ex-transitions.cfg`: … test examples on transitions (in `examples/` folder)
-  + `ex-causality-relations.cfg`: … test examples on connectedness, dependence and independence (in `examples/` folder)
+  + `code.cfg`: … the actual formalisation (in the `code/` folder)
+  + `examples\`: … test examples …
+    * `ex-processes.cfg`: … of processes (in the `examples/` folder)
+    * `ex-proof-labels.cfg`: … of proof labels (in the `examples/` folder)
+    * `ex-transitions.cfg`: … of transitions (in the `examples/` folder)
+    * `ex-causality-relations.cfg`: … of connectedness, dependence and independence (in the `examples/` folder)
+    * `ex-paper.cfg`: … of remarks and examples from the paper (in the `examples/` folder)
 - `code\`: Contains the Beluga formalisation of …
   + `shared\`: … shared …
     * `definitions.bel`: … definitions
@@ -216,7 +470,7 @@ opam install beluga.1.1.1
       - `cire.bel`: … CIRE (coinitial independence respects events)
       - `rpi.bel`: … RPI (reversing preserves independence)
       - `ed.bel`: … ED (event determinism)
-  + `ccskp\`: … CCSKP …
+  + `ccskp\`: … CCSK<sup>P</sup> …
     * `definitions.bel`: … definitions
     * `unique.bel`: … uniqueness of the derivation of predicates
     * `basic-properties.bel`: … basic properties (e.g. loop lemma, symmetry of transitions and paths)
@@ -226,7 +480,7 @@ opam install beluga.1.1.1
     * `connectedness-relationship-two.bel`: … Proposition 5.6 (2)
     * `complementarity.bel`: … complementarity of dependence and independence
     * `unique-step.bel`: … uniqueness of the derivation of transitions
-    * `lemmas-bijection.bel`: … auxiliary lemmas for the CCSK-CCSKP bijection
+    * `lemmas-bijection.bel`: … auxiliary lemmas for the CCSK-CCSK<sup>P</sup> bijection
     * `axioms\`: … axioms, in particular …
       - `defs-and-properties.bel`: … definitions and auxiliary lemmas for the axioms
       - `events.bel`: … definition and properties of equivalent transitions
@@ -240,7 +494,7 @@ opam install beluga.1.1.1
       - `cire.bel`: … CIRE (coinitial independence respects events)
       - `rpi.bel`: … RPI (reversing preserves independence)
       - `ed.bel`: … ED (event determinism)
-  + `bijection\`: … the proof of the bijection between CCSK and CCSKP, in particular …
+  + `bijection\`: … the proof of the bijection between CCSK and CCSK<sup>P</sup>, in particular …
     * `definitions.bel`: … definitions of the forget and enrich functions (as relations)
     * `functionality.bel`: … functionality of forget and enrich
     * `totality.bel`: … totality of forget and enrich
@@ -260,15 +514,16 @@ opam install beluga.1.1.1
     * `backward-transitions-ccsk.bel`: … backward transitions in CCSK
     * `stuck-std-ccsk.bel`: … proofs that some standard processes are stuck in CCSK
     * `stuck-keyed-ccsk.bel`: … proofs that some processes containing keys are stuck in CCSK
-    * `forward-transitions-ccskp.bel`: … forward transitions in CCSKP
-    * `backward-transitions-ccskp.bel`: … backward transitions in CCSKP
-    * `stuck-std-ccskp.bel`: … proofs that some standard processes are stuck in CCSKP
-    * `stuck-keyed-ccskp.bel`: … proofs that some processes containing keys are stuck in CCSKP
+    * `forward-transitions-ccskp.bel`: … forward transitions in CCSK<sup>P</sup>
+    * `backward-transitions-ccskp.bel`: … backward transitions in CCSK<sup>P</sup>
+    * `stuck-std-ccskp.bel`: … proofs that some standard processes are stuck in CCSK<sup>P</sup>
+    * `stuck-keyed-ccskp.bel`: … proofs that some processes containing keys are stuck in CCSK<sup>P</sup>
     * `events.bel`: … transitions representing the same event
   + `causality-relations\`: … causality relations on proof labels, in particular …
     * `connectedness.bel`: … connected proof labels
     * `dependence.bel`: … dependent proof labels
     * `independence.bel`: … independent proof labels
+  + `examples-paper.bel`: … examples and remarks from the paper
 
 The `.github\workflows\` repository contains workflows used to build automatically the code and run the tests.
 The `beluga_cloc_config.txt` file is a configuration file for [cloc](https://github.com/AlDanial/cloc) to count lines of code.
