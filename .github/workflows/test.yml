@@ -3,10 +3,10 @@
 
 name: Example Tests
 
-# "Every time a push is made on the main branch, that changes either
-# - one of the file in the code/ folder,
-# - one of the run/examples/ex-*.cfg file,
-# - one of the file in one of the subfolders in the examples/ folder.
+# Every time a push is made on the main branch, that changes either
+# - one of the files in the code/ folder,
+# - one of the run/examples/ex-*.cfg files,
+# - one of the files in one of the subfolders in the examples/ folder…
 
 on:
   push:
@@ -27,11 +27,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# This is the series of action we want to do:
+# This is the series of actions we want to do:
 # 1. on ubuntu-latest,
 # 2. checkout the current repository,
 # 3. install Opam,
-# 4. install Beluga
+# 4. install Beluga,
 # 5. compile the run/ex-*.cfg using the makefile.
 
 jobs:

@@ -3,7 +3,7 @@
 
 name: Code Type Reconstruction 
 
-# "Every time a push is made on the main branch, that changes one of the file in the code/ folder or the run/code.cfg file…"
+# Every time a push is made on the main branch, that changes one of the files in the code/ folder or the run/code.cfg file…
 on:
   push:
     branches: [ main ]
@@ -22,11 +22,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# This is the series of action we want to do:
+# This is the series of actions we want to do:
 # 1. on ubuntu-latest,
 # 2. checkout the current repository,
 # 3. install Opam,
-# 4. install Beluga
+# 4. install Beluga,
 # 5. compile the code/ folder using the makefile.
 
 jobs:

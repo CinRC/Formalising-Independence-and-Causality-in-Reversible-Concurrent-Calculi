@@ -7,7 +7,7 @@ This repository contains a formalisation of reversible concurrent calculi in [Be
 It extends and refines the [formalisation of CCSK<sup>P</sup>](https://github.com/CinRC/A-Beluga-Formalization-of-CCSKP) presented in [*"A Formalization of the Reversible Concurrent Calculus CCSK<sup>P</sup> in Beluga"*](https://doi.org/10.4204/EPTCS.425.5) with additional results from [*"Independence and Causality in the Reversible Concurrent Setting"*](https://doi.org/10.1007/978-3-031-97063-4_2).
 
 > [!NOTE]
-> Refer to the [`overview.md`](overview.md) file for a detailed description of the main formalisation choices and differences between the paper and the code, as well as a paper-to-artifacts table.
+> Refer to the [`overview.md`](overview.md) file for a detailed description of the main formalisation choices and differences between the paper and the code, as well as a paper-to-artifact table.
 
 [![Code Type Reconstruction](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml/badge.svg)](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/main.yml)
 [![Example Tests](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml/badge.svg)](https://github.com/CinRC/Formalising-Independence-and-Causality-in-Reversible-Concurrent-Calculi/actions/workflows/test.yml)
@@ -171,13 +171,13 @@ The
 make coverage
 ```
 
-command insert the optional `--coverage` pragma at the beginning of all the `.bel` files under `code/` and then check these conditions.
+command inserts the optional `--coverage` pragma at the beginning of all the `.bel` files under `code/` and then checks these conditions.
 
 [^1]:More details can be found in Section 6 of the [Beluga Reference Guide](https://www.cs.mcgill.ca/~complogic/beluga/userguide2/userguide.pdf).
 
 ## Installation instructions
 
-This mechanization is compatible with [Beluga](https://complogic.cs.mcgill.ca/beluga/) version 1.1.1 and above, and optionally uses [GNU Make](https://www.gnu.org/software/make/) version 4.0 and above to facilitate compilation.
+This mechanisation is compatible with [Beluga](https://complogic.cs.mcgill.ca/beluga/) version 1.1.1 and above, and optionally uses [GNU Make](https://www.gnu.org/software/make/) version 4.0 and above to facilitate compilation.
 To install Beluga or compile it from source, please refer to [their documentation](https://beluga-lang.readthedocs.io/en/latest/getting-started.html#installation) or [installation guide](https://github.com/Beluga-lang/Beluga/blob/master/INSTALL).
 
 In short, once [opam](https://opam.ocaml.org/doc/Install.html) version 2.1.4 and above is installed, simply execute
