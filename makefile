@@ -10,7 +10,7 @@
 
 all: code test
 
-# The source of the test are the .cfg 
+# The sources of the test are the .cfg 
 # files in run/examples/ that begins with ex-
 # The targets are obtained by replacing
 # .cfg by .success.
@@ -43,15 +43,16 @@ count:
 	cloc --read-lang-def=beluga_cloc_config.txt --by-file examples/
 
 # The following phony rule
-# 1. copy the run/ and code/ folders into a coverage/ folder
-# 2. appends to every .bel file the "--coverage" pragram.
-# 3. initiate a coverage check on all the programs listed in run/code.cfg
+# 1. copies the run/, code/ and examples/ folders and the run_all.cfg file into a coverage/ folder
+# 2. appends to every .bel file the "--coverage" pragma
+# 3. initiates a coverage check on all the .bel files in the development
+# 4. deletes the coverage/ folder
 
 .PHONY: coverage
 coverage:
 	$(info Creating and compiling beluga files using --coverage pragma.)
 	@mkdir -p coverage
-	@rsync -rupE run code coverage 
+	@rsync -rupE run code examples run_all.cfg coverage
 	@find coverage/ -name "*.bel" -exec sed -i '1s/^/--coverage\n/' {} + 
-	beluga coverage/run/code.cfg && echo "Compilation of code using --coverage pragma succesful."
+	beluga coverage/run_all.cfg && echo "Compilation of code using --coverage pragma successful."
 	@rm -rf coverage
