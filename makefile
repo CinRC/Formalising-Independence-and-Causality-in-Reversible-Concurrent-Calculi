@@ -54,5 +54,5 @@ coverage:
 	@mkdir -p coverage
 	@rsync -rupE run code examples run_all.cfg coverage
 	@find coverage/ -name "*.bel" -exec sed -i '1s/^/--coverage\n/' {} + 
-	beluga coverage/run_all.cfg && echo "Compilation of code using --coverage pragma successful."
+	@beluga coverage/run_all.cfg && echo "Compilation of code using --coverage pragma successful."
 	@rm -rf coverage
