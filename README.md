@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains a formalisation of reversible concurrent calculi in [Beluga](https://complogic.cs.mcgill.ca/beluga/index.html) accompanying the paper *"Concurrency, Causality and Conflict via Independence in Reversible Calculi"* by C. Aubert, G. Cecilia, I. Phillips and I. Ulidowski.
+This repository contains a formalisation of reversible concurrent calculi in [Beluga](https://www.cs.mcgill.ca/~complogic/beluga/) accompanying the paper *"Concurrency, Causality and Conflict via Independence in Reversible Calculi"* by C. Aubert, G. Cecilia, I. Phillips and I. Ulidowski.
 
 It extends and refines the [formalisation of CCSK<sup>P</sup>](https://doi.org/10.5281/zenodo.16179366) presented in [*"A Formalization of the Reversible Concurrent Calculus CCSK<sup>P</sup> in Beluga"*](https://doi.org/10.4204/EPTCS.425.5) with additional results from [*"Independence and Causality in the Reversible Concurrent Setting"*](https://doi.org/10.1007/978-3-031-97063-4_2).
 
@@ -429,7 +429,7 @@ command inserts the optional `--coverage` pragma at the beginning of all the `.b
 
 ## Installation instructions
 
-This mechanisation is compatible with [Beluga](https://complogic.cs.mcgill.ca/beluga/) version 1.1.1 and above, and optionally uses [GNU Make](https://www.gnu.org/software/make/) version 4.0 and above to facilitate compilation.
+This mechanisation is compatible with [Beluga](https://www.cs.mcgill.ca/~complogic/beluga/) version 1.1.1 and above, and optionally uses [GNU Make](https://www.gnu.org/software/make/) version 4.0 and above to facilitate compilation.
 To install Beluga or compile it from source, please refer to [their documentation](https://beluga-lang.readthedocs.io/en/latest/getting-started.html#installation) or [installation guide](https://github.com/Beluga-lang/Beluga/blob/master/INSTALL).
 
 In short, once [opam](https://opam.ocaml.org/doc/Install.html) version 2.1.4 and above is installed, simply execute
@@ -599,6 +599,7 @@ code/ccskp/axioms/ire.bel|1|4|7
 code/ccskp/axioms/cire.bel|1|4|6
 code/ccskp/axioms/rpi.bel|1|3|6
 code/ccskp/axioms/ed.bel|1|3|5
+--------|--------|--------|--------
 **SUM** |**599**|**912**|**9296**
 
 File|blank|comment|code
@@ -622,5 +623,6 @@ examples/proof-labels/valid.bel|13|12|12
 examples/processes/keyed.bel|6|7|6
 examples/processes/stuck-keyed.bel|5|6|6
 examples/processes/stuck-std.bel|3|4|3
+--------|--------|--------|--------
 SUM:|203|213|722
 </details>
